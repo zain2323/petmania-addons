@@ -121,27 +121,27 @@ class StockWarehouseOrderpoint(models.Model):
             # for franchise division
             value_config_franchise_division = rec.env['min.max.config'].search(
                 [('franchise_division', '=', rec.product_id.company_type.id), ('product_id', '=', False),
-                 ('product_category_id', '=', False), ('product_division', '=', False)], limit=1)
-            if value_config_franchise_division:
+                 ('product_category_id', '=', False), ('product_division', '=', False), ('company_id', '=', self.env.company.id)], limit=1)
+            if value_config_franchise_division and rec.product_id.company_type.id:
                 rec._filter_line_of_value_config(value_config_franchise_division)
 
             # for product division
             value_config_product_division = rec.env['min.max.config'].search(
                 [('product_division', '=', rec.product_id.product_division_id.id), ('product_id', '=', False),
-                 ('product_category_id', '=', False)], limit=1)
-            if value_config_product_division:
+                 ('product_category_id', '=', False), ('company_id', '=', self.env.company.id)], limit=1)
+            if value_config_product_division and rec.product_id.product_division_id:
                 rec._filter_line_of_value_config(value_config_product_division)
 
             # for product category
             value_config_category = rec.env['min.max.config'].search(
-                [('product_category_id', '=', rec.product_id.categ_id.id), ('product_id', '=', False)], limit=1)
-            if value_config_category:
+                [('product_category_id', '=', rec.product_id.categ_id.id), ('product_id', '=', False), ('company_id', '=', self.env.company.id)], limit=1)
+            if value_config_category and rec.product_id.categ_id.id:
                 rec._filter_line_of_value_config(value_config_category)
 
             #  for product
             # find out the min and max days of the product by value and storage
-            value_config_product = rec.env['min.max.config'].search([('product_id', '=', rec.product_id.id)], limit=1)
-            if value_config_product:
+            value_config_product = rec.env['min.max.config'].search([('product_id', '=', rec.product_id.id), ('company_id', '=', self.env.company.id)], limit=1)
+            if value_config_product and rec.product_id.id:
                 rec.min_qty_by_value = value_config_product.min_qty
                 rec.max_qty_by_value = value_config_product.max_qty
 
@@ -153,29 +153,29 @@ class StockWarehouseOrderpoint(models.Model):
             # for franchise division
             storage_config_franchise_division = rec.env['min.max.config.storage'].search(
                 [('franchise_division', '=', rec.product_id.company_type.id), ('product_id', '=', False),
-                 ('product_category_id', '=', False), ('product_division', '=', False)], limit=1)
-            if storage_config_franchise_division:
+                 ('product_category_id', '=', False), ('product_division', '=', False), ('company_id', '=', self.env.company.id)], limit=1)
+            if storage_config_franchise_division and rec.product_id.company_type.id:
                 rec.min_qty_by_storage = math.ceil(storage_config_franchise_division.min_days * rec.ads_qty)
                 rec.max_qty_by_storage = math.ceil(storage_config_franchise_division.max_days * rec.ads_qty)
 
             # for product division
             storage_config_product_division = rec.env['min.max.config.storage'].search(
                 [('product_division', '=', rec.product_id.product_division_id.id), ('product_id', '=', False),
-                 ('product_category_id', '=', False)], limit=1)
-            if storage_config_product_division:
+                 ('product_category_id', '=', False), ('company_id', '=', self.env.company.id)], limit=1)
+            if storage_config_product_division and rec.product_id.product_division_id:
                 rec.min_qty_by_storage = math.ceil(storage_config_product_division.min_days * rec.ads_qty)
                 rec.max_qty_by_storage = math.ceil(storage_config_product_division.max_days * rec.ads_qty)
 
             # for product category
             storage_config_category = rec.env['min.max.config.storage'].search(
-                [('product_category_id', '=', rec.product_id.categ_id.id), ('product_id', '=', False)], limit=1)
-            if storage_config_category:
+                [('product_category_id', '=', rec.product_id.categ_id.id), ('product_id', '=', False), ('company_id', '=', self.env.company.id)], limit=1)
+            if storage_config_category and rec.product_id.categ_id.id:
                 rec.min_qty_by_storage = math.ceil(storage_config_category.min_days * rec.ads_qty)
                 rec.max_qty_by_storage = math.ceil(storage_config_category.max_days * rec.ads_qty)
 
             # for product
-            storage_config_product = rec.env['min.max.config.storage'].search([('product_id', '=', rec.product_id.id)], limit=1)
-            if storage_config_product:
+            storage_config_product = rec.env['min.max.config.storage'].search([('product_id', '=', rec.product_id.id), ('company_id', '=', self.env.company.id)], limit=1)
+            if storage_config_product and rec.product_id.id:
                 rec.min_qty_by_storage = math.ceil(storage_config_product.min_days * rec.ads_qty)
                 rec.max_qty_by_storage = math.ceil(storage_config_product.max_days * rec.ads_qty)
 

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_pos_session_fpr," model="ir.ui.view">
+        <field name="name">pos.session.view.form.inherit</field>
+        <field name="model">pos.session</field>
+        <field name="type">form</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_session_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <notebook>
+                    <page string="Payment Lines">
+                        <field name="payment_lines">
+                            <tree editable="bottom">
+                                <field name="payment_method"/>
+                                <field name="amount"/>
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
+            </xpath>
+        </field>
+    </record>
+</odoo>

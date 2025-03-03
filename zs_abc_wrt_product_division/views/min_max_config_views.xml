@@ -23,6 +23,7 @@
                         <field name="product_division"/>
                         <field name="product_category_id"/>
                         <field name="product_id"/>
+                        <field name="company_id"/>
                     </group>
                     <group>
                         <field name="min_qty" attrs="{'invisible': [('product_id', '=', False)]}"/>
@@ -71,7 +72,7 @@
     </record>
 
     <menuitem
-            name="Min Max Configuration By Value"
+            name="Min Max Configuration By Value - Module"
             id="menu_min_max_config"
             action="action_min_max_config"
             parent="zs_inventory_planning_report.menu_scm_reports"

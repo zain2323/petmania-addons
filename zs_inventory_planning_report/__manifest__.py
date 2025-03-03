@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
     'name': 'Inventory Planning Report',
-    'version': '15.0.0.2',
+    'version': '15.0.0.5',
     'author': 'Zain Siddiqui',
     'license': 'OPL-1',
     'sequence': 25,
@@ -19,6 +19,9 @@
         'views/inventory_planning_view.xml',
         'views/purchase_views.xml',
         'views/inventory_optimisation_report_view.xml',
+        'views/out_of_stock_report_view.xml',
+        'views/branch_storage_configuration_report_view.xml',
+        'views/branch_value_configuration_report_view.xml',
     ],
     'assets': {
         'point_of_sale.assets': [

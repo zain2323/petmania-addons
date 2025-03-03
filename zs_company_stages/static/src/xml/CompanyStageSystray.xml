@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="CompanyStageSystray">
+        <div class="o_systray_item o_company_stage_systray">
+            <span class="o_company_stage">Loading...</span>
+        </div>
+    </t>
+</templates>

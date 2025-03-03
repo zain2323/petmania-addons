@@ -16,6 +16,7 @@ class MinMaxConfig(models.Model):
     franchise_division = fields.Many2one('product.company.type', string='Franchise')
     min_qty = fields.Float(string='Min Quantity')
     max_qty = fields.Float(string='Max Quantity')
+    company_id = fields.Many2one('res.company', string='Company', null=True)
     child_ids = fields.One2many(comodel_name='min.max.config.lines', inverse_name='config_id', string='Line ids')
 
     name = fields.Char(string='Name', compute='_compute_name', store=True)
@@ -76,7 +77,7 @@ class MinMaxConfigByStorage(models.Model):
     min_days = fields.Integer(string="Minimum Days", default=0)
     max_days = fields.Integer(string="Maximum Days", default=0)
     ageing_days = fields.Integer(string="Ageing Criteria", default=0)
-
+    company_id = fields.Many2one('res.company', string='Company', null=True)
     name = fields.Char(string='Name', compute='_compute_name', store=True)
 
     @api.depends('franchise_division', 'product_division', 'product_category_id', 'product_id')

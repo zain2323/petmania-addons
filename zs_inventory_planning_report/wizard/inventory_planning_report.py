@@ -19,6 +19,7 @@ class CustomerSalesData(models.TransientModel):
     _description = 'Inventory Planning Data'
 
     wizard_id = fields.Many2one('inventory.planning.report.wizard', string='Wizard', required=True)
+    company_id = fields.Many2one('res.company', string='Company', required=True)
     franchise_name = fields.Char(string='Franchise Name')
     division_name = fields.Char(string='Division Name')
     category_name = fields.Char(string='Category Name')
@@ -51,10 +52,15 @@ class CustomerWiseSalesAnalysisReport(models.TransientModel):
             'res_model': 'inventory.planning.data',
             'view_mode': 'tree',
             'target': 'current',
-            'context': {'search_default_wizard_id': self.id},
+            'domain': [('wizard_id', '=', self.id)],
         }
 
     def _get_data_for_products(self):
+        # update reordering rules data
+        rules = self.env['stock.warehouse.orderpoint'].search([('company_id', '=', self.env.company.id)])
+        for rule in rules:
+            rule._compute_product_min_max_qty()
+
         domain = []
 
         if self.franchise_division_ids:
@@ -75,7 +81,7 @@ class CustomerWiseSalesAnalysisReport(models.TransientModel):
         products = self.env['product.product'].search(domain)
         products_dict = []
         for product in products:
-            reordering_rule = self.env['stock.warehouse.orderpoint'].search([('product_id', '=', product.id)], limit=1)
+            reordering_rule = self.env['stock.warehouse.orderpoint'].search([('product_id', '=', product.id), ('company_id', '=', self.env.company.id)], limit=1)
 
             if reordering_rule:
                 max_qty_by_value = reordering_rule.max_qty_by_value
@@ -112,13 +118,14 @@ class CustomerWiseSalesAnalysisReport(models.TransientModel):
                 'min_investment': min_investment,
                 'max_qty': max_qty,
                 'max_investment': max_investment,
+                'company_id': self.env.company.id,
             })
         return products_dict
 
     def populate_pivot_data(self):
         products_data = self._get_data_for_products()
         pivot_model = self.env['inventory.planning.data']
-        pivot_model.search([]).unlink()
+        pivot_model.search([('wizard_id', '=', self.id), ('company_id', '=', self.env.company.id)]).unlink()
         for product_data in products_data:
             pivot_model.create({
                 'wizard_id': self.id,
@@ -134,4 +141,5 @@ class CustomerWiseSalesAnalysisReport(models.TransientModel):
                 'min_investment': product_data['min_investment'],
                 'max_qty': product_data['max_qty'],
                 'max_investment': product_data['max_investment'],
+                'company_id': product_data['company_id'],
             })

@@ -181,27 +181,27 @@ class SetuInventoryAgeReport(models.TransientModel):
             storage = self.env['min.max.config.storage'].search(
                 [('franchise_division', '=', product.company_type.id), ('product_id', '=', False),
                  ('product_category_id', '=', False), ('product_division', '=', False)], limit=1)
-            if storage:
+            if storage and product.company_type.id:
                 ageing_days = storage.ageing_days
 
             # for product division
             storage = self.env['min.max.config.storage'].search(
                 [('product_division', '=', product.product_division_id.id), ('product_id', '=', False),
                  ('product_category_id', '=', False)], limit=1)
-            if storage:
+            if storage and product.product_division_id.id:
                 ageing_days = storage.ageing_days
 
             # for category
             storage = self.env['min.max.config.storage'].search(
                 [('product_category_id', '=', product.categ_id.id), ('product_id', '=', False)],
                 limit=1)
-            if storage:
+            if storage and product.categ_id.id:
                 ageing_days = storage.ageing_days
 
             # for product
             storage = self.env['min.max.config.storage'].search(
                 [('product_id', '=', product.id)], limit=1)
-            if storage:
+            if storage and product.id:
                 ageing_days = storage.ageing_days
 
             fsn_data_value['ageing_days'] = ageing_days

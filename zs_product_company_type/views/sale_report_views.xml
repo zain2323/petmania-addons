@@ -18,7 +18,7 @@
         <field name="inherit_id" ref="product.product_template_form_view" />
         <field name="arch" type="xml">
             <field name="categ_id" position="after">
-                <field name="company_type" placeholder="Franchise Division" />
+                <field name="company_type" placeholder="Franchise Division"/>
             </field>
         </field>
     </record>

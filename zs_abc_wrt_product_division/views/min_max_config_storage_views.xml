@@ -28,6 +28,7 @@
                         <field name="min_days"/>
                         <field name="max_days"/>
                         <field name="ageing_days"/>
+                        <field name="company_id"/>
                     </group>
                 </sheet>
             </form>
@@ -46,7 +47,7 @@
     </record>
 
     <menuitem
-            name="Storage Config By ADS"
+            name="Storage Config By ADS - Module"
             id="menu_min_max_config_storage"
             action="action_min_max_config_storage"
             parent="zs_inventory_planning_report.menu_scm_reports"

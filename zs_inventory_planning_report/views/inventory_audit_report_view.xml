@@ -131,21 +131,21 @@
                     </group>
                     <!--                    <notebook>-->
                     <!--                        <page string="Audit Lines">-->
-                    <!--                            <field name="line_ids" attrs="{'readonly': [('state', '=', 'confirm')]}">-->
-                    <!--                                <tree editable="bottom">-->
-                    <!--                                    <field name="franchise_name"/>-->
-                    <!--                                    <field name="division_name"/>-->
-                    <!--                                    <field name="category_name"/>-->
-                    <!--                                    <field name="brand_name"/>-->
-                    <!--                                    <field name="product_name"/>-->
-                    <!--                                    <field name="barcode"/>-->
-                    <!--                                    <field name="qty_available"-->
-                    <!--                                           groups="zs_inventory_planning_report.group_scm_officers"/>-->
-                    <!--                                    <field name="counted_qty"/>-->
-                    <!--                                    <field name="difference" groups="zs_inventory_planning_report.group_scm_officers"/>-->
-                    <!--                                    <field name="remarks"/>-->
-                    <!--                                </tree>-->
-                    <!--                            </field>-->
+<!--                                                <field name="line_ids" attrs="{'readonly': [('state', '=', 'confirm')]}">-->
+<!--                                                    <tree editable="bottom">-->
+<!--                                                        <field name="franchise_name"/>-->
+<!--                                                        <field name="division_name"/>-->
+<!--                                                        <field name="category_name"/>-->
+<!--                                                        <field name="brand_name"/>-->
+<!--                                                        <field name="product_name"/>-->
+<!--                                                        <field name="barcode"/>-->
+<!--                                                        <field name="qty_available"-->
+<!--                                                               groups="zs_inventory_planning_report.group_scm_officers"/>-->
+<!--                                                        <field name="counted_qty"/>-->
+<!--                                                        <field name="difference" groups="zs_inventory_planning_report.group_scm_officers"/>-->
+<!--                                                        <field name="remarks"/>-->
+<!--                                                    </tree>-->
+<!--                                                </field>-->
                     <!--                        </page>-->
                     <!--                    </notebook>-->
                 </sheet>

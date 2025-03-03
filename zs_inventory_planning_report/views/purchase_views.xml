@@ -10,6 +10,8 @@
             <xpath expr="//field[@name='available_in_pos']"
                    position="after">
                 <field name="available_in_pos_company"/>
+                <field name="value_config_id"/>
+                <field name="storage_config_id"/>
             </xpath>
         </field>
     </record>

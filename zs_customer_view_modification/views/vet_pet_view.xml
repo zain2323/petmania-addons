@@ -1,0 +1,59 @@
+<odoo>
+    <!-- Tree view for pets -->
+    <record id="view_pet_tree" model="ir.ui.view">
+        <field name="name">vet.pet.tree</field>
+        <field name="model">vet.pet</field>
+        <field name="arch" type="xml">
+            <tree string="Pets">
+                <field name="name"/>
+                <field name="species"/>
+                <field name="breed"/>
+                <field name="gender"/>
+                <field name="date_of_birth"/>
+                <field name="age"/>
+                <field name="owner_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form view for pets -->
+    <record id="view_pet_form" model="ir.ui.view">
+        <field name="name">vet.pet.form</field>
+        <field name="model">vet.pet</field>
+        <field name="arch" type="xml">
+            <form string="Pet">
+                <sheet>
+                    <field name="image" widget="image" class="oe_avatar"/>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Pet Name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="owner_id"/>
+                            <field name="species"/>
+                            <field name="breed"/>
+                            <field name="gender"/>
+                        </group>
+                        <group>
+                            <field name="date_of_birth"/>
+                            <field name="age"/>
+                            <field name="medical_condition"/>
+                        </group>
+                    </group>
+<!--                    <notebook>-->
+<!--                        <page string="Medical History">-->
+<!--                            &lt;!&ndash; You can extend this later to add medical records &ndash;&gt;-->
+<!--                            <field name="medical_history_ids" context="{'default_pet_id': active_id}"/>-->
+<!--                        </page>-->
+<!--                        <page string="Vaccinations">-->
+<!--                            &lt;!&ndash; You can extend this later to add vaccination records &ndash;&gt;-->
+<!--                            <field name="vaccination_ids" context="{'default_pet_id': active_id}"/>-->
+<!--                        </page>-->
+<!--                    </notebook>-->
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

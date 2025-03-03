@@ -19,6 +19,7 @@ class InventoryOptimisationData(models.TransientModel):
     _description = 'Inventory Optimisation Data'
 
     wizard_id = fields.Many2one('inventory.optimisation.report.wizard', string='Wizard', required=True)
+    company_id = fields.Many2one('res.company', string='Company', required=True)
     product_id = fields.Many2one('product.product', string='Product Id')
     franchise_name = fields.Char(string='Franchise Name')
     division_name = fields.Char(string='Division Name')
@@ -67,11 +68,13 @@ class InventoryOptimisationData(models.TransientModel):
                 }))
 
             if record.optimisation_qty > 0:
-                source_loc = self.env['stock.location'].search([('usage', '=', 'internal'), ('company_id', '=', self.env.company.id)]).id,
+                source_loc = self.env['stock.location'].search(
+                    [('usage', '=', 'internal'), ('company_id', '=', self.env.company.id)]).id,
                 vendor_loc = self.env['stock.location'].search([('usage', '=', 'supplier')]).id
                 picking = self.env['stock.picking'].create({
                     'partner_id': partner.id,
-                    'picking_type_id': self.env['stock.picking.type'].search([('name', '=', 'Internal Transfers'), ('company_id', '=', self.env.company.id)]).id,
+                    'picking_type_id': self.env['stock.picking.type'].search(
+                        [('name', '=', 'Internal Transfers'), ('company_id', '=', self.env.company.id)]).id,
                     'location_id': source_loc,
                     'location_dest_id': vendor_loc,
                 })
@@ -108,10 +111,14 @@ class InventoryOptimisationReportWizard(models.TransientModel):
             'res_model': 'inventory.optimisation.data',
             'view_mode': 'tree',
             'target': 'current',
-            'context': {'search_default_wizard_id': self.id},
+            'domain': [('wizard_id', '=', self.id)],
         }
 
     def _get_data_for_products(self):
+        rules = self.env['stock.warehouse.orderpoint'].search([('company_id', '=', self.env.company.id)])
+        for rule in rules:
+            rule._compute_product_min_max_qty()
+
         domain = []
 
         if self.franchise_division_ids:
@@ -132,7 +139,8 @@ class InventoryOptimisationReportWizard(models.TransientModel):
         products = self.env['product.product'].search(domain)
         products_dict = []
         for product in products:
-            reordering_rule = self.env['stock.warehouse.orderpoint'].search([('product_id', '=', product.id)], limit=1)
+            reordering_rule = self.env['stock.warehouse.orderpoint'].search(
+                [('product_id', '=', product.id), ('company_id', '=', self.env.company.id)], limit=1)
             qty_available = product.qty_available
             if reordering_rule:
                 min_qty = reordering_rule.product_min_qty
@@ -164,13 +172,14 @@ class InventoryOptimisationReportWizard(models.TransientModel):
                 'qty_available': qty_available,
                 'optimisation_qty': optimisation_qty,
                 'status': status,
+                'company_id': self.env.company.id,
             })
         return products_dict
 
     def populate_pivot_data(self):
         products_data = self._get_data_for_products()
         pivot_model = self.env['inventory.optimisation.data']
-        pivot_model.search([]).unlink()
+        pivot_model.search([('company_id', '=', self.env.company.id)]).unlink()
         for product_data in products_data:
             pivot_model.create({
                 'wizard_id': self.id,
@@ -186,4 +195,5 @@ class InventoryOptimisationReportWizard(models.TransientModel):
                 'qty_available': product_data['qty_available'],
                 'optimisation_qty': product_data['optimisation_qty'],
                 'status': product_data['status'],
+                'company_id': product_data['company_id'],
             })

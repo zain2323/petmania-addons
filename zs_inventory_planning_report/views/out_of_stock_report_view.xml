@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <record id="zs_out_of_stock_report_view_form" model="ir.ui.view">
+            <field name="name">out.of.stock.report.wizard</field>
+            <field name="model">out.of.stock.report.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Out Of Stock Report">
+                    <sheet string="Out Of Stock Report">
+                        <group expand="0" string="Filters">
+                            <group>
+                                <field name="franchise_division_ids" widget="many2many_tags"
+                                       options="{'no_create_edit': True}"/>
+                                <field name="product_division_ids" widget="many2many_tags"
+                                       options="{'no_create_edit': True}"/>
+                                <field name="product_category_ids" widget="many2many_tags"
+                                       options="{'no_create_edit': True}"/>
+                            </group>
+                            <group>
+                                <field name="product_brand_ids" widget="many2many_tags"
+                                       options="{'no_create_edit': True}"/>
+                                <field name="product_ids" widget="many2many_tags" options="{'no_create_edit': True}"/>
+                            </group>
+                        </group>
+
+                    </sheet>
+                    <footer>
+                        <button name="action_view_pivot"
+                                string="View Data"
+                                type="object"
+                                class="oe_highlight"/>
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+
+                </form>
+            </field>
+        </record>
+
+        <record id="view_out_of_stock_report_data_tree" model="ir.ui.view">
+            <field name="name">out.of.stock.report.data.tree</field>
+            <field name="model">out.of.stock.data</field>
+            <field name="arch" type="xml">
+                <tree string="Out Of Stock Report Data">
+                    <field name="product_name"/>
+                    <field name="franchise_name"/>
+                    <field name="division_name"/>
+                    <field name="category_name"/>
+                    <field name="brand_name"/>
+                    <field name="min_qty"/>
+                    <field name="qty_available"/>
+                    <field name="out_of_stock_qty"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="zs_out_of_stock_report_view_action" model="ir.actions.act_window">
+            <field name="name">Out Of Stock Report</field>
+            <field name="res_model">out.of.stock.report.wizard</field>
+            <field name="binding_view_types">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="zs_out_of_stock_report_view" name="Out Of Stock Report"
+                  action="zs_out_of_stock_report_view_action"
+                  parent="zs_inventory_planning_report.menu_scm_reports" sequence="4"/>
+    </data>
+</odoo>

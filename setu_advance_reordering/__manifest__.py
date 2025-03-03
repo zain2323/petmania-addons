@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
     'name': 'Advance Reordering',
-    'version': '15.9',
+    'version': '15.10',
     'price': 600,
     'currency': 'EUR',
     'category': 'stock',

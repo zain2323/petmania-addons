@@ -1,0 +1,40 @@
+<odoo>
+    <record id="view_partner_form_vet_extension" model="ir.ui.view">
+        <field name="name">res.partner.form.vet.extension</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field eval="2" name="priority"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='vat']" position="after">
+                <field name="customer_category" string="Customer Category"/>
+                <field name="revenue_stream_ids" widget="many2many_tags"/>
+            </xpath>
+
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_pets" type="object" class="oe_stat_button" icon="fa-paw">
+                    <field name="pet_count" string="Pets" widget="statinfo"/>
+                </button>
+            </xpath>
+            <!-- Add the new notebook pages -->
+            <xpath expr="//notebook//page[@name='contact_addresses']" position="before">
+                <page string="Frequent Purchases">
+                    <field name="frequent_products" readonly="1">
+                        <tree>
+                            <field name="name" string="Product Name"/>
+                            <field name="list_price" string="Sale Price"/>
+                            <!--                            <field name="purchase_count" string="Purchase Count"/>-->
+                            <field name="default_code" string="Internal Reference"/>
+                            <field name="categ_id" string="Category"/>
+                        </tree>
+                    </field>
+                </page>
+                <page string="Purchase Statistics">
+                    <group>
+                        <field name="purchase_count" readonly="1"/>
+                        <field name="purchase_total" readonly="1" widget="monetary"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

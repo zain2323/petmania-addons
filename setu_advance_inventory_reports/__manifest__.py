@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
     'name' : 'Advance Inventory Reports',
-    'version' : '15.0.14.4',
+    'version' : '15.0.14.5',
     'price' : 299,
     'currency'  :'EUR',
     'category': 'stock',
