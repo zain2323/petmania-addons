@@ -1,0 +1,10 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_inventory_planning_report_wizard,inventory_planning_report_wizard,model_inventory_planning_report_wizard,,1,1,1,1
+access_inventory_planning_data,inventory_planning_data,model_inventory_planning_data,,1,1,1,1
+
+access_inventory_audit_data,inventory_audit_data,model_inventory_audit_data,,1,1,1,1
+access_inventory_audit_line,inventory_audit_line,model_inventory_audit_line,,1,1,1,1
+access_inventory_audit_report_wizard,inventory_audit_report_wizard,model_inventory_audit_report_wizard,,1,1,1,1
+
+access_inventory_optimisation_data,inventory_optimisation_data,model_inventory_optimisation_data,,1,1,1,1
+access_inventory_optimisation_report_wizard,inventory_optimisation_report_wizard,model_inventory_optimisation_report_wizard,,1,1,1,1

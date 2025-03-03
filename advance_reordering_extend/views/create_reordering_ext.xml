@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!-- Inherit Form View to Modify it -->
+    <record id="create_reordering_form_ext" model="ir.ui.view">
+        <field name="name">create_reordering_form_ext</field>
+        <field name="model">create.reordering</field>
+        <field name="inherit_id" ref="setu_advance_reordering.form_create_reordering"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='document_creation_option']" position="after">
+                <field name="slab_id"/>
+            </xpath>
+
+        </field>
+    </record>
+
+
+    <record id="product_product_tree_view_ext" model="ir.ui.view">
+        <field name="name">product_product_tree_view_ext</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_product_tree_view"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='price']" position="after">
+                <field name="min"/>
+                <field name="max"/>
+            </xpath>
+            <xpath expr="//tree" position="attributes">
+                <attribute name="editable">bottom</attribute>
+            </xpath>
+
+        </field>
+    </record>
+    <!-- Inherit Form View to Modify it -->
+
+    <record id="reorder_qty_set_action" model="ir.actions.act_window">
+        <field name="name">Reorder Qty Set</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">product.product</field>
+        <field name="view_mode">tree</field>
+    </record>
+    <!-- This Menu Item Must have a parent -->
+    <menuitem id="reorder_qty_set_menuitem" name="reorder Qty set" parent="setu_advance_reordering.menu_sub_reorder_configuration" action="reorder_qty_set_action" sequence="6"/>
+</odoo>

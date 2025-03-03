@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record model="ir.actions.server" id="action_adjust_inventory_for_all">
+            <field name="name">Adjust Inventory For All Products</field>
+            <field name="model_id" ref="zs_inventory_planning_report.model_inventory_audit_data"/>
+            <field name="binding_model_id" ref="zs_inventory_planning_report.model_inventory_audit_data"/>
+            <field name="state">code</field>
+            <field name="groups_id" eval="[(4, ref('zs_inventory_planning_report.group_executive_officers'))]"/>
+            <field name="code">
+                records.sudo()._adjust_inventory()
+            </field>
+        </record>
+
+        <record model="ir.actions.server" id="action_adjust_inventory">
+            <field name="name">Adjust Inventory</field>
+            <field name="model_id" ref="zs_inventory_planning_report.model_inventory_audit_line"/>
+            <field name="binding_model_id" ref="zs_inventory_planning_report.model_inventory_audit_line"/>
+            <field name="state">code</field>
+            <field name="groups_id" eval="[(4, ref('zs_inventory_planning_report.group_executive_officers'))]"/>
+            <field name="code">
+                records.sudo()._adjust_inventory()
+            </field>
+        </record>
+
+    </data>
+</odoo>

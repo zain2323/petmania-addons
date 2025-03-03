@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="reordering_report_wizard_view" model="ir.ui.view">
+            <field name="name">reordering.report.wizard.form</field>
+            <field name="model">reordering.report.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Generate Report">
+                    <group>
+                        <group>
+                            <field name="warehouse_id"/>
+                            <field name="brand_id"/>
+                            <field name="sales_data"/>
+                        </group>
+                        <group>
+                            <field name="category_ids" widget="many2many_tags" domain="[('show_in_report', '=', True)]"/>
+                            <field name="sub_category_ids" widget="many2many_tags" domain="[('parent_id', 'in', category_ids), ('parent_id', '!=', False)]"/>
+                            <field name="req_storage"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button string="Generate" name="action_generate_report" type="object" class="oe_highlight" />
+                        <button string="Cancel" class="oe_link" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_reordering_report_wizard" model="ir.actions.act_window">
+            <field name="name">Generate Report</field>
+            <field name="res_model">reordering.report.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem
+            id="menu_reordering_report_wizard"
+            action="action_reordering_report_wizard"
+            name="Generate Report"
+            parent="dxl_at_reordering_automation.menu_reordering_report"
+            sequence="2"/>
+
+    </data>
+</odoo>

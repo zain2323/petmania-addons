@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <template id="report_delivery_document_inherit" inherit_id="stock.report_delivery_document">
+            <xpath expr="//div[@class='page']" position="inside">
+                <div class="footer">
+                    <div>
+                        <span style="margin-right: 250px;">
+                          <strong>Prepared By:</strong>
+                        </span>
+                        <span style="margin-right: 250px;">
+                          <strong>Checked By:</strong>
+                        </span>
+                        <span>
+                          <strong>Recieved By:</strong>
+                        </span>
+                    </div>
+                </div>
+            </xpath>
+        </template>
+    </data>
+</odoo>

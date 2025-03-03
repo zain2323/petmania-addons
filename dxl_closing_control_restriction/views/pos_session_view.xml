@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_pos_session_form_inherit_arbab" model="ir.ui.view">
+        <field name="name">pos.session.form.view.inherit.arbab</field>
+        <field name="model">pos.session</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_session_form"></field>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_show_payments_list']" position='attributes'>
+                <attribute name="groups">!dxl_closing_control_restriction_group.group_closing_control_restriction</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

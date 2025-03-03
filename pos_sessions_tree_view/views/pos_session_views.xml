@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_pos_session_tree" model="ir.ui.view">
+        <field name="name">pos.session.view.tree.inherit</field>
+        <field name="model">pos.session</field>
+        <field name="type">form</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_session_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='user_id']" position="after">
+                <!-- <field name="total_payments_amount" sum="Total"/>  -->
+                <field name="order_count" sum="Total"/>
+                <field name="total_payments_amount" sum="Total"/>
+                <field name="bank_amount" sum="Total"/>
+                <field name="cash_amount" sum="Total"/>
+                <field name="online_payments_amount" sum="Total"/>
+                <field name="easypaisa_amount" sum="Total"/>
+                <field name="discount_amount" sum="Total"/>
+                <field name="return_amount" sum="Total"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

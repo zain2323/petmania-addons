@@ -1,0 +1,79 @@
+<odoo>
+    <record id="view_min_max_config_tree" model="ir.ui.view">
+        <field name="name">min.max.config.tree</field>
+        <field name="model">min.max.config</field>
+        <field name="arch" type="xml">
+            <tree string="Min-Max Configurations">
+                <field name="product_id"/>
+                <field name="product_category_id"/>
+                <field name="product_division"/>
+                <field name="franchise_division"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_min_max_config_form" model="ir.ui.view">
+        <field name="name">min.max.config.form</field>
+        <field name="model">min.max.config</field>
+        <field name="arch" type="xml">
+            <form string="Min-Max Configuration">
+                <sheet>
+                    <group>
+                        <field name="franchise_division"/>
+                        <field name="product_division"/>
+                        <field name="product_category_id"/>
+                        <field name="product_id"/>
+                    </group>
+                    <group>
+                        <field name="min_qty" attrs="{'invisible': [('product_id', '=', False)]}"/>
+                        <field name="max_qty" attrs="{'invisible': [('product_id', '=', False)]}"/>
+                    </group>
+                    <notebook attrs="{'invisible': [('product_id', '!=', False)]}">
+                        <page string="Lines">
+                            <field name="child_ids">
+                                <tree editable="bottom" string="Configuration Lines">
+                                    <field name="min_price"/>
+                                    <field name="max_price"/>
+                                    <field name="min_qty"/>
+                                    <field name="max_qty"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_min_max_config_lines_tree" model="ir.ui.view">
+        <field name="name">min.max.config.lines.tree</field>
+        <field name="model">min.max.config.lines</field>
+        <field name="arch" type="xml">
+            <tree string="Min-Max Config Lines">
+                <field name="config_id"/>
+                <field name="min_qty"/>
+                <field name="max_qty"/>
+                <field name="min_price"/>
+                <field name="max_price"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_min_max_config" model="ir.actions.act_window">
+        <field name="name">Min-Max Configurations By Value</field>
+        <field name="res_model">min.max.config</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_create">
+                Create your first Min-Max Configuration by value
+            </p>
+        </field>
+    </record>
+
+    <menuitem
+            name="Min Max Configuration By Value"
+            id="menu_min_max_config"
+            action="action_min_max_config"
+            parent="zs_inventory_planning_report.menu_scm_reports"
+    />
+</odoo>

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record id="product_template_brand_hide" model="ir.ui.view">
+        <field name="name">product.template.brand.hide.form</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product_brand.product_template_form_brand_add"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='product_brand_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="product_template_scm_grading_hide" model="ir.ui.view">
+        <field name="name">product.template.scm.grading.hide.form</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="zs_scm_grading.product_template_form_scm_grading_add"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='product_scm_grading_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="product_template_fields_hide_category" model="ir.ui.view">
+        <field name="name">product.template.product.hide.form</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="zs_product_company_type.product_template_form_company_type_add"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='categ_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+
+
+    <record id="product_template_fields_hide_franchise_division" model="ir.ui.view">
+        <field name="name">product.template.product.franchise.division.form</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='company_type']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+
+
+
+    <record id="product_template_fields_cost_sale_position" model="ir.ui.view">
+        <field name="name">product.template.product.sale.position</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='group_standard_price']//label[@for='list_price']" position="before">
+                <separator string="Commercial Information" colspan="2" style="font-weight: bold;font-size: 1.1em; border-bottom: 1px solid grey;"/>
+            </xpath>
+
+            <xpath expr="//group[@name='group_standard_price']//label[@for='standard_price']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//group[@name='group_standard_price']//div[@name='standard_price_uom']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//group[@name='group_standard_price']//label[@for='list_price']" position="before">
+                <label for="standard_price" groups="base.group_user"
+                       attrs="{'invisible': [('product_variant_count', '&gt;', 1), ('is_product_variant', '=', False)]}"/>
+                <div name="standard_price_uom" groups="base.group_user"
+                     attrs="{'invisible': [('product_variant_count', '&gt;', 1), ('is_product_variant', '=', False)]}"
+                     class="o_row">
+                    <field name="standard_price" widget="monetary"
+                           options="{'currency_field': 'cost_currency_id', 'field_digits': True}"/>
+                    <span groups="uom.group_uom" class="oe_read_only">per
+                        <field name="uom_name"/>
+                    </span>
+                </div>
+            </xpath>
+
+        </field>
+    </record>
+
+    <record id="product_template_fields_product_identity" model="ir.ui.view">
+        <field name="name">product.template.product.identity</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='default_code']" position="before">
+                <separator string="Product Identity" colspan="2" style="font-weight: bold;font-size: 1.1em; border-bottom: 1px solid grey;"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="product_template_fields_add" model="ir.ui.view">
+        <field name="name">product.template.product.form</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='uom_po_id']" position="after">
+                <separator string="SCM Information" colspan="2" style="font-weight: bold;font-size: 1.1em; border-bottom: 1px solid grey;"/>
+                <field name="ads_quarterly" placeholder="ADS (3 Months)"/>
+                <field name="ads_half_year" placeholder="ADS (6 Months)"/>
+                <field name="product_scm_grading_id" placeholder="SCM grading"/>
+                <field name="product_attribute_1_id" placeholder="Sales Contribution Class"/>
+
+                <separator string="Product Information" colspan="2" style="font-weight: bold;font-size: 1.1em; border-bottom: 1px solid grey;"/>
+                <field name="company_type"/>
+                <field name="product_division_id"/>
+                <field name="categ_id"/>
+                <field name="product_brand_id"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_product_template_tree_fields_ass" model="ir.ui.view">
+        <field name="name">product tree view: add brand</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_tree_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="ads_quarterly" placeholder="ADS (3 Months)"/>
+                <field name="ads_half_year" placeholder="ADS (6 Months)"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

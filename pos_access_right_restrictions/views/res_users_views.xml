@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_employee_form" model="ir.ui.view">
+        <!-- To add new fields to the hr.employee-->
+        <field name="name">res.users.view.form.inherit.pos.access.right.restriction</field>
+        <field name="model">res.users</field>
+        <field name="type">form</field>
+        <field name="inherit_id" ref="base.user_groups_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='company_id']" position="after">
+                <field name="show_product_refund_button"/>
+                <field name="show_product_info_button"/>
+                <field name="show_orders_menu_button"/>
+                <field name="show_edit_onhand_qty"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

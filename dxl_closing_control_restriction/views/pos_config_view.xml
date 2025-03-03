@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_pos_config_kanban_serial_id">
+            <field name="name">pos.config.kanban.view</field>
+            <field name="model">pos.config</field>
+            <field name="inherit_id" ref="point_of_sale.view_pos_config_kanban"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[hasclass('o_kanban_manage_button_section')]" position="attributes">
+                    <attribute name="groups">dxl_closing_control_restriction.group_show_pos_orders</attribute>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

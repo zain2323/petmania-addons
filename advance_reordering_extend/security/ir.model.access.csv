@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_stock_reordering_slab_qty,reordering.slab.qty,model_reordering_slab_qty,,1,1,1,1
+access_stock_reordering_slab_qty_lines,reordering.slab.qty.lines,model_reordering_slab_qty_lines,,1,1,1,1

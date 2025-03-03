@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Tree View -->
+        <record id="view_stock_warehouse_orderpoint_category_tree" model="ir.ui.view">
+            <field name="name">stock.warehouse.orderpoint.category.tree</field>
+            <field name="model">stock.warehouse.orderpoint.category</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="scm_grading_id"/>
+                    <field name="scheduler_date" widget="date"/>
+<!--                    <field name="vendor_id"/>-->
+                </tree>
+            </field>
+        </record>
+
+        <!-- Form View -->
+        <record id="view_stock_warehouse_orderpoint_category_form" model="ir.ui.view">
+            <field name="name">stock.warehouse.orderpoint.category.form</field>
+            <field name="model">stock.warehouse.orderpoint.category</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="scm_grading_id"/>
+<!--                                <field name="vendor_id"/>-->
+                            </group>
+                            <group>
+                                <field name="scheduler_date" widget="date"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Action -->
+        <record id="action_stock_warehouse_orderpoint_category" model="ir.actions.act_window">
+            <field name="name">Reordering with Category</field>
+            <field name="res_model">stock.warehouse.orderpoint.category</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- Menu Item -->
+        <menuitem id="menu_stock_warehouse_orderpoint_category" name="Reordering with Category"
+                  parent="setu_advance_reordering.menu_sub_reordering_process"
+                  action="action_stock_warehouse_orderpoint_category"/>
+
+    </data>
+</odoo>

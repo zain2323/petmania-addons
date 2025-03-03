@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="menu_pos_sale_report"
+              name="POS Sales Report"
+              action="pos_product_sale_report.action_view_branding_filters"
+              parent="stock.menu_warehouse_report"
+              sequence="33"
+    />
+
+</odoo>

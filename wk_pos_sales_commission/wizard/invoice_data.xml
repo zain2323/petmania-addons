@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2016-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<!-- License URL : <https://store.webkul.com/license.html/> -->
+<odoo>
+    <record id="view_pos_invoice_data_wizard" model="ir.ui.view">
+            <field name="name">invoice.data.form</field>
+            <field name="model">invoice.data</field>
+            <field name="arch" type="xml">
+                <form string="Invoice Details">
+                    <group>
+                        <field name="start_date"/>
+                        <field name="end_date"/>
+                        <field name="report_of"/>
+                        <field name="employee_id" attrs="{'invisible': [('report_of', '!=', 'employee')]}" required='1'/>
+                        <field name="user_id" attrs="{'invisible': [('report_of', '!=', 'user')]}" required='1'/>
+                    </group>
+                    <footer>
+                        <!-- <button name="create_invoice" string="Create Invoice" type="object" class="btn-primary"/> -->
+                        <button string="Cancel" class="btn-secondary" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record> 
+
+        <record id="pos_invoice_data_action_window" model="ir.actions.act_window">
+            <field name="name">POS Invoice Data</field>
+            <field name="res_model">invoice.data</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+        
+</odoo>

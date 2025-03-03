@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<odoo>
+    <data>
+        <record id="life_stage_action" model="ir.actions.act_window">
+            <field name="name">Life Stage</field>
+            <field name="res_model">life.stage</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="life_stage_view" model="ir.ui.view">
+            <field name="name">Life Stage</field>
+            <field name="model">life.stage</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name" string="Name"/>
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+         <menuitem id="life_stage"
+                   name="Life Stage"
+                   parent="sale.product_menu_catalog"
+                   sequence="4"
+                   action="life_stage_action"/>
+    </data>
+</odoo>

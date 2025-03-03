@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <record id="zs_advance_sales_analysis_report_form" model="ir.ui.view">
+            <field name="name">zs.advance.sales.analysis.report.form</field>
+            <field name="model">sales.analysis.report.wizard</field>
+            <field name="arch" type="xml">
+                <form string="ABC Sales Analysis Report">
+                    <sheet string="ABC Sales Analysis">
+                        <group expand="0" string="Filters">
+                            <group expand="0" string="Choose dates to calculate sales">
+                                <field name="start_date" required="True" />
+<!--                                <field name="end_date" required="True" />-->
+                            </group>
+                            <group expand="0" string="Companies &#038; Warehouses">
+                                <field name="months_before" />
+                            </group>
+                        </group>
+
+                    </sheet>
+                    <footer>
+                        <button name="download_report" string="Excel Report" type="object"
+                                class="oe_highlight"/>
+                        <button string="Cancel" class="oe_link" special="cancel" />
+                    </footer>
+
+                </form>
+            </field>
+        </record>
+
+
+        <record id="zs_advance_sales_analysis_report_action" model="ir.actions.act_window">
+            <field name="name">Advance Sales Analysis</field>
+            <field name="res_model">sales.analysis.report.wizard</field>
+            <field name="binding_view_types">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="zs_sales_analysis_report" name="Advance Sales Analysis Report"
+                  parent="sale.menu_sale_report" sequence="17" />
+
+        <menuitem id="zs_advance_sales_analysis_report" action="zs_advance_sales_analysis_report_action"
+                  parent="zs_sales_analysis_report.zs_sales_analysis_report"
+                  sequence="1" />
+    </data>
+</odoo>

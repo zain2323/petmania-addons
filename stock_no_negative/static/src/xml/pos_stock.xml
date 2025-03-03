@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="stock_no_negative.template" inherit_id="point_of_sale.template">
+    <t t-name="ProductItem" t-inherit="point_of_sale.ProductItem" t-inherit-mode="extension" owl="1">
+        <xpath expr="//div[hasclass('product-img')]" position="inside">
+            <span class="qty-tag" style="right: 90px;">
+            </span>
+        </xpath>
+    </t>
+</templates>

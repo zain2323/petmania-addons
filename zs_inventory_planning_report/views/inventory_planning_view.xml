@@ -1,0 +1,22 @@
+<odoo>
+    <record id="view_inventory_planning_data_tree" model="ir.ui.view">
+        <field name="name">inventory.planning.data.tree</field>
+        <field name="model">inventory.planning.data</field>
+        <field name="arch" type="xml">
+            <tree string="Inventory Planning Data">
+                <field name="product_name"/>
+                <field name="barcode"/>
+                <field name="cost"/>
+                <field name="selected_method"/>
+                <field name="franchise_name"/>
+                <field name="division_name"/>
+                <field name="category_name"/>
+                <field name="brand_name"/>
+                <field name="min_qty" sum="Total min qty"/>
+                <field name="min_investment" sum="Total min investment"/>
+                <field name="max_qty" sum="Total max qty"/>
+                <field name="max_investment" sum="Total max investment"/>
+            </tree>
+        </field>
+    </record>
+</odoo>

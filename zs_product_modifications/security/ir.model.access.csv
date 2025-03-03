@@ -1,0 +1,17 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_product_type,access_product_type,model_product_type,base.group_user,1,1,1,1
+access_product_manufacture,access_product_manufacture,model_product_manufacture,base.group_user,1,1,1,1
+access_product_formula,access_product_formula,model_product_formula,base.group_user,1,1,1,1
+access_product_packsize,access_product_packsize,model_product_packsize,base.group_user,1,1,1,1
+access_product_core,access_product_core,model_product_core,base.group_user,1,1,1,1
+access_product_storage,access_product_storage,model_product_storage,base.group_user,1,1,1,1
+access_procurement_type,access_procurement_type,model_procurement_type,base.group_user,1,1,1,1
+access_product_division,access_product_division,model_product_division,base.group_user,1,1,1,1
+access_vendor_name,access_vendor_name,model_vendor_name,base.group_user,1,1,1,1
+access_life_stage,access_life_stage,model_life_stage,base.group_user,1,1,1,1
+access_packing_type,access_packing_type,model_packing_type,base.group_user,1,1,1,1
+access_product_material,access_product_material,model_product_material,base.group_user,1,1,1,1
+access_packing_size,access_packing_size,model_packing_size,base.group_user,1,1,1,1
+access_attribute_1,access_attribute_1,model_attribute_1,base.group_user,1,1,1,1
+access_attribute_2,access_attribute_2,model_attribute_2,base.group_user,1,1,1,1
+access_attribute_3,access_attribute_3,model_attribute_3,base.group_user,1,1,1,1

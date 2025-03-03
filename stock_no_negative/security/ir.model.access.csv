@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+stock_no_negative.access_stock_update,access_stock_update,stock_no_negative.model_stock_update,base.group_user,1,1,1,1

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates xml:space="preserve">
+    <t name="pos_access_right.forcechrome" owl="1"
+       t-inherit="point_of_sale.Chrome" t-inherit-mode="extension">
+        <xpath expr="//TicketButton" position="attributes">
+            <attribute name="showTicketButton">showTicketButton</attribute>
+        </xpath>
+    </t>
+</templates>

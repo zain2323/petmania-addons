@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_res_rider,access_res_rider,model_res_rider,base.group_user,1,1,1,1
+access_sale_delivery_rider,access_sale_delivery_rider,model_sale_delivery_rider,base.group_user,1,1,1,1
+access_delivery_rider_wizard,access_delivery_rider_wizard,model_deliver_rider_wizard,base.group_user,1,1,1,1
+access_delivery_rider_wizard_line,access_delivery_rider_wizard_line,model_deliver_rider_wizard_line,base.group_user,1,1,1,1

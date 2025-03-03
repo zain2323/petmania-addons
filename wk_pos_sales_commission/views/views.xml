@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2016-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<!-- License URL : <https://store.webkul.com/license.html/> -->
+<odoo>
+    <data>
+        <record id="pos_sale_commission_form_view" model="ir.ui.view">
+            <field name="name">POS Sale Commission</field>
+            <field name="model">pos.sale.commission</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </div>
+                        <group colspan='2'>
+                            <group>
+                                <field name="start_date" attrs="{'required': [('end_date', '!=', False)]}"/>
+                                <field name="end_date" attrs="{'required': [('start_date', '!=', False)]}"/>
+                            </group>
+                            <group>
+                                <field name="active"/>
+                                <field name='currency_id' invisible='1'/>
+                                
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Commission Calculation">
+                                <group>
+                                    <field name="commission_rule" string='On the Basis '/>
+                                </group>
+                                <group>
+                                    <field name='cart_amount_commission_ids' nolabel="1" attrs="{'invisible': [('commission_rule', '!=', 'amount')]}">
+                                        <tree string='Cart Amount Rules'>
+                                            <field name="name"/>
+                                            <field name="compute_commision"/>
+                                            <field name="commission"/>
+                                            <field name="cart_amount_from" string='Amount from'/>
+                                            <field name="cart_amount_to" string='Amount to'/>
+                                        </tree>
+                                        <form string='Cart Amount Rule'>
+                                            <group>
+                                                <group>
+                                                    <field name="name"/>
+                                                </group>
+                                                <group colspan='2'>
+                                                    <group>
+                                                        <field name="cart_amount_from"/>
+                                                        <field name="cart_amount_to"/>
+                                                    </group>
+                                                </group>
+                                                <group>
+                                                    <field name='compute_commision' required='1' widget='radio'/>
+                                                </group>
+                                                <group> 
+                                                        <field name='currency_id' invisible='1'/>
+                                                        <field name="fixed_commission" attrs="{'invisible':[('compute_commision', '!=', 'fixed')]}"/>
+                                                        <label for="percent_commission" attrs="{'invisible':[('compute_commision', '!=', 'percentage')]}"/>
+                                                        <div attrs="{'invisible':[('compute_commision', '!=', 'percentage')]}">
+                                                            <field name="percent_commission"
+                                                                class="oe_inline"
+                                                                attrs="{'invisible':[('compute_commision', '!=', 'percentage')]}"/>
+                                                            %%
+                                                        </div>
+                                                </group>
+                                            </group>
+                                        </form> 
+                                    </field>
+                                </group>
+                            
+                                <field name="commission_line_ids" attrs="{'invisible': [('commission_rule', '!=', 'rule')]}">
+                                    <tree string="Commission Items">
+                                        <field name="name"/>
+                                        <field name='apply_on' required="1" />
+                                        <field name='min_qty'/>
+                                        <field name='commission'/>
+                                        <field name='compute_commision'/>
+                                    </tree>
+                                    <form string="Commission Items">
+                                        <group colspan='2'>
+                                            <group>
+                                                <field name='apply_on' required="1" widget="radio"/>
+                                                <field name="categ_id" attrs="{
+                                                    'invisible':[('apply_on', '!=', '2_categories')],
+                                                    'required':[('apply_on', '=', '2_categories')]}"/>
+                                                <field name="product_id" attrs="{
+                                                    'invisible':[('apply_on', '!=', '1_products')],
+                                                    'required':[('apply_on', '=', '1_products')]}"/>
+                                            </group>
+                                            <group>
+                                                <field name='min_qty'/>
+                                            </group>
+                                        </group>
+                                        <group string="Commission Computation">
+                                            <group colspan='2'>
+                                                <group>
+                                                    <field name='compute_commision' required='1' widget='radio'/>
+                                                </group>
+                                                <group> 
+                                                        <field name='currency_id' invisible='1'/>
+                                                        <field name="fixed_commission" attrs="{'invisible':[('compute_commision', '!=', 'fixed')]}"/>
+                                                        <label for="percent_commission" attrs="{'invisible':[('compute_commision', '!=', 'percentage')]}"/>
+                                                        <div attrs="{'invisible':[('compute_commision', '!=', 'percentage')]}">
+                                                            <field name="percent_commission"
+                                                                class="oe_inline"
+                                                                attrs="{'invisible':[('compute_commision', '!=', 'percentage')]}"/>
+                                                            %%
+                                                        </div>
+                                                </group>
+                                            </group>
+                                        </group>
+                                    </form>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="pos_sale_commission_tree_view" model="ir.ui.view">
+            <field name="name">POS Sale Commission</field>
+            <field name="model">pos.sale.commission</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="commission_rule"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="pos_sale_commission_action_window" model="ir.actions.act_window">
+            <field name="name">POS Sale Commission</field>
+            <field name="res_model">pos.sale.commission</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="pos_commission_view_menuitem" name="Commission" parent="point_of_sale.menu_point_root" sequence='10'/>
+
+        <menuitem id="pos_sale_commission_view_menuitem" name="Commission Configuration" 
+            parent="wk_pos_sales_commission.pos_commission_view_menuitem" 
+            action="wk_pos_sales_commission.pos_sale_commission_action_window"/>
+
+        <!-- <record id="commission_hr_employee_view" model="ir.actions.act_window">
+            <field name="name">Commission Employee</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">hr.employee</field>
+            <field name="domain">[('is_commission_applicable','=',True)]</field>
+            <field name="context">{"default_is_commission_applicable":True}</field>
+            <field name="view_mode">tree,form</field>
+                <field name="view_ids" eval="[(5, 0, 0),
+                (0, 0, {'view_mode': 'kanban', 'view_id': ref('hr.hr_kanban_view_employees')}),
+                (0, 0, {'view_mode': 'tree', 'view_id': ref('hr.view_employee_tree')}),
+                (0, 0, {'view_mode': 'form', 'view_id': ref('hr.view_employee_form')})]"/>
+        </record> -->
+
+        <!-- <menuitem id="commission_hr_employee_user_root" parent="wk_pos_sales_commission.pos_commission_view_menuitem" 
+            name="Commission Employees" action="wk_pos_sales_commission.commission_hr_employee_view" sequence="3" /> -->
+        
+        <!-- <record id="commission_res_users_view" model="ir.actions.act_window">
+            <field name="name">Commission Users</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.users</field>
+            <field name="domain">[('is_commission_applicable','=',True)]</field>
+            <field name="context">{"default_is_commission_applicable":True}</field>
+            <field name="view_mode">tree,form</field>
+                <field name="view_ids" eval="[(5, 0, 0),
+                (0, 0, {'view_mode': 'kanban', 'view_id': ref('base.view_res_users_kanban')}),
+                (0, 0, {'view_mode': 'tree', 'view_id': ref('base.view_users_tree')}),
+                (0, 0, {'view_mode': 'form', 'view_id': ref('base.view_users_form')})]"/>
+        </record> -->
+
+        <!-- <menuitem id="commission_res_partner_user_root" parent="wk_pos_sales_commission.pos_commission_view_menuitem" 
+            name="Commission Users" action="wk_pos_sales_commission.commission_res_users_view" sequence="2" /> -->
+    </data>
+</odoo>

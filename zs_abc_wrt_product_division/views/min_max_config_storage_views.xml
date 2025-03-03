@@ -1,0 +1,54 @@
+<odoo>
+    <record id="view_min_max_config_storage_tree" model="ir.ui.view">
+        <field name="name">min.max.config.storage.tree</field>
+        <field name="model">min.max.config.storage</field>
+        <field name="arch" type="xml">
+            <tree string="Min-Max Configurations By Storage">
+                <field name="product_id"/>
+                <field name="product_category_id"/>
+                <field name="product_division"/>
+                <field name="franchise_division"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_min_max_config_storage_form" model="ir.ui.view">
+        <field name="name">min.max.config.storage.form</field>
+        <field name="model">min.max.config.storage</field>
+        <field name="arch" type="xml">
+            <form string="Storage Config By ADS">
+                <sheet>
+                    <group>
+                        <field name="franchise_division"/>
+                        <field name="product_division"/>
+                        <field name="product_category_id"/>
+                        <field name="product_id"/>
+                    </group>
+                    <group>
+                        <field name="min_days"/>
+                        <field name="max_days"/>
+                        <field name="ageing_days"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_min_max_config_storage" model="ir.actions.act_window">
+        <field name="name">Storage Config By ADS</field>
+        <field name="res_model">min.max.config.storage</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_create">
+                Create your first Storage Configuration
+            </p>
+        </field>
+    </record>
+
+    <menuitem
+            name="Storage Config By ADS"
+            id="menu_min_max_config_storage"
+            action="action_min_max_config_storage"
+            parent="zs_inventory_planning_report.menu_scm_reports"
+    />
+</odoo>

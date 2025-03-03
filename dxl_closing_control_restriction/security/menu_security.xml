@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <record id="group_show_pos_orders" model="res.groups">
+        <field name="name">Show POS Orders</field>
+    </record>
+</odoo>

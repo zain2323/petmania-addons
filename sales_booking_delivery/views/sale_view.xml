@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    	<record id="sale_order_view_form_sale_extended" model="ir.ui.view">
+	        <field name="name">sale.order.form.extended</field>
+	        <field name="model">sale.order</field>
+	        <field name="inherit_id" ref="sale.view_order_form"/>
+	        <field name="arch" type="xml">
+	        	<!-- <xpath expr="//header/field[@name='state']" position="replace">
+	            	<field name="state" widget="statusbar" statusbar_visible="draft,sent,sale,ready,assign,delivered"/>
+	            </xpath> -->
+	            <xpath expr="//button[@name='action_cancel']" position="before">
+	            	<button name="action_sale_register_payment" id="sale_invoice_payment_btn"
+                                type="object" class="oe_highlight"
+                                string="Register Payment"
+                                context="{'default_sale_id': active_id}"
+                                groups="account.group_account_invoice"
+                                attrs="{'invisible': [('is_online_shop', '=', False)]}" />
+	            	<button name="action_stock_request" type="object" string="Stock Request" class='oe_highlight' attrs="{'invisible':['|', '|', ('delivery_control', '=', False), ('state', '!=', 'sale'), ('new_line', '=', False)]}"/>
+	            </xpath>
+	        	<!-- <xpath expr="//button[@name='action_cancel']" position="after">
+	        		<button name="action_ready" states="sale" type="object" string="Ready" groups="sales_booking_delivery.grp_packing"/>
+	        		<button name="action_assign" type="object" string="Assign" groups="sales_booking_delivery.grp_supervisor" attrs="{'invisible':['|', ('order_type', '=', 'pick_up'), ('state', '!=', 'ready')]}"/>
+	        		<button name="action_delivered" type="object" string="Delivered" groups="sales_booking_delivery.grp_supervisor"  attrs="{'invisible':['|', ('res_id', '=', False), ('state', 'in', ('sale', 'draft', 'delivered'))]}" />
+	            </xpath> -->
+	            <xpath expr="//button[@name='action_view_invoice']" position="before">
+	            	<!-- '|', ('delivery_control', '=', False) -->
+	              <button type="object"
+	                  name="action_view_rider"
+	                  class="oe_stat_button"
+	                  icon="fa-user-o" attrs="{'invisible':[('rider_count', '=', 0)]}">
+	                  <field name="rider_count" widget="statinfo" string="Control"/>
+	              </button>
+          		</xpath>
+          		<field name="partner_id" position="before">
+          			<field name="customer_mobile"/>
+          		</field>
+	           	<xpath expr="//label[@for='commitment_date']" position="replace"/>
+	           	<xpath expr="//field[@name='commitment_date']" position="replace"/>
+	           	<xpath expr="//field[@name='payment_term_id']" position="after">
+	           		<field name="is_online_shop" invisible="1"/>
+	           		<field name="new_line" invisible='1'/> 
+	           		<field name="delivery_control" invisible="1"/>
+	           		<field name="order_shop_id" readonly='1' force_save='1' attrs="{'invisible': [('delivery_control', '=', False)]}"/> 
+	           		<field name="channel_type" readonly='1' force_save='1' attrs="{'invisible': [('delivery_control', '=', False)]}"/>
+	           		<field name="order_type" attrs="{'invisible': [('delivery_control', '=', False)], 'required': [('delivery_control', '=', True)]}"/>
+	           		<field name="shop_id" domain="[('channel_type', '=', 'shop')]" attrs="{'invisible': [('delivery_control', '=', False)], 'required': [('delivery_control', '=', True)]}"/>
+	           		<field name="res_id" domain="[('deliver_rider','=',True)]" attrs="{'invisible':['|', ('delivery_control', '=', False), ('order_type', '=', 'pick_up')]}" readonly='1'/>
+	           		<field name="commitment_date" attrs="{'readonly': ['&amp;', ('delivery_status', '!=', False), ('delivery_status', '!=', 'draft')]}"/>
+	           		<field name="delivery_status" attrs="{'invisible': [('delivery_control', '=', False)]}"/>
+	           	</xpath>
+	           	<xpath expr="//field[@name='order_line']//form//field[@name='product_id']" position="after">
+	           		<field name="is_process"/>
+	           	</xpath>
+	        </field>
+	    </record>
+
+	    <record id="res_user_form_inherit_view" model="ir.ui.view">
+	        <field name="name">res.users.form.view</field>
+	        <field name="model">res.users</field>
+	        <field name="inherit_id" ref="base.view_users_form" />
+	        <field name="arch" type="xml">
+	        	<xpath expr="//field[@name='login']" position="after">
+	        		<group>
+	    				<field name='is_deliver_rider' invisible='1'/>
+	    				<field name="deliver_rider" attrs="{'invisible': [('is_deliver_rider', '=', False)]}"/>
+	    			</group>
+	        	</xpath>
+	            <xpath expr="//notebook[last()]" position="inside">
+	                <page string="Assign Shops">
+	                	<group colspan='6'>
+	                		<field name="shop_id"/>
+	                	</group>
+	                </page>   
+	            </xpath>
+	        </field>
+	    </record>
+
+	    <record id="product_template_form_inherit_view" model="ir.ui.view">
+	        <field name="name">product.template.prodct.form.view</field>
+	        <field name="model">product.template</field>
+	        <field name="inherit_id" ref="product.product_template_form_view"/>
+	        <field name="arch" type="xml">
+	        	<xpath expr="//field[@name='categ_id']" position="after">
+	        		<field name='product_sub_type'/>
+	        	</xpath>
+	        </field>
+	    </record>
+
+	    <record id="view_multi_shop_form_view_inherit" model="ir.ui.view">
+	        <field name="name">pos.multi.shop.form.view.inherit</field>
+	        <field name="model">pos.multi.shop</field>
+	        <field name="inherit_id" ref="bi_pos_multi_shop.view_pos_multi_shop_form_view"/>
+	        <field name="arch" type="xml">
+	        	<xpath expr="//field[@name='config_id']" position="after">
+	        		<field name='warehouse_id'/>
+	        	</xpath>
+	        </field>
+	    </record>
+	    <record id="view_quotation_tree_inherit_booking_delivery" model="ir.ui.view">
+	        <field name="name">sale.order.form.view.inherit</field>
+	        <field name="model">sale.order</field>
+	        <field name="inherit_id" ref="sale.view_quotation_tree"/>
+	        <field name="arch" type="xml">
+	        	<xpath expr="//field[@name='invoice_status']" position="after">
+	        		<field name='delivery_status'/>
+	        		<field name="late_hours"/>
+	        	</xpath>
+	        	<field name="company_id" position="after">
+	        		<field name="delivered_time"/>
+	        	</field>
+	        	<field name="partner_id" position="after">
+	        		<field name="order_status"/>
+	        	</field>
+	        </field>
+	    </record>
+	    <record id="view_order_tree_inherit_booking_delivery" model="ir.ui.view">
+	        <field name="name">sale.order.form.view.inherit</field>
+	        <field name="model">sale.order</field>
+	        <field name="inherit_id" ref="sale.view_order_tree"/>
+	        <field name="arch" type="xml">
+	        	<xpath expr="//field[@name='invoice_status']" position="after">
+	        		<field name='delivery_status'/>
+	        		<field name="late_hours"/>
+	        	</xpath>
+	        	<field name="company_id" position="after">
+	        		<field name="delivered_time"/>
+	        	</field>
+	        	<field name="partner_id" position="after">
+	        		<field name="order_status"/>
+	        	</field>
+	        </field>
+	    </record>
+
+    </data>
+</odoo>

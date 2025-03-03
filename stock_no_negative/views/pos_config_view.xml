@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="pos_config" model="ir.ui.view">
+        <field name="name">pos.config</field>
+        <field name="model">pos.config</field>
+        <field name="inherit_id" ref="point_of_sale.pos_config_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr='//div[@id="inventory_location"]' position='inside'>
+                <div class="col-12 col-lg-6 o_setting_box price_control">
+                    <div class="o_setting_left_pane">
+                        <field name="restrict_out_of_stock"/>
+                    </div>
+                    <div class="o_setting_right_pane">
+                        <label for="restrict_out_of_stock" string="Restrict Out of Stock"/>
+                        <div class="text-muted">
+                            Restrict to sale out of stock product on pos
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

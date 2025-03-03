@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!-- Copyright (c) 2016-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<!-- License URL : <https://store.webkul.com/license.html/> -->
+<templates id="template" xml:space="preserve">
+    <t t-name="ApplyCommissionButton" owl="1">
+        <span class="control-button" id="apply_commission">
+            <t t-if="!env.pos.get_order().is_commission">
+                <span id='commission_person'>Apply Commission</span>
+            </t>
+            <t t-if="env.pos.get_order().is_commission">
+                <span id='commission_person'>Commission Applied</span>
+            </t>
+        </span>
+    </t>
+</templates>

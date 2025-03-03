@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_tdzebrabarcode_configuration,tdzebrabarcode.configuration,model_tdzebrabarcode_configuration,group_zbarcode_labels,1,1,1,1
+access_tdzebrabarcode_label,tdzebrabarcode.label,model_tdzebrabarcode_labels,group_zbarcode_labels,1,1,1,1
+access_tdzebrabarcode_product_line,tdzebrabarcode.line,model_tdzebrabarcode_product_lines,group_zbarcode_labels,1,1,1,1

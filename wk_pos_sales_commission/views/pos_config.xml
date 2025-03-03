@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2016-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<!-- License URL : <https://store.webkul.com/license.html/> -->
+<odoo>
+    <record id="view_pos_config_form_inherit_pos_sale_commission" model="ir.ui.view">
+        <field name="name">POS configuration</field>
+        <field name="model">pos.config</field>
+        <field name="inherit_id" ref="point_of_sale.pos_config_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('o_settings_container')][7]" position="after">
+                <div>
+                    <h2>Commission</h2>
+                    <div class="row mt16 o_settings_container" id='commission'>
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane">
+                                <field name="is_use_pos_commission"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <label for="is_use_pos_commission"/>
+                                <div class="text-muted">
+                                    Enable POS Sale Commission.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6 o_setting_box" attrs="{'invisible': [('is_use_pos_commission', '=', False)]}">
+                            <div class="o_setting_left_pane">
+                                <field name="show_apply_commission"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <label for="show_apply_commission"/>
+                                <div class="text-muted">
+                                    Show Apply Commission Button.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6 o_setting_box" attrs="{'invisible': ['|', ('is_use_pos_commission', '=', False),('is_pos_config_commission_enable', '=', False)]}">
+                            <div class="o_setting_left_pane">
+                                <field name="use_different_commission"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <label for="use_different_commission"/>
+                                <div class="text-muted">
+                                    Selecting this option will enable the use of different commission.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6 o_setting_box" id="default_commission_setting" attrs="{'invisible': ['|',('is_pos_config_commission_enable', '=', False),('use_different_commission', '=', False)]}">
+                            <div class="o_setting_right_pane">
+                                <span class="o_form_label">Pos Sale Commission</span>
+                                <div class="content-group mt16">
+                                    <field name="sale_commission_id" attrs="{'required': [('use_different_commission', '=', True)]}"/>
+                                </div>
+                                <div>
+                                    <button name="%(wk_pos_sales_commission.pos_sale_commission_action_window)d" icon="fa-arrow-right" type="action" string="Commission" class="btn-link"/>
+                                </div>
+                            </div>
+                        </div>
+                        <field name="is_pos_config_commission_enable" attrs="{'invisible': True}"/>
+                    </div>
+                </div>
+            </xpath>            
+        </field>
+    </record>
+</odoo>

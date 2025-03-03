@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<odoo>
+    <data>
+        <record id="product_storage_action" model="ir.actions.act_window">
+            <field name="name">Product Storage</field>
+            <field name="res_model">product.storage</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="product_storage_view" model="ir.ui.view">
+            <field name="name">Product Storage</field>
+            <field name="model">product.storage</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name" string="Name"/>
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+         <menuitem id="product_storage"
+                   name="Product Storage"
+                   parent="sale.product_menu_catalog"
+                   sequence="4"
+                   action="product_storage_action"/>
+    </data>
+</odoo>

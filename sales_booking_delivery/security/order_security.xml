@@ -1,0 +1,37 @@
+<odoo>
+
+    <record id="category_user_profile_groups" model="ir.module.category">
+        <field name="name">Sale User Profile</field>
+    </record>
+
+	<!-- Group Admin -->
+	<record id="grp_booker" model="res.groups">
+		<field name="name">Order Booker</field>
+		<field name="category_id" ref="sales_booking_delivery.category_user_profile_groups"/>
+	</record>
+
+	<record id="grp_packing" model="res.groups">
+		<field name="name">Packing</field>
+		<field name="category_id" ref="sales_booking_delivery.category_user_profile_groups"/>
+	</record>
+
+	<record id="grp_supervisor" model="res.groups">
+		<field name="name">Delivery Supervisor</field>
+		<field name="category_id" ref="sales_booking_delivery.category_user_profile_groups"/>
+	</record>
+
+	<!-- Stock Quant(Inventory Report) -->
+<!--     <record id="sale_delivery_rider_rule_user" model="ir.rule">
+        <field name="name">Sale Delivery Rider User</field>
+        <field name="model_id" ref="sales_booking_delivery.model_sale_delivery_rider"/>
+        <field name="domain_force">[('shop_id', '=', user.shop_id.id)]</field>
+        <field name="groups" eval="[(4, ref('stock.group_stock_user'))]"/>
+    </record>
+    <record id="sale_delivery_rider_rule_manager" model="ir.rule">
+        <field name="name">Sale Delivery Rider Manager</field>
+        <field name="model_id" ref="sales_booking_delivery.model_sale_delivery_rider"/>
+        <field name="domain_force">[(1,'=',1)]</field>
+        <field name="groups" eval="[(4, ref('stock.group_stock_manager'))]"/>
+    </record> -->
+
+</odoo>

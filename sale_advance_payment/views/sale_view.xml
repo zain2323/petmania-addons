@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="view_order_form_change_button" model="ir.ui.view">
+        <field name="name">sale.order.form.change_button</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <button name="action_confirm" position="after">
+                <button name="%(action_sale_advance_payment_id)d" string="Register Payment"
+                type="action" attrs="{'invisible': [('state', '!=', 'sale')]}" groups='sale_advance_payment.group_advance_payment' class='oe_highlight'/>
+            </button>
+            <xpath expr="//button[@name='action_view_invoice']" position="before">
+                <button 
+                    type="object"
+                    name="action_view_payment"
+                    class="oe_stat_button"
+                    icon="fa-usd" 
+                    attrs="{'invisible':[('payment_count', '=', 0)]}">
+                    <field name="payment_count" widget="statinfo" string="Payments"/>
+                </button>
+            </xpath>
+            <xpath expr="//field[@name='tax_totals_json']" position="after">
+                <field name="due_payment"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="custom_view_payment_invoice_form" model="ir.ui.view">
+        <field name="name">account.move.form.paymnet.custom</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='amount_residual']" position="after">
+                <field name="advance_payment"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2016-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<!-- License URL : <https://store.webkul.com/license.html/> -->
+<odoo>
+    <record id="res_config_settings_view_form_inherit_sale_commission" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.sale.commission</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="point_of_sale.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@data-key='point_of_sale']/div[hasclass('o_settings_container')][3]" position="after">
+                <h2>Commission</h2>
+                <div class="row mt16 o_settings_container" id="o_settings_use_default_commission">
+                    <div class="col-12 col-lg-6 o_setting_box" title="Select a default Commission rule to use in POS.">
+                        <div class="o_setting_right_pane">
+                            <div>
+                                <label string="Default Commission" for="sale_commission_id"/>
+                                <div class="text-muted">
+                                    Select a Default Commission rule to use in POS.
+                                </div>
+                                <div class="content-group mt16">
+                                    <field name="sale_commission_id" colspan="4" nolabel="1" required='1'/>
+                                </div>
+                            </div>
+                            <div class="mt8">
+                                <button name="%(wk_pos_sales_commission.pos_sale_commission_action_window)d" icon="fa-arrow-right" type="action" string="Commission" class="btn-link"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6 o_setting_box" title="Select a default Commission Product to use in commission and invoice.">
+                        <div class="o_setting_right_pane">
+                            <div>
+                                <label string="Default Commission Product" for="commission_product_id"/>
+                                <div class="text-muted">
+                                    Select a Default Commission Product to use in Commission and Invoice.
+                                </div>
+                                <div class="content-group mt16">
+                                    <field name="commission_product_id" colspan="4" nolabel="1" required='1'/>
+                                </div>
+                            </div>
+                            <div class="mt8">
+                                <button name="%(product.product_template_action_all)d" icon="fa-arrow-right" type="action" string="Product" class="btn-link"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6 o_setting_box" title="Creation of Commission">
+                        <div class="o_setting_left_pane">
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label for="create_commission"/>
+                            <div class="text-muted">
+                                Creation of Commission based on the selection below
+                            </div>
+                            <div class="mt8">
+                                <field name="create_commission" class="o_light_label" widget="radio" required="True"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6 o_setting_box">
+                        <div>
+                            <div class="o_setting_left_pane">
+                                <field name="auto_confirm_at_order_validation"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <label for="auto_confirm_at_order_validation" string="Auto Confirm Commission"/>
+                                <div class="text-muted">
+                                    Auto Confirm commission at the time of Order Validation.
+                                </div>
+                            </div>
+                        </div>
+                    </div>  
+                    <div class="col-12 col-lg-6 o_setting_box" title="Select this option to select different Commission in POS Config.">
+                        <div class="o_setting_left_pane">
+                            <field name="use_pos_congif_commission"/>
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label for="use_pos_congif_commission" string="Enable Different Commission for POS Config"/>
+                            <div class="text-muted">
+                                Select this option to enable options to select a different Commission in POS Config.
+                            </div>
+                        </div>
+                        <div class="mt8" attrs="{'invisible': [('use_pos_congif_commission', '=', False)]}">
+                            <button name="%(point_of_sale.action_pos_config_kanban)d" icon="fa-arrow-right" type="action" string="Point of Sale" class="btn-link"/>
+                        </div>
+                    </div>                          
+                </div>
+            </xpath>    
+        </field>
+    </record>
+</odoo>

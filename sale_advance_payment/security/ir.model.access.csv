@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_sale_advance,sale.advance.payment,sale_advance_payment.model_sale_advance_payment,,1,1,1,1

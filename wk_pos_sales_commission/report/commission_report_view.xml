@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2016-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<!-- License URL : <https://store.webkul.com/license.html/> -->
+<odoo>
+    <record id="action_wk_pos_sales_commission_summary" model="ir.actions.report">
+        <field name="name">Commission Summary</field>
+        <field name="model">commission.report</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">wk_pos_sales_commission.report_pos_commission_summary</field>
+        <field name="report_file">wk_pos_sales_commission.report_pos_commission_summary</field>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

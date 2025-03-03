@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="reordering_report_line_tree" model="ir.ui.view">
+        <field name="name">reordering.report.line.tree</field>
+        <field name="model">reordering.report.line</field>
+        <field name="arch" type="xml">
+            <tree default_order="create_date desc" create="0" decoration-success="state == 'posted'" editable="bottom">
+                <field name="name"/>
+                <field name="barcode"/>
+                <field name="standard_price"/>
+                <field name="product_brand_id"/>
+                <field name="display_category" optional="show"/>
+                <field name="display_sub_category" optional="show"/>
+                <field name="sales_data_in_days" optional="show"/>
+                <field name="avg_sales" optional="show"/>
+                <field name="req_storage_in_days" optional="show"/>
+                <field name="req_storage_level_new" optional="show"/>
+                <field name="desired_investment" optional="show"/>
+                <field name="present_stock" optional="show"/>
+                <field name="present_invenstment" optional="show"/>
+                <field name="excess_stock" optional="show"/>
+                <field name="excess_investment" optional="show"/>
+                <field name="deficient_stock" optional="show"/>
+                <field name="deficient_investment" optional="show"/>
+                <field name="return_excess_qty" optional="show"/>
+                <field name="manual_return_excess_qty" optional="show"/>
+                <field name="order_deficient_qty" optional="show"/>
+                <field name="manually_order_deficient_qty" optional="show"/>
+                <field name="reason" optional="show"/>
+                <field name="company_id" invisible="1"/>
+                <field name="state" readonly="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_reordering_report_line" model="ir.actions.act_window">
+        <field name="name">Reordering Report</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">reordering.report.line</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="action_posted" model="ir.actions.server">
+        <field name="name">Posted</field>
+        <field name="model_id" ref="dxl_at_reordering_automation.model_reordering_report_line"/>
+        <field name="binding_model_id" ref="dxl_at_reordering_automation.model_reordering_report_line"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">
+        if records:
+            records.action_posted_records()
+        </field>
+    </record>
+
+    <menuitem
+        id="menu_reordering_report"
+        name="Reordering Report" 
+        parent="stock.menu_stock_root"
+        sequence="5"/>
+    <menuitem
+        id="menu_reordering_report_data"
+        name="Reordering Report" 
+        parent="menu_reordering_report"
+        action="action_reordering_report_line"
+        sequence="100"/>
+</odoo>
