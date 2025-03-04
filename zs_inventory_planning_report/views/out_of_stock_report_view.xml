@@ -46,9 +46,12 @@
                     <field name="division_name"/>
                     <field name="category_name"/>
                     <field name="brand_name"/>
+                    <field name="scm_grading"/>
                     <field name="min_qty"/>
                     <field name="qty_available"/>
                     <field name="out_of_stock_qty"/>
+                    <field name="ads"/>
+                    <field name="sale_loss"/>
                 </tree>
             </field>
         </record>

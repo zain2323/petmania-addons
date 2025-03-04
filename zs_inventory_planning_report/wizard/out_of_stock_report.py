@@ -29,6 +29,9 @@ class OutOfStockData(models.TransientModel):
     min_qty = fields.Integer(string='Min QTY')
     qty_available = fields.Integer(string='Available QTY')
     out_of_stock_qty = fields.Integer(string='Out Of Stock QTY')
+    ads = fields.Float(string='ADS')
+    sale_loss = fields.Float(string="Sale Loss")
+    scm_grading = fields.Char(string="SCM Grading")
 
 
 class OutOfStockReportWizard(models.TransientModel):
@@ -88,6 +91,8 @@ class OutOfStockReportWizard(models.TransientModel):
                 out_of_stock_qty = 0
             if out_of_stock_qty <= 0:
                 continue
+            ads = max(float(product.ads_quarterly or 0), float(product.ads_half_year or 0))
+            sale_price = product.list_price or 0
             products_dict.append({
                 'product_id': product.id,
                 'product_name': product.name,
@@ -98,6 +103,9 @@ class OutOfStockReportWizard(models.TransientModel):
                 'min_qty': min_qty,
                 'qty_available': qty_available,
                 'out_of_stock_qty': out_of_stock_qty,
+                'ads': ads,
+                'sale_loss': ads * sale_price,
+                'scm_grading': product.product_scm_grading_id.name,
                 'company_id': self.env.company.id,
             })
         return products_dict
@@ -119,4 +127,7 @@ class OutOfStockReportWizard(models.TransientModel):
                 'qty_available': product_data['qty_available'],
                 'out_of_stock_qty': product_data['out_of_stock_qty'],
                 'company_id': product_data['company_id'],
+                'ads': product_data['ads'],
+                'sale_loss': product_data['sale_loss'],
+                'scm_grading': product_data['scm_grading'],
             })
