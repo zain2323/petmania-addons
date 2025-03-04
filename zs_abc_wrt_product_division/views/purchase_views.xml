@@ -2,14 +2,15 @@
 
 <odoo>
 
-    <record id="product_template_view_allow_pos_company" model="ir.ui.view">
-        <field name="name">product.template.view.pos.company</field>
+    <record id="product_template_view_min_max" model="ir.ui.view">
+        <field name="name">product.template.view.min.max.config</field>
         <field name="model">product.template</field>
         <field name="inherit_id" ref="product.product_template_only_form_view"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='available_in_pos']"
                    position="after">
-                <field name="available_in_pos_company"/>
+                <field name="value_config_id"/>
+                <field name="storage_config_id"/>
             </xpath>
         </field>
     </record>

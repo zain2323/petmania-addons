@@ -6,7 +6,7 @@
     'author': 'Zain Siddiqui',
     'license': 'OPL-1',
     'sequence': 25,
-    'depends': ['stock', 'sale', 'zs_product_company_type'],
+    'depends': ['stock', 'sale', 'zs_product_company_type', 'product'],
     'data': [
         'security/ir.model.access.csv',
         'data/groups.xml',

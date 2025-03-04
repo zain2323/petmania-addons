@@ -5,8 +5,8 @@
             <field name="name">branch.value.config.report.wizard</field>
             <field name="model">branch.value.config.report.wizard</field>
             <field name="arch" type="xml">
-                <form string="Branch Value Configuration">
-                    <sheet string="Branch Value Configuration">
+                <form string="Min Max Configuration By Value - Report">
+                    <sheet string="Min Max Configuration By Value - Report">
                         <group expand="0" string="Filters">
                             <group>
                                 <field name="franchise_division_ids" widget="many2many_tags"
@@ -59,7 +59,7 @@
 
 
         <record id="zs_branch_value_configuration_report_action" model="ir.actions.act_window">
-            <field name="name">Branch Value Configuration</field>
+            <field name="name">Min Max Configuration By Value - Report</field>
             <field name="res_model">branch.value.config.report.wizard</field>
             <field name="binding_view_types">form</field>
             <field name="view_mode">form</field>

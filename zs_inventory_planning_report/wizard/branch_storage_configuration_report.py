@@ -47,7 +47,7 @@ class BranchStorageConfigurationReportWizard(models.TransientModel):
         self.populate_pivot_data()
         return {
             'type': 'ir.actions.act_window',
-            'name': 'Branch Storage Configuration Report',
+            'name': 'Min Max Configuration By Storage - Report',
             'res_model': 'branch.config.storage.data',
             'view_mode': 'tree',
             'target': 'current',

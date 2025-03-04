@@ -49,7 +49,7 @@ class BranchValueConfigurationReportWizard(models.TransientModel):
         self.populate_pivot_data()
         return {
             'type': 'ir.actions.act_window',
-            'name': 'Branch Value Configuration Report',
+            'name': 'Min Max Configuration By Value - Report',
             'res_model': 'branch.config.value.data',
             'view_mode': 'tree',
             'target': 'current',
