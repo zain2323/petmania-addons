@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates xml:space="preserve">
+    <t name="zs_pos_cashout_modifications.cashbutton" owl="1"
+       t-inherit="point_of_sale.CashMoveButton" t-inherit-mode="extension">
+        <xpath expr="//span" position="replace">
+                <span style="padding-left: 10px;">POS Transfer</span>
+        </xpath>
+    </t>
+</templates>
