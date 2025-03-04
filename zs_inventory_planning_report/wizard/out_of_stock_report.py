@@ -1,7 +1,7 @@
 from collections import defaultdict
 
 from odoo import fields, models, api, _
-from datetime import datetime
+from datetime import datetime, date
 from odoo.exceptions import UserError
 
 try:
@@ -27,6 +27,11 @@ class OutOfStockData(models.TransientModel):
     brand_name = fields.Char(string='Brand Name')
     product_name = fields.Char(string='Product Name')
     min_qty = fields.Integer(string='Min QTY')
+    out_of_stock_days = fields.Float(string='Out-Of-Stock Days')
+    sale_loss = fields.Float(string='Sale Loss')
+    ads = fields.Float(string='ADS')
+    sale_price = fields.Float(string='Sale price')
+    scm_grading = fields.Char(string='SCM Grading')
     qty_available = fields.Integer(string='Available QTY')
     out_of_stock_qty = fields.Integer(string='Out Of Stock QTY')
 
@@ -51,6 +56,22 @@ class OutOfStockReportWizard(models.TransientModel):
             'target': 'current',
             'domain': [('wizard_id', '=', self.id)],
         }
+
+    def get_out_of_stock_days(self, product_id):
+        last_out_of_stock_move = self.env['stock.move'].search([
+            ('product_id', '=', product_id),
+            ('state', '=', 'done'),
+            ('product_uom_qty', '>', 0),
+            ('company_id', '=', self.env.company.id)
+        ], order="date DESC", limit=1)
+
+        if last_out_of_stock_move:
+            last_out_of_stock_date = last_out_of_stock_move.date.date()
+            today = date.today()
+            return (today - last_out_of_stock_date).days
+
+        return 0
+
 
     def _get_data_for_products(self):
         rules = self.env['stock.warehouse.orderpoint'].search([('company_id', '=', self.env.company.id)])
@@ -77,6 +98,8 @@ class OutOfStockReportWizard(models.TransientModel):
         products = self.env['product.product'].search(domain)
         products_dict = []
         for product in products:
+            if product.qty_available > 0:
+                continue
             reordering_rule = self.env['stock.warehouse.orderpoint'].search(
                 [('product_id', '=', product.id), ('company_id', '=', self.env.company.id)], limit=1)
             qty_available = product.qty_available
@@ -88,6 +111,12 @@ class OutOfStockReportWizard(models.TransientModel):
                 out_of_stock_qty = 0
             if out_of_stock_qty <= 0:
                 continue
+
+            out_of_stock_days = self.get_out_of_stock_days(product.id) if product.qty_available <= 0 else 0
+            ads = float(max(float(product.ads_quarterly or 0), float(product.ads_half_year or 0)))
+            sale_price = product.list_price
+            sale_loss = sale_price * out_of_stock_days * ads
+            scm_grading = product.product_scm_grading_id.name if product.product_scm_grading_id else ''
             products_dict.append({
                 'product_id': product.id,
                 'product_name': product.name,
@@ -98,6 +127,11 @@ class OutOfStockReportWizard(models.TransientModel):
                 'min_qty': min_qty,
                 'qty_available': qty_available,
                 'out_of_stock_qty': out_of_stock_qty,
+                'out_of_stock_days': out_of_stock_days,
+                'ads': ads,
+                'sale_loss': sale_loss,
+                'sale_price': sale_price,
+                'scm_grading': scm_grading,
                 'company_id': self.env.company.id,
             })
         return products_dict
@@ -118,5 +152,10 @@ class OutOfStockReportWizard(models.TransientModel):
                 'min_qty': product_data['min_qty'],
                 'qty_available': product_data['qty_available'],
                 'out_of_stock_qty': product_data['out_of_stock_qty'],
+                'out_of_stock_days': product_data['out_of_stock_days'],
+                'ads': product_data['ads'],
+                'sale_loss': product_data['sale_loss'],
+                'sale_price': product_data['sale_price'],
+                'scm_grading': product_data['scm_grading'],
                 'company_id': product_data['company_id'],
             })
