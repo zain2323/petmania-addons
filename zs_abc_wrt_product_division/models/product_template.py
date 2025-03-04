@@ -24,7 +24,7 @@ class ProductTemplate(models.Model):
             rec.value_config_id = False
             rec.value_config_basis = None
             value_config_franchise_division = rec.env['min.max.config'].search(
-                [('franchise_division', '=', rec.company_type.id), ('product_id', '=', False),
+                [('franchise_division', '=', rec.company_type.id), ('product_id', '=', False), ('brand_id', '=', False),
                  ('product_category_id', '=', False), ('product_division', '=', False),
                  ('company_id', '=', self.env.company.id)], limit=1)
             if value_config_franchise_division and rec.company_type.id:
@@ -33,6 +33,7 @@ class ProductTemplate(models.Model):
             # for product division
             value_config_product_division = rec.env['min.max.config'].search(
                 [('product_division', '=', rec.product_division_id.id), ('product_id', '=', False),
+                 ('brand_id', '=', False),
                  ('product_category_id', '=', False), ('company_id', '=', self.env.company.id)], limit=1)
             if value_config_product_division and rec.product_division_id:
                 rec.value_config_id = value_config_product_division.id
@@ -40,11 +41,19 @@ class ProductTemplate(models.Model):
 
             # for product category
             value_config_category = rec.env['min.max.config'].search(
-                [('product_category_id', '=', rec.categ_id.id), ('product_id', '=', False),
+                [('product_category_id', '=', rec.categ_id.id), ('product_id', '=', False), ('brand_id', '=', False),
                  ('company_id', '=', self.env.company.id)], limit=1)
             if value_config_category and rec.categ_id.id:
                 rec.value_config_id = value_config_category.id
                 rec.value_config_basis = "Category"
+
+            # for brand
+            value_config_brand = rec.env['min.max.config'].search(
+                [('brand_id', '=', rec.product_brand_id.id), ('product_id', '=', False),
+                 ('company_id', '=', self.env.company.id)], limit=1)
+            if value_config_brand and rec.product_brand_id.id:
+                rec.value_config_id = value_config_brand.id
+                rec.value_config_basis = "Brand"
 
             #  for product
             # find out the min and max days of the product by value and storage
@@ -60,7 +69,7 @@ class ProductTemplate(models.Model):
             rec.storage_config_basis = None
             # for franchise division
             storage_config_franchise_division = rec.env['min.max.config.storage'].search(
-                [('franchise_division', '=', rec.company_type.id), ('product_id', '=', False),
+                [('franchise_division', '=', rec.company_type.id), ('product_id', '=', False), ('brand_id', '=', False),
                  ('product_category_id', '=', False), ('product_division', '=', False),
                  ('company_id', '=', self.env.company.id)], limit=1)
             if storage_config_franchise_division and rec.company_type.id:
@@ -70,6 +79,7 @@ class ProductTemplate(models.Model):
             # for product division
             storage_config_product_division = rec.env['min.max.config.storage'].search(
                 [('product_division', '=', rec.product_division_id.id), ('product_id', '=', False),
+                 ('brand_id', '=', False),
                  ('product_category_id', '=', False), ('company_id', '=', self.env.company.id)], limit=1)
             if storage_config_product_division and rec.product_division_id.id:
                 rec.storage_config_id = storage_config_product_division.id
@@ -77,11 +87,19 @@ class ProductTemplate(models.Model):
 
             # for product category
             storage_config_category = rec.env['min.max.config.storage'].search(
-                [('product_category_id', '=', rec.categ_id.id), ('product_id', '=', False),
+                [('product_category_id', '=', rec.categ_id.id), ('product_id', '=', False), ('brand_id', '=', False),
                  ('company_id', '=', self.env.company.id)], limit=1)
             if storage_config_category and rec.categ_id.id:
                 rec.storage_config_id = storage_config_category.id
                 rec.storage_config_basis = "Category"
+
+            # for brand
+            storage_config_brand = rec.env['min.max.config.storage'].search(
+                [('brand_id', '=', rec.product_brand_id.id), ('company_id', '=', self.env.company.id),
+                 ('product_id', '=', False), ], limit=1)
+            if storage_config_brand and rec.id:
+                rec.storage_config_id = storage_config_brand.id
+                rec.storage_config_basis = "Brand"
 
             # for product
             storage_config_product = rec.env['min.max.config.storage'].search(

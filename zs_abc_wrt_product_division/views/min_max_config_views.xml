@@ -5,6 +5,7 @@
         <field name="arch" type="xml">
             <tree string="Min-Max Configurations">
                 <field name="product_id"/>
+                <field name="brand_id"/>
                 <field name="product_category_id"/>
                 <field name="product_division"/>
                 <field name="franchise_division"/>
@@ -22,6 +23,7 @@
                         <field name="franchise_division"/>
                         <field name="product_division"/>
                         <field name="product_category_id"/>
+                        <field name="brand_id"/>
                         <field name="product_id"/>
                         <field name="company_id"/>
                     </group>

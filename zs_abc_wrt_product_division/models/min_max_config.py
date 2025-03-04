@@ -11,6 +11,7 @@ class MinMaxConfig(models.Model):
     _rec_name = 'name'
 
     product_id = fields.Many2one('product.product', string='Product')
+    brand_id = fields.Many2one('product.brand', string='Brand')
     product_category_id = fields.Many2one('product.category', string='Product Category')
     product_division = fields.Many2one('product.division', string='Product Division')
     franchise_division = fields.Many2one('product.company.type', string='Franchise')
@@ -31,6 +32,8 @@ class MinMaxConfig(models.Model):
                 rec.name = rec.product_division.name
             if rec.product_category_id:
                 rec.name = rec.product_category_id.name
+            if rec.brand_id:
+                rec.name = rec.brand_id.name
             if rec.product_id:
                 rec.name = rec.product_id.name
 
@@ -71,6 +74,7 @@ class MinMaxConfigByStorage(models.Model):
     _rec_name = 'name'
 
     product_id = fields.Many2one('product.product', string='Product')
+    brand_id = fields.Many2one('product.brand', string='Brand')
     product_category_id = fields.Many2one('product.category', string='Product Category')
     product_division = fields.Many2one('product.division', string='Product Division')
     franchise_division = fields.Many2one('product.company.type', string='Franchise')
@@ -90,5 +94,7 @@ class MinMaxConfigByStorage(models.Model):
                 rec.name = rec.product_division.name
             if rec.product_category_id:
                 rec.name = rec.product_category_id.name
+            if rec.brand_id:
+                rec.name = rec.brand_id.name
             if rec.product_id:
                 rec.name = rec.product_id.name
