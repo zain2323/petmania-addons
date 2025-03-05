@@ -283,4 +283,4 @@ class SetuInventoryTurnoverAnalysisBIReport(models.TransientModel):
     average_stock = fields.Float("Average Stock")
     sales = fields.Float("Sales")
     turnover_ratio = fields.Float("Turnover Ratio")
-    wizard_id = fields.Many2one("setu.inventory.turnover.analysis.report")
+    wizard_id = fields.Many2one("setu.inventory.turnover.report")
