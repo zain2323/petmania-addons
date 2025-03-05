@@ -1,6 +1,6 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_setu_inventory_turnover_analysis_report,setu.inventory.turnover.analysis.report,model_setu_inventory_turnover_analysis_report,,1,1,1,1
-access_setu_inventory_turnover_analysis_bi_report,setu.inventory.turnover.analysis.bi.report,model_setu_inventory_turnover_analysis_bi_report,,1,1,1,1
+access_setu_inventory_turnover_report,setu.inventory.turnover.report,model_setu_inventory_turnover_report,,1,1,1,1
+access_setu_inventory_turnover_bi_report,setu.inventory.turnover.bi.report,model_setu_inventory_turnover_bi_report,,1,1,1,1
 access_setu_inventory_fsn_analysis_report,setu.inventory.fsn.analysis.report,model_setu_inventory_fsn_analysis_report,,1,1,1,1
 access_setu_inventory_fsn_analysis_bi_report,setu.inventory.fsn.analysis.bi.report,model_setu_inventory_fsn_analysis_bi_report,,1,1,1,1
 access_setu_inventory_xyz_analysis_report,setu.inventory.xyz.analysis.report,model_setu_inventory_xyz_analysis_report,,1,1,1,1

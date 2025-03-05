@@ -8,7 +8,7 @@ import base64
 from io import BytesIO
 
 class SetuInventoryTurnoverAnalysisReport(models.TransientModel):
-    _name = 'setu.inventory.turnover.analysis.report'
+    _name = 'setu.inventory.turnover.report'
     _description = """
         Inventory Turnover Analysis Report
             Inventory turnover is a ratio showing how many times a company has sold and replaced inventory during a given period.
@@ -21,6 +21,9 @@ class SetuInventoryTurnoverAnalysisReport(models.TransientModel):
     product_category_ids = fields.Many2many("product.category", string="Product Categories")
     product_ids = fields.Many2many("product.product", string="Products")
     warehouse_ids = fields.Many2many("stock.warehouse", string="Warehouses")
+    product_division_ids = fields.Many2many('product.division', string="Product Division")
+    franchise_division_ids = fields.Many2many('product.company.type', string="Franchise Division")
+    brand_ids = fields.Many2many('product.brand', string="Brands")
 
     @api.onchange('product_category_ids')
     def onchange_product_category_id(self):
@@ -90,6 +93,35 @@ class SetuInventoryTurnoverAnalysisReport(models.TransientModel):
 
         warehouses = self.warehouse_ids and set(self.warehouse_ids.ids) or {}
 
+        if self.franchise_division_ids:
+            if products:
+                company_products = self.env['product.product'].search(
+                    [('company_type', 'in', self.franchise_division_ids.ids), ('id', 'in', list(products))])
+            else:
+                company_products = self.env['product.product'].search(
+                    [('company_type', 'in', self.franchise_division_ids.ids)])
+            products = set(company_products.ids) or {}
+
+        if self.product_division_ids:
+            if products:
+                division_products = self.env['product.product'].search(
+                    [('product_division_id', 'in', self.product_division_ids.ids), ('id', 'in', list(products))])
+            else:
+                division_products = self.env['product.product'].search(
+                    [('product_division_id', 'in', self.product_division_ids.ids)])
+
+            products = set(division_products.ids) or {}
+
+        if self.brand_ids:
+            if products:
+                brand_products = self.env['product.product'].search(
+                    [('product_brand_id', 'in', self.brand_ids.ids), ('id', 'in', list(products))])
+            else:
+                brand_products = self.env['product.product'].search(
+                    [('product_brand_id', 'in', self.brand_ids.ids)])
+
+            products = set(brand_products.ids) or {}
+
         # get_products_overstock_data(company_ids, product_ids, category_ids, warehouse_ids, start_date, end_date, advance_stock_days)
         query = """
                 Select * from get_inventory_turnover_ratio_data('%s','%s','%s','%s','%s','%s')
@@ -141,7 +173,7 @@ class SetuInventoryTurnoverAnalysisReport(models.TransientModel):
         return {
             'name' : 'Inventory Turnover Analysis Report',
             'type' : 'ir.actions.act_url',
-            'url': '/web/binary/download_document?model=setu.inventory.turnover.analysis.report&field=stock_file_data&id=%s&filename=%s'%(self.id, file_name),
+            'url': '/web/binary/download_document?model=setu.inventory.turnover.report&field=stock_file_data&id=%s&filename=%s'%(self.id, file_name),
             'target': 'self',
         }
 
@@ -150,6 +182,11 @@ class SetuInventoryTurnoverAnalysisReport(models.TransientModel):
         print (stock_data)
         for turnover_data_value in stock_data:
             turnover_data_value['wizard_id'] = self.id
+            product = self.env['product.product'].search([('id', '=', turnover_data_value.get('product_id',''))])
+            if product:
+                turnover_data_value.update({'brand': product.product_brand_id.id})
+                turnover_data_value.update({'franchise_division': product.company_type.id})
+                turnover_data_value.update({'product_division': product.product_division_id.id})
             self.create_data(turnover_data_value)
 
         graph_view_id = self.env.ref('setu_advance_inventory_reports.setu_inventory_turnover_analysis_bi_report_graph').id
@@ -165,7 +202,7 @@ class SetuInventoryTurnoverAnalysisReport(models.TransientModel):
         return {
             'name': _('Inventory Turnover Ratio Analysis'),
             'domain': [('wizard_id', '=', self.id)],
-            'res_model': 'setu.inventory.turnover.analysis.bi.report',
+            'res_model': 'setu.inventory.turnover.bi.report',
             'view_mode': 'tree',
             'type': 'ir.actions.act_window',
             'views': report_display_views,
@@ -176,7 +213,7 @@ class SetuInventoryTurnoverAnalysisReport(models.TransientModel):
         del data['product_name']
         del data['warehouse_name']
         del data['category_name']
-        return self.env['setu.inventory.turnover.analysis.bi.report'].create(data)
+        return self.env['setu.inventory.turnover.bi.report'].create(data)
 
     def write_report_data_header(self, workbook, worksheet, row):
         self.set_report_title(workbook,worksheet)
@@ -189,11 +226,14 @@ class SetuInventoryTurnoverAnalysisReport(models.TransientModel):
 
         worksheet.write(row, 0, 'Product Name', normal_left_format)
         worksheet.write(row, 1, 'Category', normal_left_format)
-        worksheet.write(row, 2, 'Opening Stock', odd_normal_right_format)
-        worksheet.write(row, 3, 'Closing Stock', even_normal_right_format)
-        worksheet.write(row, 4, 'Average Stock', odd_normal_right_format)
-        worksheet.write(row, 5, 'Sales', even_normal_right_format)
-        worksheet.write(row, 6, 'Turnover Ratio', odd_normal_right_format)
+        worksheet.write(row, 2, 'Brand', normal_left_format)
+        worksheet.write(row, 3, 'Product Division', normal_left_format)
+        worksheet.write(row, 4, 'Franchise Division', normal_left_format)
+        worksheet.write(row, 5, 'Opening Stock', odd_normal_right_format)
+        worksheet.write(row, 6, 'Closing Stock', even_normal_right_format)
+        worksheet.write(row, 7, 'Average Stock', odd_normal_right_format)
+        worksheet.write(row, 8, 'Sales', even_normal_right_format)
+        worksheet.write(row, 9, 'Turnover Ratio', odd_normal_right_format)
 
         return worksheet
 
@@ -209,24 +249,33 @@ class SetuInventoryTurnoverAnalysisReport(models.TransientModel):
         # worksheet.write(row, 0, data.get('product_name',''), normal_left_format)
         if product:
             worksheet.write(row, 0, product.display_name, normal_left_format)
-           
+            worksheet.write(row, 2, product.product_brand_id.name, normal_left_format)
+            worksheet.write(row, 3, product.product_division_id.name, normal_left_format)
+            worksheet.write(row, 4, product.company_type.name, normal_left_format)
+
         else:
-            worksheet.write(row, 0, data.get('product_name',''), normal_left_format)
+            worksheet.write(row, 0, data.get('product_name', ''), normal_left_format)
+            worksheet.write(row, 2, "", normal_left_format)
+            worksheet.write(row, 3, "", normal_left_format)
+            worksheet.write(row, 4, "", normal_left_format)
         # worksheet.write(row, 0, data.get('product_name',''), normal_left_format)
         worksheet.write(row, 1, data.get('category_name',''), normal_left_format)
-        worksheet.write(row, 2, data.get('opening_stock',''), odd_normal_right_format)
-        worksheet.write(row, 3, data.get('closing_stock',''), even_normal_right_format)
-        worksheet.write(row, 4, data.get('average_stock',''), odd_normal_right_format)
-        worksheet.write(row, 5, data.get('sales',''), even_normal_right_format)
-        worksheet.write(row, 6, data.get('turnover_ratio',''), odd_normal_right_format)
+        worksheet.write(row, 5, data.get('opening_stock',''), odd_normal_right_format)
+        worksheet.write(row, 6, data.get('closing_stock',''), even_normal_right_format)
+        worksheet.write(row, 7, data.get('average_stock',''), odd_normal_right_format)
+        worksheet.write(row, 8, data.get('sales',''), even_normal_right_format)
+        worksheet.write(row, 9, data.get('turnover_ratio',''), odd_normal_right_format)
         return worksheet
 
 
 class SetuInventoryTurnoverAnalysisBIReport(models.TransientModel):
-    _name = 'setu.inventory.turnover.analysis.bi.report'
+    _name = 'setu.inventory.turnover.bi.report'
 
     product_id = fields.Many2one("product.product", "Product")
     product_category_id = fields.Many2one("product.category", "Category")
+    product_division = fields.Many2one("product.division", "Product Division")
+    franchise_division = fields.Many2one("product.company.type", "Franchise Division")
+    brand = fields.Many2one("product.brand", "Brand")
     warehouse_id = fields.Many2one("stock.warehouse")
     company_id = fields.Many2one("res.company", "Company")
     opening_stock = fields.Float("Opening Stock")

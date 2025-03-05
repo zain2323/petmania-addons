@@ -44,6 +44,9 @@ class SetuStockMovementReport(models.TransientModel):
     product_category_ids = fields.Many2many("product.category", string="Product Categories")
     product_ids = fields.Many2many("product.product", string="Products")
     warehouse_ids = fields.Many2many("stock.warehouse", string="Warehouses")
+    product_division_ids = fields.Many2many('product.division', string="Product Division")
+    franchise_division_ids = fields.Many2many('product.company.type', string="Franchise Division")
+    brand_ids = fields.Many2many('product.brand', string="Brands")
 
 
     @api.onchange('product_category_ids')
@@ -110,6 +113,35 @@ class SetuStockMovementReport(models.TransientModel):
             company_ids = set(self.env.context.get('allowed_company_ids',False) or self.env.user.company_ids.ids) or {}
 
         warehouses = self.warehouse_ids and set(self.warehouse_ids.ids) or {}
+
+        if self.franchise_division_ids:
+            if products:
+                company_products = self.env['product.product'].search(
+                    [('company_type', 'in', self.franchise_division_ids.ids), ('id', 'in', list(products))])
+            else:
+                company_products = self.env['product.product'].search(
+                    [('company_type', 'in', self.franchise_division_ids.ids)])
+            products = set(company_products.ids) or {}
+
+        if self.product_division_ids:
+            if products:
+                division_products = self.env['product.product'].search(
+                    [('product_division_id', 'in', self.product_division_ids.ids), ('id', 'in', list(products))])
+            else:
+                division_products = self.env['product.product'].search(
+                    [('product_division_id', 'in', self.product_division_ids.ids)])
+
+            products = set(division_products.ids) or {}
+
+        if self.brand_ids:
+            if products:
+                brand_products = self.env['product.product'].search(
+                    [('product_brand_id', 'in', self.brand_ids.ids), ('id', 'in', list(products))])
+            else:
+                brand_products = self.env['product.product'].search(
+                    [('product_brand_id', 'in', self.brand_ids.ids)])
+
+            products = set(brand_products.ids) or {}
 
         # get_products_stock_movements(company_ids, product_ids, category_ids, warehouse_ids, start_date, end_date)
         query = """
@@ -264,34 +296,37 @@ class SetuStockMovementReport(models.TransientModel):
         worksheet.write(row, 1, 'Product Name', normal_left_format)
         # category name = 3 column
         worksheet.write(row, 2, 'Category', normal_left_format)
+        worksheet.write(row, 3, 'Brand', normal_left_format)
+        worksheet.write(row, 4, 'Product Division', normal_left_format)
+        worksheet.write(row, 5, 'Franchise Division', normal_left_format)
         # opening stock = 4 column
-        worksheet.write(row, 3, 'Opening Stock', even_normal_right_format)
+        worksheet.write(row, 6, 'Opening Stock', even_normal_right_format)
         # sales = 5 column
-        worksheet.write(row, 4, 'Sales', odd_normal_right_format)
+        worksheet.write(row, 7, 'Sales', odd_normal_right_format)
         # sales_return = 6 column
-        worksheet.write(row, 5, 'Sales Return', even_normal_right_format)
+        worksheet.write(row, 8, 'Sales Return', even_normal_right_format)
         # purchase = 7 column
-        worksheet.write(row, 6, 'Purchase', odd_normal_right_format)
+        worksheet.write(row, 9, 'Purchase', odd_normal_right_format)
         # purchase_return = 8 column
-        worksheet.write(row, 7, 'Purchase Return', even_normal_right_format)
+        worksheet.write(row, 10, 'Purchase Return', even_normal_right_format)
         # internal_in = 9 column
-        worksheet.write(row, 8, 'Internal IN', odd_normal_right_format)
+        worksheet.write(row, 11, 'Internal IN', odd_normal_right_format)
         # internal_out = 10 column
-        worksheet.write(row, 9, 'Internal OUT', even_normal_right_format)
+        worksheet.write(row, 12, 'Internal OUT', even_normal_right_format)
         # adjustment_in = 11 column
-        worksheet.write(row, 10, 'Adjustment IN', odd_normal_right_format)
+        worksheet.write(row, 13, 'Adjustment IN', odd_normal_right_format)
         # adjustment_out = 12 column
-        worksheet.write(row, 11, 'Adjustment OUT', even_normal_right_format)
+        worksheet.write(row, 14, 'Adjustment OUT', even_normal_right_format)
         # production_in = 13 column
-        worksheet.write(row, 12, 'Production IN', odd_normal_right_format)
+        worksheet.write(row, 15, 'Production IN', odd_normal_right_format)
         # production_out = 14 column
-        worksheet.write(row, 13, 'Production OUT', even_normal_right_format)
+        worksheet.write(row, 16, 'Production OUT', even_normal_right_format)
         # transit_in = 15 column
-        worksheet.write(row, 14, 'Transit IN', odd_normal_right_format)
+        worksheet.write(row, 17, 'Transit IN', odd_normal_right_format)
         # transit_out = 16 column
-        worksheet.write(row, 15, 'Transit OUT', even_normal_right_format)
+        worksheet.write(row, 18, 'Transit OUT', even_normal_right_format)
         # closing = 16 column
-        worksheet.write(row, 16, 'Closing', odd_normal_right_format)
+        worksheet.write(row, 19, 'Closing', odd_normal_right_format)
 
         return worksheet
 
@@ -308,39 +343,45 @@ class SetuStockMovementReport(models.TransientModel):
         # worksheet.write(row, 0, data.get('product_name',''), normal_left_format)
         if product:
             worksheet.write(row, 1, product.display_name, normal_left_format)
-           
+            worksheet.write(row, 3, product.product_brand_id.name, normal_left_format)
+            worksheet.write(row, 4, product.product_division_id.name, normal_left_format)
+            worksheet.write(row, 5, product.company_type.name, normal_left_format)
+
         else:
-            worksheet.write(row, 1, data.get('product_name',''), normal_left_format)
+            worksheet.write(row, 1, data.get('product_name', ''), normal_left_format)
+            worksheet.write(row, 3, "", normal_left_format)
+            worksheet.write(row, 4, "", normal_left_format)
+            worksheet.write(row, 5, "", normal_left_format)
         # worksheet.write(row, 1, data.get('product_name',''), normal_left_format)
         # category name = 3 column
         worksheet.write(row, 2, data.get('category_name',''), normal_left_format)
         # opening stock = 4 column
-        worksheet.write(row, 3, data.get('opening_stock',''), even_normal_right_format)
+        worksheet.write(row, 6, data.get('opening_stock',''), even_normal_right_format)
         # sales = 5 column
-        worksheet.write(row, 4, data.get('sales',''), odd_normal_right_format)
+        worksheet.write(row, 7, data.get('sales',''), odd_normal_right_format)
         # sales_return = 6 column
-        worksheet.write(row, 5, data.get('sales_return',''), even_normal_right_format)
+        worksheet.write(row, 8, data.get('sales_return',''), even_normal_right_format)
         # purchase = 7 column
-        worksheet.write(row, 6, data.get('purchase',''), odd_normal_right_format)
+        worksheet.write(row, 9, data.get('purchase',''), odd_normal_right_format)
         # purchase_return = 8 column
-        worksheet.write(row, 7, data.get('purchase_return',''), even_normal_right_format)
+        worksheet.write(row, 10, data.get('purchase_return',''), even_normal_right_format)
         # internal_in = 9 column
-        worksheet.write(row, 8, data.get('internal_in',''), odd_normal_right_format)
+        worksheet.write(row, 11, data.get('internal_in',''), odd_normal_right_format)
         # internal_out = 10 column
-        worksheet.write(row, 9, data.get('internal_out',''), even_normal_right_format)
+        worksheet.write(row, 12, data.get('internal_out',''), even_normal_right_format)
         # adjustment_in = 11 column
-        worksheet.write(row, 10, data.get('adjustment_in',''), odd_normal_right_format)
+        worksheet.write(row, 13, data.get('adjustment_in',''), odd_normal_right_format)
         # adjustment_out = 12 column
-        worksheet.write(row, 11, data.get('adjustment_out',''), even_normal_right_format)
+        worksheet.write(row, 14, data.get('adjustment_out',''), even_normal_right_format)
         # production_in = 13 column
-        worksheet.write(row, 12, data.get('production_in',''), odd_normal_right_format)
+        worksheet.write(row, 15, data.get('production_in',''), odd_normal_right_format)
         # production_out = 14 column
-        worksheet.write(row, 13, data.get('production_out',''), even_normal_right_format)
+        worksheet.write(row, 16, data.get('production_out',''), even_normal_right_format)
         # transit_in = 15 column
-        worksheet.write(row, 14, data.get('transit_in',''), odd_normal_right_format)
+        worksheet.write(row, 17, data.get('transit_in',''), odd_normal_right_format)
         # transit_out = 16 column
-        worksheet.write(row, 15, data.get('transit_out',''), even_normal_right_format)
+        worksheet.write(row, 18, data.get('transit_out',''), even_normal_right_format)
         # closing = 16 column
-        worksheet.write(row, 16, data.get('closing',''), odd_normal_right_format)
+        worksheet.write(row, 19, data.get('closing',''), odd_normal_right_format)
 
         # return worksheet

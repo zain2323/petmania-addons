@@ -50,6 +50,9 @@ class SetuInventoryOverstockReport(models.TransientModel):
     product_category_ids = fields.Many2many("product.category", string="Product Categories")
     product_ids = fields.Many2many("product.product", string="Products")
     warehouse_ids = fields.Many2many("stock.warehouse", string="Warehouses")
+    product_division_ids = fields.Many2many('product.division', string="Product Division")
+    franchise_division_ids = fields.Many2many('product.company.type', string="Franchise Division")
+    brand_ids = fields.Many2many('product.brand', string="Brands")
 
     @api.onchange('product_category_ids')
     def onchange_product_category_id(self):
@@ -156,6 +159,36 @@ class SetuInventoryOverstockReport(models.TransientModel):
 
         warehouses = self.warehouse_ids and set(self.warehouse_ids.ids) or {}
 
+        if self.franchise_division_ids:
+            if products:
+                company_products = self.env['product.product'].search(
+                    [('company_type', 'in', self.franchise_division_ids.ids), ('id', 'in', list(products))])
+            else:
+                company_products = self.env['product.product'].search(
+                    [('company_type', 'in', self.franchise_division_ids.ids)])
+            products = set(company_products.ids) or {}
+
+        if self.product_division_ids:
+            if products:
+                division_products = self.env['product.product'].search(
+                    [('product_division_id', 'in', self.product_division_ids.ids), ('id', 'in', list(products))])
+            else:
+                division_products = self.env['product.product'].search(
+                    [('product_division_id', 'in', self.product_division_ids.ids)])
+
+            products = set(division_products.ids) or {}
+
+        if self.brand_ids:
+            if products:
+                brand_products = self.env['product.product'].search(
+                    [('product_brand_id', 'in', self.brand_ids.ids), ('id', 'in', list(products))])
+            else:
+                brand_products = self.env['product.product'].search(
+                    [('product_brand_id', 'in', self.brand_ids.ids)])
+
+            products = set(brand_products.ids) or {}
+
+
         # get_products_overstock_data(company_ids, product_ids, category_ids, warehouse_ids, start_date, end_date, advance_stock_days)
         query = """
                 Select * from get_products_overstock_data('%s','%s','%s','%s','%s','%s', '%s')
@@ -216,6 +249,11 @@ class SetuInventoryOverstockReport(models.TransientModel):
         print (stock_data)
         for overstock_data_value in stock_data:
             overstock_data_value['wizard_id'] = self.id
+            product = self.env['product.product'].search([('id', '=', overstock_data_value.get('product_id',''))])
+            if product:
+                overstock_data_value.update({'brand': product.product_brand_id.id})
+                overstock_data_value.update({'franchise_division': product.company_type.id})
+                overstock_data_value.update({'product_division': product.product_division_id.id})
             self.create_data(overstock_data_value)
 
         graph_view_id = self.env.ref('setu_advance_inventory_reports.setu_overstock_bi_report_graph').id
@@ -264,25 +302,28 @@ class SetuInventoryOverstockReport(models.TransientModel):
 
         worksheet.write(row, 0, 'Product Name', normal_left_format)
         worksheet.write(row, 1, 'Category', normal_left_format)
-        worksheet.write(row, 2, 'Sales', odd_normal_right_format)
-        worksheet.write(row, 3, 'ADS', even_normal_right_format)
-        worksheet.write(row, 4, 'Current Stock', odd_normal_right_format)
-        worksheet.write(row, 5, 'Outgoing', even_normal_right_format)
-        worksheet.write(row, 6, 'Incoming', odd_normal_right_format)
-        worksheet.write(row, 7, 'Virtual Stock', even_normal_right_format)
-        worksheet.write(row, 8, 'Demanded Qty', odd_normal_right_format)
-        worksheet.write(row, 9, 'Coverage Days', even_normal_right_format)
-        worksheet.write(row, 10, 'Overstock Qty', odd_normal_right_format)
-        worksheet.write(row, 11, 'Overstock Value', even_normal_right_format)
-        worksheet.write(row, 12, 'Turnover Ratio', odd_normal_right_format)
-        worksheet.write(row, 13, 'FSN Classification', even_normal_right_format)
-        worksheet.write(row, 14, 'Overstock Qty (%)', odd_normal_right_format)
-        worksheet.write(row, 15, 'Overstock Value (%)', even_normal_right_format)
-        worksheet.write(row, 16, 'Last PO Date', odd_normal_right_format)
-        worksheet.write(row, 17, 'Last PO Qty', even_normal_right_format)
-        worksheet.write(row, 18, 'Last PO Price', odd_normal_right_format)
-        worksheet.write(row, 19, 'Currency', even_normal_left_format)
-        worksheet.write(row, 20, 'Vendor', odd_normal_left_format)
+        worksheet.write(row, 2, 'Brand', normal_left_format)
+        worksheet.write(row, 3, 'Product Division', normal_left_format)
+        worksheet.write(row, 4, 'Franchise Division', normal_left_format)
+        worksheet.write(row, 5, 'Sales', odd_normal_right_format)
+        worksheet.write(row, 6, 'ADS', even_normal_right_format)
+        worksheet.write(row, 7, 'Current Stock', odd_normal_right_format)
+        worksheet.write(row, 8, 'Outgoing', even_normal_right_format)
+        worksheet.write(row, 9, 'Incoming', odd_normal_right_format)
+        worksheet.write(row, 10, 'Virtual Stock', even_normal_right_format)
+        worksheet.write(row, 11, 'Demanded Qty', odd_normal_right_format)
+        worksheet.write(row, 12, 'Coverage Days', even_normal_right_format)
+        worksheet.write(row, 13, 'Overstock Qty', odd_normal_right_format)
+        worksheet.write(row, 14, 'Overstock Value', even_normal_right_format)
+        worksheet.write(row, 15, 'Turnover Ratio', odd_normal_right_format)
+        worksheet.write(row, 16, 'FSN Classification', even_normal_right_format)
+        worksheet.write(row, 17, 'Overstock Qty (%)', odd_normal_right_format)
+        worksheet.write(row, 18, 'Overstock Value (%)', even_normal_right_format)
+        worksheet.write(row, 19, 'Last PO Date', odd_normal_right_format)
+        worksheet.write(row, 20, 'Last PO Qty', even_normal_right_format)
+        worksheet.write(row, 21, 'Last PO Price', odd_normal_right_format)
+        worksheet.write(row, 22, 'Currency', even_normal_left_format)
+        worksheet.write(row, 23, 'Vendor', odd_normal_left_format)
         return worksheet
 
     def write_data_to_worksheet(self, workbook, worksheet, data, row):
@@ -301,30 +342,36 @@ class SetuInventoryOverstockReport(models.TransientModel):
         # worksheet.write(row, 0, data.get('product_name',''), normal_left_format)
         if product:
             worksheet.write(row, 0, product.display_name, normal_left_format)
-           
+            worksheet.write(row, 2, product.product_brand_id.name, normal_left_format)
+            worksheet.write(row, 3, product.product_division_id.name, normal_left_format)
+            worksheet.write(row, 4, product.company_type.name, normal_left_format)
+
         else:
-            worksheet.write(row, 0, data.get('product_name',''), normal_left_format)
+            worksheet.write(row, 0, data.get('product_name', ''), normal_left_format)
+            worksheet.write(row, 2, "", normal_left_format)
+            worksheet.write(row, 3, "", normal_left_format)
+            worksheet.write(row, 4, "", normal_left_format)
         # worksheet.write(row, 0, data.get('product_name',''), normal_left_format)
         worksheet.write(row, 1, data.get('category_name',''), normal_left_format)
-        worksheet.write(row, 2, data.get('sales',''), odd_normal_right_format)
-        worksheet.write(row, 3, data.get('ads',''), even_normal_right_format)
-        worksheet.write(row, 4, data.get('qty_available',''), odd_normal_right_format)
-        worksheet.write(row, 5, data.get('outgoing',''), even_normal_right_format)
-        worksheet.write(row, 6, data.get('incoming',''), odd_normal_right_format)
-        worksheet.write(row, 7, data.get('forecasted_stock',''), even_normal_right_format)
-        worksheet.write(row, 8, data.get('demanded_qty',''), odd_normal_right_format)
-        worksheet.write(row, 9, data.get('coverage_days',''), even_normal_right_format)
-        worksheet.write(row, 10, data.get('overstock_qty',''), odd_normal_right_format)
-        worksheet.write(row, 11, data.get('overstock_value',''), even_normal_right_format)
-        worksheet.write(row, 12, data.get('turnover_ratio',''), odd_normal_right_format)
-        worksheet.write(row, 13, data.get('stock_movement',''), even_normal_center_format)
-        worksheet.write(row, 14, data.get('wh_overstock_qty_per',''), odd_normal_right_format)
-        worksheet.write(row, 15, data.get('wh_overstock_value_per',''), even_normal_right_format)
-        worksheet.write(row, 16, data.get('last_purchase_date',''), odd_normal_right_format_with_date)
-        worksheet.write(row, 17, data.get('last_purchase_qty',''), even_normal_right_format)
-        worksheet.write(row, 18, data.get('last_purchase_price',''), odd_normal_right_format)
-        worksheet.write(row, 19, data.get('currency_name',''), even_normal_left_format)
-        worksheet.write(row, 20, data.get('vendor_name',''), odd_normal_left_format)
+        worksheet.write(row, 5, data.get('sales',''), odd_normal_right_format)
+        worksheet.write(row, 6, data.get('ads',''), even_normal_right_format)
+        worksheet.write(row, 7, data.get('qty_available',''), odd_normal_right_format)
+        worksheet.write(row, 8, data.get('outgoing',''), even_normal_right_format)
+        worksheet.write(row, 9, data.get('incoming',''), odd_normal_right_format)
+        worksheet.write(row, 10, data.get('forecasted_stock',''), even_normal_right_format)
+        worksheet.write(row, 11, data.get('demanded_qty',''), odd_normal_right_format)
+        worksheet.write(row, 12, data.get('coverage_days',''), even_normal_right_format)
+        worksheet.write(row, 13, data.get('overstock_qty',''), odd_normal_right_format)
+        worksheet.write(row, 14, data.get('overstock_value',''), even_normal_right_format)
+        worksheet.write(row, 15, data.get('turnover_ratio',''), odd_normal_right_format)
+        worksheet.write(row, 16, data.get('stock_movement',''), even_normal_center_format)
+        worksheet.write(row, 17, data.get('wh_overstock_qty_per',''), odd_normal_right_format)
+        worksheet.write(row, 18, data.get('wh_overstock_value_per',''), even_normal_right_format)
+        worksheet.write(row, 19, data.get('last_purchase_date',''), odd_normal_right_format_with_date)
+        worksheet.write(row, 20, data.get('last_purchase_qty',''), even_normal_right_format)
+        worksheet.write(row, 21, data.get('last_purchase_price',''), odd_normal_right_format)
+        worksheet.write(row, 22, data.get('currency_name',''), even_normal_left_format)
+        worksheet.write(row, 23, data.get('vendor_name',''), odd_normal_left_format)
         return worksheet
 
 class SetuInventoryOverstockBIReport(models.TransientModel):
@@ -332,6 +379,9 @@ class SetuInventoryOverstockBIReport(models.TransientModel):
 
     product_id = fields.Many2one("product.product", "Product")
     product_category_id = fields.Many2one("product.category", "Category")
+    product_division = fields.Many2one("product.division", "Product Division")
+    franchise_division = fields.Many2one("product.company.type", "Franchise Division")
+    brand = fields.Many2one("product.brand", "Brand")
     warehouse_id = fields.Many2one("stock.warehouse")
     company_id = fields.Many2one("res.company", "Company")
     sales = fields.Float("Sales")

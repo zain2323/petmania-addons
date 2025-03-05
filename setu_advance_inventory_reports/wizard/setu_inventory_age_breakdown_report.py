@@ -20,6 +20,9 @@ class SetuInventoryAgeBreakdownReport(models.TransientModel):
     product_category_ids = fields.Many2many("product.category", string="Product Categories")
     product_ids = fields.Many2many("product.product", string="Products")
     breakdown_days = fields.Integer("Breakdown Days", default=30)
+    product_division_ids = fields.Many2many('product.division', string="Product Division")
+    franchise_division_ids = fields.Many2many('product.company.type', string="Franchise Division")
+    brand_ids = fields.Many2many('product.brand', string="Brands")
 
     @api.onchange('product_category_ids')
     def onchange_product_category_id(self):
@@ -70,6 +73,35 @@ class SetuInventoryAgeBreakdownReport(models.TransientModel):
             company_ids = set(companies.ids) or {}
         else:
             company_ids = set(self.env.context.get('allowed_company_ids',False) or self.env.user.company_ids.ids) or {}
+
+        if self.franchise_division_ids:
+            if products:
+                company_products = self.env['product.product'].search(
+                    [('company_type', 'in', self.franchise_division_ids.ids), ('id', 'in', list(products))])
+            else:
+                company_products = self.env['product.product'].search(
+                    [('company_type', 'in', self.franchise_division_ids.ids)])
+            products = set(company_products.ids) or {}
+
+        if self.product_division_ids:
+            if products:
+                division_products = self.env['product.product'].search(
+                    [('product_division_id', 'in', self.product_division_ids.ids), ('id', 'in', list(products))])
+            else:
+                division_products = self.env['product.product'].search(
+                    [('product_division_id', 'in', self.product_division_ids.ids)])
+
+            products = set(division_products.ids) or {}
+
+        if self.brand_ids:
+            if products:
+                brand_products = self.env['product.product'].search(
+                    [('product_brand_id', 'in', self.brand_ids.ids), ('id', 'in', list(products))])
+            else:
+                brand_products = self.env['product.product'].search(
+                    [('product_brand_id', 'in', self.brand_ids.ids)])
+
+            products = set(brand_products.ids) or {}
 
         # warehouses = self.warehouse_ids and set(self.warehouse_ids.ids) or {}
 
@@ -160,36 +192,39 @@ class SetuInventoryAgeBreakdownReport(models.TransientModel):
 
         worksheet.write(row, 0, 'Product Name', normal_left_format)
         worksheet.write(row, 1, 'Category', normal_left_format)
-        worksheet.write(row, 2, 'Total Stock', odd_normal_right_format)
-        worksheet.write(row, 3, 'Stock Value', even_normal_right_format)
+        worksheet.write(row, 2, 'Brand', normal_left_format)
+        worksheet.write(row, 3, 'Product Division', normal_left_format)
+        worksheet.write(row, 4, 'Franchise Division', normal_left_format)
+        worksheet.write(row, 5, 'Total Stock', odd_normal_right_format)
+        worksheet.write(row, 6, 'Stock Value', even_normal_right_format)
 
-        self.set_breakdown_header(workbook, worksheet, row-1, 4, self.get_column_header(1), odd_normal_center_format)
-        worksheet.write(row, 4, "Stock" ,odd_normal_right_format)
-        worksheet.write(row, 5, "Value", odd_normal_right_format)
+        self.set_breakdown_header(workbook, worksheet, row-1, 7, self.get_column_header(1), odd_normal_center_format)
+        worksheet.write(row, 7, "Stock" ,odd_normal_right_format)
+        worksheet.write(row, 8, "Value", odd_normal_right_format)
 
-        self.set_breakdown_header(workbook, worksheet, row - 1, 6, self.get_column_header(2), even_normal_center_format)
-        worksheet.write(row, 6, "Stock", even_normal_right_format)
-        worksheet.write(row, 7, "Value", even_normal_right_format)
+        self.set_breakdown_header(workbook, worksheet, row - 1, 9, self.get_column_header(2), even_normal_center_format)
+        worksheet.write(row, 9, "Stock", even_normal_right_format)
+        worksheet.write(row, 10, "Value", even_normal_right_format)
 
-        self.set_breakdown_header(workbook, worksheet, row - 1, 8, self.get_column_header(3), odd_normal_center_format)
-        worksheet.write(row, 8, "Stock", odd_normal_right_format)
-        worksheet.write(row, 9, "Value", odd_normal_right_format)
+        self.set_breakdown_header(workbook, worksheet, row - 1, 11, self.get_column_header(3), odd_normal_center_format)
+        worksheet.write(row, 11, "Stock", odd_normal_right_format)
+        worksheet.write(row, 12, "Value", odd_normal_right_format)
 
-        self.set_breakdown_header(workbook, worksheet, row - 1, 10, self.get_column_header(4), even_normal_center_format)
-        worksheet.write(row, 10, "Stock", odd_normal_right_format)
-        worksheet.write(row, 11, "Value", odd_normal_right_format)
+        self.set_breakdown_header(workbook, worksheet, row - 1, 13, self.get_column_header(4), even_normal_center_format)
+        worksheet.write(row, 13, "Stock", odd_normal_right_format)
+        worksheet.write(row, 14, "Value", odd_normal_right_format)
 
-        self.set_breakdown_header(workbook, worksheet, row - 1, 12, self.get_column_header(5), odd_normal_center_format)
-        worksheet.write(row, 12, "Stock", odd_normal_right_format)
-        worksheet.write(row, 13, "Value", odd_normal_right_format)
+        self.set_breakdown_header(workbook, worksheet, row - 1, 15, self.get_column_header(5), odd_normal_center_format)
+        worksheet.write(row, 15, "Stock", odd_normal_right_format)
+        worksheet.write(row, 16, "Value", odd_normal_right_format)
 
-        self.set_breakdown_header(workbook, worksheet, row - 1, 14, self.get_column_header(6), even_normal_center_format)
-        worksheet.write(row, 14, "Stock", odd_normal_right_format)
-        worksheet.write(row, 15, "Value", odd_normal_right_format)
+        self.set_breakdown_header(workbook, worksheet, row - 1, 17, self.get_column_header(6), even_normal_center_format)
+        worksheet.write(row, 17, "Stock", odd_normal_right_format)
+        worksheet.write(row, 18, "Value", odd_normal_right_format)
 
-        self.set_breakdown_header(workbook, worksheet, row - 1, 16, self.get_column_header(7), odd_normal_center_format)
-        worksheet.write(row, 16, "Stock", odd_normal_right_format)
-        worksheet.write(row, 17, "Value", odd_normal_right_format)
+        self.set_breakdown_header(workbook, worksheet, row - 1, 19, self.get_column_header(7), odd_normal_center_format)
+        worksheet.write(row, 19, "Stock", odd_normal_right_format)
+        worksheet.write(row, 20, "Value", odd_normal_right_format)
 
         return worksheet
 
@@ -205,24 +240,30 @@ class SetuInventoryAgeBreakdownReport(models.TransientModel):
         # worksheet.write(row, 0, data.get('product_name',''), normal_left_format)
         if product:
             worksheet.write(row, 0, product.display_name, normal_left_format)
+            worksheet.write(row, 2, product.product_brand_id.name, normal_left_format)
+            worksheet.write(row, 3, product.product_division_id.name, normal_left_format)
+            worksheet.write(row, 4, product.company_type.name, normal_left_format)
            
         else:
             worksheet.write(row, 0, data.get('product_name',''), normal_left_format)
+            worksheet.write(row, 2, "", normal_left_format)
+            worksheet.write(row, 3, "", normal_left_format)
+            worksheet.write(row, 4, "", normal_left_format)
         worksheet.write(row, 1, data.get('category_name',''), normal_left_format)
-        worksheet.write(row, 2, data.get('total_stock',''), odd_normal_right_format)
-        worksheet.write(row, 3, data.get('total_stock_value',''), even_normal_right_format)
-        worksheet.write(row, 4, data.get('breakdown1_qty',''), odd_normal_right_format)
-        worksheet.write(row, 5, data.get('breckdown1_value',''), odd_normal_right_format)
-        worksheet.write(row, 6, data.get('breakdown2_qty', ''), even_normal_right_format)
-        worksheet.write(row, 7, data.get('breckdown2_value', ''), even_normal_right_format)
-        worksheet.write(row, 8, data.get('breakdown3_qty', ''), odd_normal_right_format)
-        worksheet.write(row, 9, data.get('breckdown3_value', ''), odd_normal_right_format)
-        worksheet.write(row, 10, data.get('breakdown4_qty', ''), even_normal_right_format)
-        worksheet.write(row, 11, data.get('breckdown4_value', ''), even_normal_right_format)
-        worksheet.write(row, 12, data.get('breakdown5_qty', ''), odd_normal_right_format)
-        worksheet.write(row, 13, data.get('breckdown5_value', ''), odd_normal_right_format)
-        worksheet.write(row, 14, data.get('breakdown6_qty', ''), even_normal_right_format)
-        worksheet.write(row, 15, data.get('breckdown6_value', ''), even_normal_right_format)
-        worksheet.write(row, 16, data.get('breakdown7_qty', ''), odd_normal_right_format)
-        worksheet.write(row, 17, data.get('breckdown7_value', ''), odd_normal_right_format)
+        worksheet.write(row, 5, data.get('total_stock',''), odd_normal_right_format)
+        worksheet.write(row, 6, data.get('total_stock_value',''), even_normal_right_format)
+        worksheet.write(row, 7, data.get('breakdown1_qty',''), odd_normal_right_format)
+        worksheet.write(row, 8, data.get('breckdown1_value',''), odd_normal_right_format)
+        worksheet.write(row, 9, data.get('breakdown2_qty', ''), even_normal_right_format)
+        worksheet.write(row, 10, data.get('breckdown2_value', ''), even_normal_right_format)
+        worksheet.write(row, 11, data.get('breakdown3_qty', ''), odd_normal_right_format)
+        worksheet.write(row, 12, data.get('breckdown3_value', ''), odd_normal_right_format)
+        worksheet.write(row, 13, data.get('breakdown4_qty', ''), even_normal_right_format)
+        worksheet.write(row, 14, data.get('breckdown4_value', ''), even_normal_right_format)
+        worksheet.write(row, 15, data.get('breakdown5_qty', ''), odd_normal_right_format)
+        worksheet.write(row, 16, data.get('breckdown5_value', ''), odd_normal_right_format)
+        worksheet.write(row, 17, data.get('breakdown6_qty', ''), even_normal_right_format)
+        worksheet.write(row, 18, data.get('breckdown6_value', ''), even_normal_right_format)
+        worksheet.write(row, 19, data.get('breakdown7_qty', ''), odd_normal_right_format)
+        worksheet.write(row, 20, data.get('breckdown7_value', ''), odd_normal_right_format)
         return worksheet

@@ -28,6 +28,9 @@ class SetuInventoryFSNAnalysisReport(models.TransientModel):
                                             ('fast', 'Fast Moving'),
                                             ('slow', 'Slow Moving'),
                                             ('non', 'Non Moving')], "FSN Classification", default="all")
+    product_division_ids = fields.Many2many('product.division', string="Product Division")
+    franchise_division_ids = fields.Many2many('product.company.type', string="Franchise Division")
+    brand_ids = fields.Many2many('product.brand', string="Brands")
 
     @api.onchange('product_category_ids')
     def onchange_product_category_id(self):
@@ -96,6 +99,35 @@ class SetuInventoryFSNAnalysisReport(models.TransientModel):
 
         warehouses = self.warehouse_ids and set(self.warehouse_ids.ids) or {}
 
+        if self.franchise_division_ids:
+            if products:
+                company_products = self.env['product.product'].search(
+                    [('company_type', 'in', self.franchise_division_ids.ids), ('id', 'in', list(products))])
+            else:
+                company_products = self.env['product.product'].search(
+                    [('company_type', 'in', self.franchise_division_ids.ids)])
+            products = set(company_products.ids) or {}
+
+        if self.product_division_ids:
+            if products:
+                division_products = self.env['product.product'].search(
+                    [('product_division_id', 'in', self.product_division_ids.ids), ('id', 'in', list(products))])
+            else:
+                division_products = self.env['product.product'].search(
+                    [('product_division_id', 'in', self.product_division_ids.ids)])
+
+            products = set(division_products.ids) or {}
+
+        if self.brand_ids:
+            if products:
+                brand_products = self.env['product.product'].search(
+                    [('product_brand_id', 'in', self.brand_ids.ids), ('id', 'in', list(products))])
+            else:
+                brand_products = self.env['product.product'].search(
+                    [('product_brand_id', 'in', self.brand_ids.ids)])
+
+            products = set(brand_products.ids) or {}
+
         # get_products_overstock_data(company_ids, product_ids, category_ids, warehouse_ids, start_date, end_date, advance_stock_days)
         query = """
                 Select * from get_inventory_fsn_analysis_report('%s','%s','%s','%s','%s','%s', '%s')
@@ -156,6 +188,11 @@ class SetuInventoryFSNAnalysisReport(models.TransientModel):
         print (stock_data)
         for fsn_data_value in stock_data:
             fsn_data_value['wizard_id'] = self.id
+            product = self.env['product.product'].search([('id', '=', fsn_data_value['product_id'])], limit=1)
+            fsn_data_value.update({'brand': product.product_brand_id.id})
+            fsn_data_value.update({'franchise_division': product.company_type.id})
+            fsn_data_value.update({'product_division': product.product_division_id.id})
+
             self.create_data(fsn_data_value)
 
         graph_view_id = self.env.ref('setu_advance_inventory_reports.setu_inventory_fsn_analysis_bi_report_graph').id
@@ -197,12 +234,15 @@ class SetuInventoryFSNAnalysisReport(models.TransientModel):
         normal_left_format = self.set_format(workbook, setu_excel_formatter.FONT_MEDIUM_BOLD_LEFT)
         worksheet.write(row, 0, 'Product Name', normal_left_format)
         worksheet.write(row, 1, 'Category', normal_left_format)
-        worksheet.write(row, 2, 'Opening Stock', odd_normal_right_format)
-        worksheet.write(row, 3, 'Closing Stock', even_normal_right_format)
-        worksheet.write(row, 4, 'Average Stock', odd_normal_right_format)
-        worksheet.write(row, 5, 'Sales', even_normal_right_format)
-        worksheet.write(row, 6, 'Turnover Ratio', odd_normal_right_format)
-        worksheet.write(row, 7, 'FSN Classification', even_normal_right_format)
+        worksheet.write(row, 2, 'Brand', normal_left_format)
+        worksheet.write(row, 3, 'Product Division', normal_left_format)
+        worksheet.write(row, 4, 'Franchise Division', normal_left_format)
+        worksheet.write(row, 5, 'Opening Stock', odd_normal_right_format)
+        worksheet.write(row, 6, 'Closing Stock', even_normal_right_format)
+        worksheet.write(row, 7, 'Average Stock', odd_normal_right_format)
+        worksheet.write(row, 8, 'Sales', even_normal_right_format)
+        worksheet.write(row, 9, 'Turnover Ratio', odd_normal_right_format)
+        worksheet.write(row, 10, 'FSN Classification', even_normal_right_format)
 
         return worksheet
 
@@ -218,17 +258,23 @@ class SetuInventoryFSNAnalysisReport(models.TransientModel):
         # worksheet.write(row, 0, data.get('product_name',''), normal_left_format)
         if product:
             worksheet.write(row, 0, product.display_name, normal_left_format)
-           
+            worksheet.write(row, 2, product.product_brand_id.name, normal_left_format)
+            worksheet.write(row, 3, product.product_division_id.name, normal_left_format)
+            worksheet.write(row, 4, product.company_type.name, normal_left_format)
+
         else:
-            worksheet.write(row, 0, data.get('product_name',''), normal_left_format)
+            worksheet.write(row, 0, data.get('product_name', ''), normal_left_format)
+            worksheet.write(row, 2, "", normal_left_format)
+            worksheet.write(row, 3, "", normal_left_format)
+            worksheet.write(row, 4, "", normal_left_format)
         # worksheet.write(row, 0, data.get('product_name',''), normal_left_format)
         worksheet.write(row, 1, data.get('category_name',''), normal_left_format)
-        worksheet.write(row, 2, data.get('opening_stock',''), odd_normal_right_format)
-        worksheet.write(row, 3, data.get('closing_stock',''), even_normal_right_format)
-        worksheet.write(row, 4, data.get('average_stock',''), odd_normal_right_format)
-        worksheet.write(row, 5, data.get('sales',''), even_normal_right_format)
-        worksheet.write(row, 6, data.get('turnover_ratio',''), odd_normal_right_format)
-        worksheet.write(row, 7, data.get('stock_movement',''), even_normal_center_format)
+        worksheet.write(row, 5, data.get('opening_stock',''), odd_normal_right_format)
+        worksheet.write(row, 6, data.get('closing_stock',''), even_normal_right_format)
+        worksheet.write(row, 7, data.get('average_stock',''), odd_normal_right_format)
+        worksheet.write(row, 8, data.get('sales',''), even_normal_right_format)
+        worksheet.write(row, 9, data.get('turnover_ratio',''), odd_normal_right_format)
+        worksheet.write(row, 10, data.get('stock_movement',''), even_normal_center_format)
         return worksheet
 
 class SetuInventoryFSNAnalysisBIReport(models.TransientModel):
@@ -236,6 +282,9 @@ class SetuInventoryFSNAnalysisBIReport(models.TransientModel):
 
     product_id = fields.Many2one("product.product", "Product")
     product_category_id = fields.Many2one("product.category", "Category")
+    product_division = fields.Many2one("product.division", "Product Division")
+    franchise_division = fields.Many2one("product.company.type", "Franchise Division")
+    brand = fields.Many2one("product.brand", "Brand")
     warehouse_id = fields.Many2one("stock.warehouse")
     company_id = fields.Many2one("res.company", "Company")
     opening_stock = fields.Float("Opening Stock")

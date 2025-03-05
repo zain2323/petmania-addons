@@ -3,7 +3,7 @@
     <data>
         <record id="setu_turnover_analysis_report_form" model="ir.ui.view">
             <field name="name">setu.inventory.turnover.analysis.report.form</field>
-            <field name="model">setu.inventory.turnover.analysis.report</field>
+            <field name="model">setu.inventory.turnover.report</field>
             <field name="arch" type="xml">
                 <form string="Inventory Turnover Analysis Report">
                     <sheet string="Inventory Turnover Analysis">
@@ -17,7 +17,10 @@
                         </group>
                         <group expand="0" >
                             <group expand="0" string="Products &#038; Categories">
+                                <field name="franchise_division_ids" widget="many2many_tags" options="{'no_create_edit': True}"/>
+                                <field name="product_division_ids" widget="many2many_tags" options="{'no_create_edit': True}"/>
                                 <field name="product_category_ids" widget="many2many_tags" options="{'no_create_edit': True}"/>
+                                <field name="brand_ids" widget="many2many_tags" options="{'no_create_edit': True}"/>
                                 <field name="product_ids" widget="many2many_tags" options="{'no_create_edit': True}"/>
                             </group>
                             <group expand="0" string="Companies &#038; Warehouses">
@@ -45,7 +48,7 @@
 
         <record id="setu_turnover_analysis_report_action" model="ir.actions.act_window">
             <field name="name">Inventory Turnover Analysis</field>
-            <field name="res_model">setu.inventory.turnover.analysis.report</field>
+            <field name="res_model">setu.inventory.turnover.report</field>
             <field name="binding_view_types">form</field>
             <field name="view_mode">form</field>
             <field name="target">new</field>
@@ -57,13 +60,16 @@
 
         <record id="setu_inventory_turnover_ratio_analysis_bi_report_tree" model="ir.ui.view">
             <field name="name">setu.inventory.turnover.analysis.bi.report.tree</field>
-            <field name="model">setu.inventory.turnover.analysis.bi.report</field>
+            <field name="model">setu.inventory.turnover.bi.report</field>
             <field name="arch" type="xml">
                 <tree string="Inventory Turnover Ratio Analysis"  create="false">
                     <field name="company_id" />
                     <field name="warehouse_id" />
                     <field name="product_id" />
                     <field name="product_category_id" />
+                    <field name="brand" />
+                    <field name="product_division" />
+                    <field name="franchise_division" />
                     <field name="opening_stock" />
                     <field name="closing_stock" />
                     <field name="average_stock" />
@@ -75,13 +81,16 @@
 
         <record id="setu_inventory_turnover_ratio_analysis_bi_report_search" model="ir.ui.view">
             <field name="name">setu.inventory.turnover.analysis.bi.report.search</field>
-            <field name="model">setu.inventory.turnover.analysis.bi.report</field>
+            <field name="model">setu.inventory.turnover.bi.report</field>
             <field name="arch" type="xml">
                 <search string="Inventory Turnover Ratio Analysis">
                     <field name="company_id" />
                     <field name="warehouse_id" />
                     <field name="product_id" />
                     <field name="product_category_id" />
+                    <field name="brand" />
+                    <field name="product_division" />
+                    <field name="franchise_division" />
 
                     <separator/>
 
@@ -96,7 +105,7 @@
 
         <record id="setu_inventory_turnover_analysis_bi_report_graph" model="ir.ui.view">
             <field name="name">setu.inventory.turnover.analysis.bi.report.graph</field>
-            <field name="model">setu.inventory.turnover.analysis.bi.report</field>
+            <field name="model">setu.inventory.turnover.bi.report</field>
             <field name="arch" type="xml">
                 <graph string="Inventory Turnover Ratio Analysis" type="bar" stacked="False">
                     <field name="warehouse_id" type="col"/>

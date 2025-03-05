@@ -166,6 +166,45 @@ class SetuInventoryAgeReport(models.TransientModel):
             'target': 'self',
         }
 
+    def get_ageing_days(self, product):
+        ageing_days = 0
+
+        # for franchise division
+        storage = self.env['min.max.config.storage'].search(
+            [('franchise_division', '=', product.company_type.id), ('product_id', '=', False), ('brand_id', '=', False),
+             ('product_category_id', '=', False), ('product_division', '=', False)], limit=1)
+        if storage and product.company_type.id:
+            ageing_days = storage.ageing_days
+
+        # for product division
+        storage = self.env['min.max.config.storage'].search(
+            [('product_division', '=', product.product_division_id.id), ('product_id', '=', False),
+             ('product_category_id', '=', False), ('brand_id', '=', False)], limit=1)
+        if storage and product.product_division_id.id:
+            ageing_days = storage.ageing_days
+
+        # for category
+        storage = self.env['min.max.config.storage'].search(
+            [('product_category_id', '=', product.categ_id.id), ('product_id', '=', False), ('brand_id', '=', False)],
+            limit=1)
+        if storage and product.categ_id.id:
+            ageing_days = storage.ageing_days
+
+        # for brand
+        storage = self.env['min.max.config.storage'].search(
+            [('brand_id', '=', product.product_brand_id.id), ('product_id', '=', False)],
+            limit=1)
+        if storage and product.product_brand_id.id:
+            ageing_days = storage.ageing_days
+
+        # for product
+        storage = self.env['min.max.config.storage'].search(
+            [('product_id', '=', product.id)], limit=1)
+        if storage and product.id:
+            ageing_days = storage.ageing_days
+
+        return ageing_days
+
     def download_report_in_listview(self):
         stock_data = self.get_inventory_age_report_data()
         print(stock_data)
@@ -175,41 +214,7 @@ class SetuInventoryAgeReport(models.TransientModel):
             fsn_data_value.update({'franchise_division': product.company_type.id})
             fsn_data_value.update({'product_division': product.product_division_id.id})
 
-            ageing_days = 0
-
-            # for franchise division
-            storage = self.env['min.max.config.storage'].search(
-                [('franchise_division', '=', product.company_type.id), ('product_id', '=', False), ('brand_id', '=', False),
-                 ('product_category_id', '=', False), ('product_division', '=', False)], limit=1)
-            if storage and product.company_type.id:
-                ageing_days = storage.ageing_days
-
-            # for product division
-            storage = self.env['min.max.config.storage'].search(
-                [('product_division', '=', product.product_division_id.id), ('product_id', '=', False),
-                 ('product_category_id', '=', False), ('brand_id', '=', False)], limit=1)
-            if storage and product.product_division_id.id:
-                ageing_days = storage.ageing_days
-
-            # for category
-            storage = self.env['min.max.config.storage'].search(
-                [('product_category_id', '=', product.categ_id.id), ('product_id', '=', False), ('brand_id', '=', False)],
-                limit=1)
-            if storage and product.categ_id.id:
-                ageing_days = storage.ageing_days
-
-            # for brand
-            storage = self.env['min.max.config.storage'].search(
-                [('brand_id', '=', product.product_brand_id.id), ('product_id', '=', False)],
-                limit=1)
-            if storage and product.product_brand_id.id:
-                ageing_days = storage.ageing_days
-
-            # for product
-            storage = self.env['min.max.config.storage'].search(
-                [('product_id', '=', product.id)], limit=1)
-            if storage and product.id:
-                ageing_days = storage.ageing_days
+            ageing_days = self.get_ageing_days(product)
 
             fsn_data_value['ageing_days'] = ageing_days
             fsn_data_value['wizard_id'] = self.id
@@ -253,13 +258,17 @@ class SetuInventoryAgeReport(models.TransientModel):
 
         worksheet.write(row, 0, 'Product Name', normal_left_format)
         worksheet.write(row, 1, 'Category', normal_left_format)
-        worksheet.write(row, 2, 'Current Stock', odd_normal_right_format)
-        worksheet.write(row, 3, 'Stock Value', even_normal_right_format)
-        worksheet.write(row, 4, 'Stock Qty (%)', odd_normal_right_format)
-        worksheet.write(row, 5, 'Stock Value (%)', even_normal_right_format)
-        worksheet.write(row, 6, "Oldest Stock Age", odd_normal_right_format)
-        worksheet.write(row, 7, "Oldest Qty", even_normal_right_format)
-        worksheet.write(row, 8, "Oldest Stock Value", odd_normal_right_format)
+        worksheet.write(row, 2, 'Brand', normal_left_format)
+        worksheet.write(row, 3, 'Product Division', normal_left_format)
+        worksheet.write(row, 4, 'Franchise Division', normal_left_format)
+        worksheet.write(row, 5, 'Ageing Days', normal_left_format)
+        worksheet.write(row, 6, 'Current Stock', odd_normal_right_format)
+        worksheet.write(row, 7, 'Stock Value', even_normal_right_format)
+        worksheet.write(row, 8, 'Stock Qty (%)', odd_normal_right_format)
+        worksheet.write(row, 9, 'Stock Value (%)', even_normal_right_format)
+        worksheet.write(row, 10, "Oldest Stock Age", odd_normal_right_format)
+        worksheet.write(row, 11, "Oldest Qty", even_normal_right_format)
+        worksheet.write(row, 12, "Oldest Stock Value", odd_normal_right_format)
 
         return worksheet
 
@@ -274,19 +283,28 @@ class SetuInventoryAgeReport(models.TransientModel):
         product = self.env['product.product'].search([('id', '=', data.get('product_id', ''))])
         # worksheet.write(row, 0, data.get('product_name',''), normal_left_format)
         if product:
+            ageing_days = self.get_ageing_days(product)
             worksheet.write(row, 0, product.display_name, normal_left_format)
+            worksheet.write(row, 2, product.product_brand_id.name, normal_left_format)
+            worksheet.write(row, 3, product.product_division_id.name, normal_left_format)
+            worksheet.write(row, 4, product.company_type.name, normal_left_format)
+            worksheet.write(row, 5, ageing_days, normal_left_format)
 
         else:
             worksheet.write(row, 0, data.get('product_name', ''), normal_left_format)
+            worksheet.write(row, 2, "", normal_left_format)
+            worksheet.write(row, 3, "", normal_left_format)
+            worksheet.write(row, 4, "", normal_left_format)
+            worksheet.write(row, 5, "", normal_left_format)
         # worksheet.write(row, 0, data.get('product_name',''), normal_left_format)
         worksheet.write(row, 1, data.get('category_name', ''), normal_left_format)
-        worksheet.write(row, 2, data.get('current_stock', ''), odd_normal_right_format)
-        worksheet.write(row, 3, data.get('current_stock_value', ''), even_normal_right_format)
-        worksheet.write(row, 4, data.get('stock_qty_ratio', ''), odd_normal_right_format)
-        worksheet.write(row, 5, data.get('stock_value_ratio', ''), even_normal_right_format)
-        worksheet.write(row, 6, data.get('days_old', ''), odd_normal_right_format)
-        worksheet.write(row, 7, data.get('oldest_stock_qty', ''), even_normal_right_format)
-        worksheet.write(row, 8, data.get('oldest_stock_value', ''), odd_normal_right_format)
+        worksheet.write(row, 6, data.get('current_stock', ''), odd_normal_right_format)
+        worksheet.write(row, 7, data.get('current_stock_value', ''), even_normal_right_format)
+        worksheet.write(row, 8, data.get('stock_qty_ratio', ''), odd_normal_right_format)
+        worksheet.write(row, 9, data.get('stock_value_ratio', ''), even_normal_right_format)
+        worksheet.write(row, 10, data.get('days_old', ''), odd_normal_right_format)
+        worksheet.write(row, 11, data.get('oldest_stock_qty', ''), even_normal_right_format)
+        worksheet.write(row, 12, data.get('oldest_stock_value', ''), odd_normal_right_format)
         return worksheet
 
 
