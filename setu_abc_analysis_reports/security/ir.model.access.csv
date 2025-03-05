@@ -2,8 +2,8 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_setu_abc_sales_analysis_report,setu.abc.sales.analysis.report,model_setu_abc_sales_analysis_report,,1,1,1,1
 access_setu_abc_sales_analysis_bi_report,setu.abc.sales.analysis.bi.report,model_setu_abc_sales_analysis_bi_report,,1,1,1,1
 
-access_setu_abc_sales_frequency_analysis_report,setu.abc.sales.frequency.analysis.report,model_setu_abc_sales_frequency_analysis_report,,1,1,1,1
-access_setu_abc_sales_frequency_analysis_bi_report,setu.abc.sales.frequency.analysis.bi.report,model_setu_abc_sales_frequency_analysis_bi_report,,1,1,1,1
+access_setu_abc_sales_frequency_report,setu.abc.sales.frequency.report,model_setu_abc_sales_frequency_report,,1,1,1,1
+access_setu_abc_sales_frequency_bi_report,setu.abc.sales.frequency.bi.report,model_setu_abc_sales_frequency_bi_report,,1,1,1,1
 
 access_setu_abc_xyz_analysis_report,setu.abc.xyz.analysis.report,model_setu_abc_xyz_analysis_report,,1,1,1,1
 access_setu_abc_xyz_analysis_bi_report,setu.abc.xyz.analysis.bi.report,model_setu_abc_xyz_analysis_bi_report,,1,1,1,1

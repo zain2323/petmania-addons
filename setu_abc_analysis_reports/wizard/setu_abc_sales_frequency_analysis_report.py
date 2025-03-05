@@ -9,7 +9,7 @@ import base64
 from io import BytesIO
 
 class SetuABCSalesFrequencyAnalysisReport(models.TransientModel):
-    _name = 'setu.abc.sales.frequency.analysis.report'
+    _name = 'setu.abc.sales.frequency.report'
     _description = """
         ABC Sales Frequency Analysis Report / ABC Analysis for Order Frequency
         Based ABC-analysis is the famous Pareto principle, which states that 20% of efforts give 80% of the result.    
@@ -26,6 +26,9 @@ class SetuABCSalesFrequencyAnalysisReport(models.TransientModel):
                                             ('highest_order', 'Highest Order Frequency (A)'),
                                             ('medium_order', 'Average Order Frequency (B)'),
                                             ('lowest_order', 'Lowest Order Frequency (C)')], "ABC Classification", default="all")
+    product_division_ids = fields.Many2many('product.division', string="Product Division")
+    franchise_division_ids = fields.Many2many('product.company.type', string="Franchise Division")
+    brand_ids = fields.Many2many('product.brand', string="Brands")
 
     @api.onchange('product_category_ids')
     def onchange_product_category_id(self):
@@ -92,6 +95,35 @@ class SetuABCSalesFrequencyAnalysisReport(models.TransientModel):
             company_ids = set(self.env.context.get('allowed_company_ids',False) or self.env.user.company_ids.ids) or {}
 
         warehouses = self.warehouse_ids and set(self.warehouse_ids.ids) or {}
+
+        if self.franchise_division_ids:
+            if products:
+                company_products = self.env['product.product'].search(
+                    [('company_type', 'in', self.franchise_division_ids.ids), ('id', 'in', list(products))])
+            else:
+                company_products = self.env['product.product'].search(
+                    [('company_type', 'in', self.franchise_division_ids.ids)])
+            products = set(company_products.ids) or {}
+
+
+        if self.product_division_ids:
+            if products:
+                division_products = self.env['product.product'].search([('product_division_id','in',self.product_division_ids.ids), ('id', 'in', list(products))])
+            else:
+                division_products = self.env['product.product'].search([('product_division_id','in',self.product_division_ids.ids)])
+
+            products = set(division_products.ids) or {}
+
+        if self.brand_ids:
+            if products:
+                brand_products = self.env['product.product'].search(
+                    [('product_brand_id', 'in', self.brand_ids.ids), ('id', 'in', list(products))])
+            else:
+                brand_products = self.env['product.product'].search(
+                    [('product_brand_id', 'in', self.brand_ids.ids)])
+
+            products = set(brand_products.ids) or {}
+
         query = """
                 Select * from get_abc_sales_frequency_analysis_data('%s','%s','%s','%s','%s','%s', '%s')
             """%(company_ids, products, category_ids, warehouses, start_date, end_date, self.abc_analysis_type)
@@ -139,7 +171,7 @@ class SetuABCSalesFrequencyAnalysisReport(models.TransientModel):
         return {
             'name' : 'ABC Sales Frequency Analysis Report',
             'type' : 'ir.actions.act_url',
-            'url': '/web/binary/download_document?model=setu.abc.sales.frequency.analysis.report&field=stock_file_data&id=%s&filename=%s'%(self.id, file_name),
+            'url': '/web/binary/download_document?model=setu.abc.sales.frequency.report&field=stock_file_data&id=%s&filename=%s'%(self.id, file_name),
             'target': 'self',
         }
 
@@ -148,6 +180,11 @@ class SetuABCSalesFrequencyAnalysisReport(models.TransientModel):
         print (stock_data)
         for abc_data_value in stock_data:
             abc_data_value['wizard_id'] = self.id
+            product = self.env['product.product'].search([('id', '=', abc_data_value['product_id'])], limit=1)
+            if product:
+                abc_data_value.update({'brand': product.product_brand_id.id})
+                abc_data_value.update({'franchise_division': product.company_type.id})
+                abc_data_value.update({'product_division': product.product_division_id.id})
             self.create_data(abc_data_value)
 
         graph_view_id = self.env.ref('setu_abc_analysis_reports.setu_abc_sales_frequency_analysis_bi_report_graph').id
@@ -166,7 +203,7 @@ class SetuABCSalesFrequencyAnalysisReport(models.TransientModel):
         return {
             'name': _('ABC Sales Frequency Analysis'),
             'domain': [('wizard_id', '=', self.id)],
-            'res_model': 'setu.abc.sales.frequency.analysis.bi.report',
+            'res_model': 'setu.abc.sales.frequency.bi.report',
             'view_mode': viewmode,
             'type': 'ir.actions.act_window',
             'views': report_display_views,
@@ -177,7 +214,7 @@ class SetuABCSalesFrequencyAnalysisReport(models.TransientModel):
         del data['product_name']
         del data['warehouse_name']
         del data['category_name']
-        return self.env['setu.abc.sales.frequency.analysis.bi.report'].create(data)
+        return self.env['setu.abc.sales.frequency.bi.report'].create(data)
 
     def write_report_data_header(self, workbook, worksheet, row):
         self.set_report_title(workbook,worksheet)
@@ -194,11 +231,14 @@ class SetuABCSalesFrequencyAnalysisReport(models.TransientModel):
 
         worksheet.write(row, 0, 'Product Name', normal_left_format)
         worksheet.write(row, 1, 'Category', normal_left_format)
-        worksheet.write(row, 2, 'Sales Qty', odd_normal_right_format)
-        worksheet.write(row, 3, 'Total Orders', even_normal_right_format)
-        worksheet.write(row, 4, 'Total Orders (%)', odd_normal_right_format)
-        worksheet.write(row, 5, 'Cum. Total Orders (%)', even_normal_right_format)
-        worksheet.write(row, 6, 'ABC Classification', odd_normal_right_format)
+        worksheet.write(row, 2, 'Brand', normal_left_format)
+        worksheet.write(row, 3, 'Product Division', normal_left_format)
+        worksheet.write(row, 4, 'Franchise Division', normal_left_format)
+        worksheet.write(row, 5, 'Sales Qty', odd_normal_right_format)
+        worksheet.write(row, 6, 'Total Orders', even_normal_right_format)
+        worksheet.write(row, 7, 'Total Orders (%)', odd_normal_right_format)
+        worksheet.write(row, 8, 'Cum. Total Orders (%)', even_normal_right_format)
+        worksheet.write(row, 9, 'ABC Classification', odd_normal_right_format)
         return worksheet
 
     def write_data_to_worksheet(self, workbook, worksheet, data, row):
@@ -210,21 +250,37 @@ class SetuABCSalesFrequencyAnalysisReport(models.TransientModel):
         odd_normal_left_format = self.set_format(workbook, setu_excel_formatter.ODD_FONT_MEDIUM_NORMAL_LEFT)
         normal_left_format = self.set_format(workbook, setu_excel_formatter.FONT_MEDIUM_NORMAL_LEFT)
 
-        worksheet.write(row, 0, data.get('product_name',''), normal_left_format)
+        product = self.env['product.product'].search([('id', '=', data.get('product_id', ''))])
+
+        if product:
+            worksheet.write(row, 0, product.display_name, normal_left_format)
+            worksheet.write(row, 2, product.product_brand_id.name, normal_left_format)
+            worksheet.write(row, 3, product.product_division_id.name, normal_left_format)
+            worksheet.write(row, 4, product.company_type.name, normal_left_format)
+
+        else:
+            worksheet.write(row, 0, data.get('product_name', ''), normal_left_format)
+            worksheet.write(row, 2, "", normal_left_format)
+            worksheet.write(row, 3, "", normal_left_format)
+            worksheet.write(row, 4, "", normal_left_format)
+
         worksheet.write(row, 1, data.get('category_name',''), normal_left_format)
-        worksheet.write(row, 2, data.get('sales_qty',''), odd_normal_right_format)
-        worksheet.write(row, 3, data.get('total_orders',''), even_normal_right_format)
-        worksheet.write(row, 4, data.get('total_orders_per',''), odd_normal_right_format)
-        worksheet.write(row, 5, data.get('cum_total_orders_per',''), even_normal_right_format)
-        worksheet.write(row, 6, data.get('analysis_category',''), odd_normal_right_format)
+        worksheet.write(row, 5, data.get('sales_qty',''), odd_normal_right_format)
+        worksheet.write(row, 6, data.get('total_orders',''), even_normal_right_format)
+        worksheet.write(row, 7, data.get('total_orders_per',''), odd_normal_right_format)
+        worksheet.write(row, 8, data.get('cum_total_orders_per',''), even_normal_right_format)
+        worksheet.write(row, 9, data.get('analysis_category',''), odd_normal_right_format)
         return worksheet
 
 class SetuABCSalesAnalysisBIReport(models.TransientModel):
-    _name = 'setu.abc.sales.frequency.analysis.bi.report'
+    _name = 'setu.abc.sales.frequency.bi.report'
     _description = """It helps to organize ABC sales frequency analysis data in listview and graphview"""
 
     product_id = fields.Many2one("product.product", "Product")
     product_category_id = fields.Many2one("product.category", "Category")
+    product_division = fields.Many2one("product.division", "Product Division")
+    franchise_division = fields.Many2one("product.company.type", "Franchise Division")
+    brand = fields.Many2one("product.brand", "Brand")
     warehouse_id = fields.Many2one("stock.warehouse")
     company_id = fields.Many2one("res.company", "Company")
     sales_qty = fields.Float("Total Sales")
@@ -232,4 +288,4 @@ class SetuABCSalesAnalysisBIReport(models.TransientModel):
     total_orders_per = fields.Float("Total Orders (%)")
     cum_total_orders_per = fields.Float("Cum. Total Orders (%)")
     analysis_category  = fields.Char("ABC Classification")
-    wizard_id = fields.Many2one("setu.abc.sales.frequency.analysis.report")
+    wizard_id = fields.Many2one("setu.abc.sales.frequency.report")

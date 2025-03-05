@@ -210,13 +210,14 @@ class SetuInventoryAgeReport(models.TransientModel):
         print(stock_data)
         for fsn_data_value in stock_data:
             product = self.env['product.product'].search([('id', '=', fsn_data_value['product_id'])], limit=1)
-            fsn_data_value.update({'brand': product.product_brand_id.id})
-            fsn_data_value.update({'franchise_division': product.company_type.id})
-            fsn_data_value.update({'product_division': product.product_division_id.id})
+            if product:
+                fsn_data_value.update({'brand': product.product_brand_id.id})
+                fsn_data_value.update({'franchise_division': product.company_type.id})
+                fsn_data_value.update({'product_division': product.product_division_id.id})
 
-            ageing_days = self.get_ageing_days(product)
+                ageing_days = self.get_ageing_days(product)
 
-            fsn_data_value['ageing_days'] = ageing_days
+                fsn_data_value['ageing_days'] = ageing_days
             fsn_data_value['wizard_id'] = self.id
             self.create_data(fsn_data_value)
         graph_view_id = self.env.ref('setu_advance_inventory_reports.setu_inventory_age_bi_report_graph').id

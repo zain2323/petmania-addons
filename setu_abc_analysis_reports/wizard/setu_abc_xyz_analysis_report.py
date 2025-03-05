@@ -34,6 +34,10 @@ class SetuABCYZAnalysisReport(models.TransientModel):
                                                 ('medium_stock', 'Y Class'),
                                                 ('low_stock', 'Z Class')], "XYZ Classification", default="all")
 
+    product_division_ids = fields.Many2many('product.division', string="Product Division")
+    franchise_division_ids = fields.Many2many('product.company.type', string="Franchise Division")
+    brand_ids = fields.Many2many('product.brand', string="Brands")
+
     @api.onchange('product_category_ids')
     def onchange_product_category_id(self):
         if self.product_category_ids:
@@ -98,6 +102,34 @@ class SetuABCYZAnalysisReport(models.TransientModel):
         else:
             company_ids = set(self.env.context.get('allowed_company_ids',False) or self.env.user.company_ids.ids) or {}
 
+        if self.franchise_division_ids:
+            if products:
+                company_products = self.env['product.product'].search(
+                    [('company_type', 'in', self.franchise_division_ids.ids), ('id', 'in', list(products))])
+            else:
+                company_products = self.env['product.product'].search(
+                    [('company_type', 'in', self.franchise_division_ids.ids)])
+            products = set(company_products.ids) or {}
+
+
+        if self.product_division_ids:
+            if products:
+                division_products = self.env['product.product'].search([('product_division_id','in',self.product_division_ids.ids), ('id', 'in', list(products))])
+            else:
+                division_products = self.env['product.product'].search([('product_division_id','in',self.product_division_ids.ids)])
+
+            products = set(division_products.ids) or {}
+
+        if self.brand_ids:
+            if products:
+                brand_products = self.env['product.product'].search(
+                    [('product_brand_id', 'in', self.brand_ids.ids), ('id', 'in', list(products))])
+            else:
+                brand_products = self.env['product.product'].search(
+                    [('product_brand_id', 'in', self.brand_ids.ids)])
+
+            products = set(brand_products.ids) or {}
+
         query = """
                 Select * from get_abc_xyz_analysis_report('%s','%s','%s','%s','%s','%s', '%s')
             """%(company_ids, products, category_ids, start_date, end_date, self.abc_analysis_type, self.inventory_analysis_type)
@@ -155,6 +187,11 @@ class SetuABCYZAnalysisReport(models.TransientModel):
         print (stock_data)
         for abc_data_value in stock_data:
             abc_data_value['wizard_id'] = self.id
+            product = self.env['product.product'].search([('id', '=', abc_data_value['product_id'])], limit=1)
+            if product:
+                abc_data_value.update({'brand': product.product_brand_id.id})
+                abc_data_value.update({'franchise_division': product.company_type.id})
+                abc_data_value.update({'product_division': product.product_division_id.id})
             self.create_data(abc_data_value)
 
         graph_view_id = self.env.ref('setu_abc_analysis_reports.setu_abc_xyz_analysis_bi_report_graph').id
@@ -201,15 +238,18 @@ class SetuABCYZAnalysisReport(models.TransientModel):
 
         worksheet.write(row, 0, 'Product Name', normal_left_format)
         worksheet.write(row, 1, 'Category', normal_left_format)
-        worksheet.write(row, 2, 'Sales Qty', odd_normal_right_format)
-        worksheet.write(row, 3, 'Sales Amount', even_normal_right_format)
-        worksheet.write(row, 4, 'Sales Amount (%)', odd_normal_right_format)
-        worksheet.write(row, 5, 'Cum. Sales Amount (%)', even_normal_right_format)
-        worksheet.write(row, 6, 'ABC Classification', odd_normal_right_format)
-        worksheet.write(row, 7, 'Current Stock', even_normal_right_format)
-        worksheet.write(row, 8, 'Stock Value', odd_normal_right_format)
-        worksheet.write(row, 9, 'XYZ Classification', even_normal_right_format)
-        worksheet.write(row, 10, 'ABC-XYZ Classification', odd_normal_right_format)
+        worksheet.write(row, 2, 'Brand', normal_left_format)
+        worksheet.write(row, 3, 'Product Division', normal_left_format)
+        worksheet.write(row, 4, 'Franchise Division', normal_left_format)
+        worksheet.write(row, 5, 'Sales Qty', odd_normal_right_format)
+        worksheet.write(row, 6, 'Sales Amount', even_normal_right_format)
+        worksheet.write(row, 7, 'Sales Amount (%)', odd_normal_right_format)
+        worksheet.write(row, 8, 'Cum. Sales Amount (%)', even_normal_right_format)
+        worksheet.write(row, 9, 'ABC Classification', odd_normal_right_format)
+        worksheet.write(row, 10, 'Current Stock', even_normal_right_format)
+        worksheet.write(row, 11, 'Stock Value', odd_normal_right_format)
+        worksheet.write(row, 12, 'XYZ Classification', even_normal_right_format)
+        worksheet.write(row, 13, 'ABC-XYZ Classification', odd_normal_right_format)
 
         return worksheet
 
@@ -223,17 +263,30 @@ class SetuABCYZAnalysisReport(models.TransientModel):
         odd_normal_left_format = self.set_format(workbook, setu_excel_formatter.ODD_FONT_MEDIUM_NORMAL_LEFT)
         normal_left_format = self.set_format(workbook, setu_excel_formatter.FONT_MEDIUM_NORMAL_LEFT)
 
-        worksheet.write(row, 0, data.get('product_name', ''), normal_left_format)
+        product = self.env['product.product'].search([('id', '=', data.get('product_id', ''))])
+
+        if product:
+            worksheet.write(row, 0, product.display_name, normal_left_format)
+            worksheet.write(row, 2, product.product_brand_id.name, normal_left_format)
+            worksheet.write(row, 3, product.product_division_id.name, normal_left_format)
+            worksheet.write(row, 4, product.company_type.name, normal_left_format)
+
+        else:
+            worksheet.write(row, 0, data.get('product_name', ''), normal_left_format)
+            worksheet.write(row, 2, "", normal_left_format)
+            worksheet.write(row, 3, "", normal_left_format)
+            worksheet.write(row, 4, "", normal_left_format)
+
         worksheet.write(row, 1, data.get('category_name', ''), normal_left_format)
-        worksheet.write(row, 2, data.get('sales_qty', ''), odd_normal_right_format)
-        worksheet.write(row, 3, data.get('sales_amount', ''), even_normal_right_format)
-        worksheet.write(row, 4, data.get('sales_amount_per', ''), odd_normal_right_format)
-        worksheet.write(row, 5, data.get('cum_sales_amount_per', ''), even_normal_right_format)
-        worksheet.write(row, 6, data.get('abc_classification', ''), odd_normal_center_format)
-        worksheet.write(row, 7, data.get('current_stock',''), even_normal_right_format)
-        worksheet.write(row, 8, data.get('stock_value',''), odd_normal_right_format)
-        worksheet.write(row, 9, data.get('xyz_classification',''), even_normal_center_format)
-        worksheet.write(row, 10, data.get('combine_classification', ''), odd_normal_center_format)
+        worksheet.write(row, 5, data.get('sales_qty', ''), odd_normal_right_format)
+        worksheet.write(row, 6, data.get('sales_amount', ''), even_normal_right_format)
+        worksheet.write(row, 7, data.get('sales_amount_per', ''), odd_normal_right_format)
+        worksheet.write(row, 8, data.get('cum_sales_amount_per', ''), even_normal_right_format)
+        worksheet.write(row, 9, data.get('abc_classification', ''), odd_normal_center_format)
+        worksheet.write(row, 10, data.get('current_stock',''), even_normal_right_format)
+        worksheet.write(row, 11, data.get('stock_value',''), odd_normal_right_format)
+        worksheet.write(row, 12, data.get('xyz_classification',''), even_normal_center_format)
+        worksheet.write(row, 13, data.get('combine_classification', ''), odd_normal_center_format)
         return worksheet
 
 
@@ -243,6 +296,9 @@ class SetuABCXYZAnalysisBIReport(models.TransientModel):
 
     product_id = fields.Many2one("product.product", "Product")
     product_category_id = fields.Many2one("product.category", "Category")
+    product_division = fields.Many2one("product.division", "Product Division")
+    franchise_division = fields.Many2one("product.company.type", "Franchise Division")
+    brand = fields.Many2one("product.brand", "Brand")
     company_id = fields.Many2one("res.company", "Company")
     sales_qty = fields.Float("Total Sales")
     sales_amount = fields.Float("Total Sales Amount")

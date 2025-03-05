@@ -51,8 +51,8 @@
                     <field name="sale_price"/>
                     <field name="ads"/>
                     <field name="sale_loss"/>
-                    <field name="min_qty"/>
-                    <field name="qty_available"/>
+<!--                    <field name="min_qty"/>-->
+<!--                    <field name="qty_available"/>-->
                     <field name="out_of_stock_qty"/>
                 </tree>
             </field>
