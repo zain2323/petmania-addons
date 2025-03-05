@@ -4,6 +4,10 @@ odoo.define('zs_pos_cash_out_modifications.pos_cash_move', function (require) {
     const CashMoveButton = require('point_of_sale.CashMoveButton');
     const Registries = require('point_of_sale.Registries');
     const {_t} = require('web.core');
+    const {Gui} = require('point_of_sale.Gui');
+    var models = require('point_of_sale.models');
+
+    models.load_fields('pos.session', 'is_cashed_out');
 
     const TRANSLATED_CASH_MOVE_TYPE = {
         in: _t('in'),
@@ -15,6 +19,15 @@ odoo.define('zs_pos_cash_out_modifications.pos_cash_move', function (require) {
             const {confirmed, payload} = await this.showPopup('CashMovePopup');
             if (!confirmed) return;
             const {type, amount, reason} = payload;
+
+            // if type is cash out and it has already happened then restricting it
+            if (type === 'out' && this.env.pos.pos_session.is_cashed_out) {
+                await Gui.showPopup('ErrorPopup', {
+                    'title': _t('Error'),
+                    'body': _t('You have already cashed out. You can only close the session now!'),
+                });
+                return;
+            }
             const translatedType = TRANSLATED_CASH_MOVE_TYPE[type];
             const formattedAmount = this.env.pos.format_currency(amount);
             if (!amount) {
@@ -43,7 +56,13 @@ odoo.define('zs_pos_cash_out_modifications.pos_cash_move', function (require) {
                 3000
             );
             if (type === "out") {
-                this.env.pos.cashed_out = true;
+                await this.rpc({
+                    model: 'pos.session',
+                    method: 'write',
+                    args: [[this.env.pos.pos_session.id], {'is_cashed_out': true}],
+                });
+
+                this.env.pos.pos_session.is_cashed_out = true;
             }
         }
     };

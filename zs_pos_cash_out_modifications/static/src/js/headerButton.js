@@ -10,12 +10,9 @@ odoo.define('zs_pos_cash_out_modifications.pos_header_button', function (require
 
     const CustomHeaderButton = (HeaderButton) => class extends HeaderButton {
         async onClick() {
-            console.log(this.env);
-            console.log(this.env.pos);
-            console.log(this.env.pos.cashed_out);
 
             // Check if cashier has cashed out
-            if (!this.env.pos.cashed_out) {
+            if (!this.env.pos.pos_session.is_cashed_out) {
                 await Gui.showPopup('ErrorPopup', {
                     'title': _t('Error'),
                     'body': _t('Please cash out first before closing the session'),
