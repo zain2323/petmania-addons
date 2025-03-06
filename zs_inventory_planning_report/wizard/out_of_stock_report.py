@@ -26,9 +26,11 @@ class OutOfStockData(models.TransientModel):
     category_name = fields.Char(string='Category Name')
     brand_name = fields.Char(string='Brand Name')
     product_name = fields.Char(string='Product Name')
-    min_qty = fields.Integer(string='Min QTY')
+    min_qty = fields.Integer(string='Min QTY Planned')
+    max_qty = fields.Integer(string='Max QTY Planned')
     out_of_stock_days = fields.Float(string='Out-Of-Stock Days')
-    sale_loss = fields.Float(string='Sale Loss')
+    sale_loss_value = fields.Float(string='Sale Loss')
+    sale_loss_qty = fields.Float(string='Sale Loss QTY')
     ads = fields.Float(string='ADS')
     sale_price = fields.Float(string='Sale price')
     scm_grading = fields.Char(string='SCM Grading')
@@ -105,9 +107,11 @@ class OutOfStockReportWizard(models.TransientModel):
             qty_available = product.qty_available
             if reordering_rule:
                 min_qty = reordering_rule.product_min_qty
+                max_qty = reordering_rule.product_max_qty
                 out_of_stock_qty = min_qty - qty_available
             else:
                 min_qty = 0
+                max_qty = 0
                 out_of_stock_qty = 0
             if out_of_stock_qty <= 0:
                 continue
@@ -115,7 +119,8 @@ class OutOfStockReportWizard(models.TransientModel):
             out_of_stock_days = self.get_out_of_stock_days(product.id) if product.qty_available <= 0 else 0
             ads = float(max(float(product.ads_quarterly or 0), float(product.ads_half_year or 0)))
             sale_price = product.list_price
-            sale_loss = sale_price * out_of_stock_days * ads
+            sale_loss_value = sale_price * out_of_stock_days * ads
+            sale_loss_qty = out_of_stock_days * ads
             scm_grading = product.product_scm_grading_id.name if product.product_scm_grading_id else ''
             products_dict.append({
                 'product_id': product.id,
@@ -125,11 +130,13 @@ class OutOfStockReportWizard(models.TransientModel):
                 'franchise_name': product.company_type.name,
                 'division_name': product.product_division_id.name,
                 'min_qty': min_qty,
+                'max_qty': max_qty,
                 'qty_available': qty_available,
                 'out_of_stock_qty': out_of_stock_qty,
                 'out_of_stock_days': out_of_stock_days,
                 'ads': ads,
-                'sale_loss': sale_loss,
+                'sale_loss_value': sale_loss_value,
+                'sale_loss_qty': sale_loss_qty,
                 'sale_price': sale_price,
                 'scm_grading': scm_grading,
                 'company_id': self.env.company.id,
@@ -150,11 +157,13 @@ class OutOfStockReportWizard(models.TransientModel):
                 'category_name': product_data['category_name'],
                 'brand_name': product_data['brand_name'],
                 'min_qty': product_data['min_qty'],
+                'max_qty': product_data['max_qty'],
                 'qty_available': product_data['qty_available'],
                 'out_of_stock_qty': product_data['out_of_stock_qty'],
                 'out_of_stock_days': product_data['out_of_stock_days'],
                 'ads': product_data['ads'],
-                'sale_loss': product_data['sale_loss'],
+                'sale_loss_value': product_data['sale_loss_value'],
+                'sale_loss_qty': product_data['sale_loss_qty'],
                 'sale_price': product_data['sale_price'],
                 'scm_grading': product_data['scm_grading'],
                 'company_id': product_data['company_id'],

@@ -61,7 +61,7 @@
 
         <menuitem id="setu_abc_sales_analysis_report_action_menu" action="setu_abc_sales_analysis_report_action"
                   parent="zs_inventory_planning_report.menu_scm_reports"
-                  sequence="6"/>
+                  sequence="10"/>
 
 
         <record id="setu_abc_sales_analysis_bi_report_tree" model="ir.ui.view">

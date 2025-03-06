@@ -68,6 +68,6 @@
 
         <menuitem id="zs_branch_value_configuration_view" name="Min Max Configuration By Value - Report"
                   action="zs_branch_value_configuration_report_action"
-                  parent="zs_inventory_planning_report.menu_scm_reports" sequence="5"/>
+                  parent="zs_inventory_planning_report.menu_scm_reports" sequence="7"/>
     </data>
 </odoo>

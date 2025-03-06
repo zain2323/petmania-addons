@@ -52,6 +52,7 @@
             name="Min Max Configuration By ADS - Module"
             id="menu_min_max_config_storage"
             action="action_min_max_config_storage"
+            sequence="6"
             parent="zs_inventory_planning_report.menu_scm_reports"
     />
 </odoo>
