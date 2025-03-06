@@ -2,15 +2,15 @@
 
 <odoo>
     <data>
-        <record id="packing_size_action" model="ir.actions.act_window">
-            <field name="name">Packing Size</field>
-            <field name="res_model">packing.size</field>
+        <record id="packing_nature_action" model="ir.actions.act_window">
+            <field name="name">Packing Nature</field>
+            <field name="res_model">packing.nature</field>
             <field name="view_mode">tree,form</field>
         </record>
 
-        <record id="packing_size_view" model="ir.ui.view">
-            <field name="name">Packing Size</field>
-            <field name="model">packing.size</field>
+        <record id="packing_nature_view" model="ir.ui.view">
+            <field name="name">Packing Nature</field>
+            <field name="model">packing.nature</field>
             <field name="arch" type="xml">
                 <form>
                     <sheet>
@@ -25,10 +25,10 @@
             </field>
         </record>
 
-         <menuitem id="packing_size"
-                   name="Packing Size"
+         <menuitem id="packing_nature"
+                   name="Packing Nature"
                    parent="sale.product_menu_catalog"
                    sequence="4"
-                   action="packing_size_action"/>
+                   action="packing_nature_action"/>
     </data>
 </odoo>

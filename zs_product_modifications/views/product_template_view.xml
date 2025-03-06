@@ -10,7 +10,6 @@
                 <field name="product_type_id" placeholder="Product Nature"/>
                 <field name="product_manufacture_id" placeholder="Product Manufacture"/>
                 <field name="product_formula_id" placeholder="Generic"/>
-                <field name="product_packsize_id" placeholder="Product Pack Size"/>
                 <field name="product_core_id" placeholder="Product Core"/>
                 <field name="product_storage_id" placeholder="Storage"/>
 
@@ -18,12 +17,21 @@
                 <field name="product_division_id" placeholder="Product Division"/>
                 <field name="product_vendor_name_id" placeholder="Vendor Name"/>
                 <field name="product_life_stage_id" placeholder="Life Stage"/>
-                <field name="product_packing_type_id" placeholder="Packing Type"/>
                 <field name="product_material_id" placeholder="Product Material"/>
                 <field name="product_attribute_1_id" placeholder="Sales Contribution Class"/>
-                <field name="product_attribute_2_id" placeholder="Attribute 2"/>
-                <field name="product_attribute_3_id" placeholder="Attribute 3"/>
-                <field name="product_packing_size_id" placeholder="Attribute 4"/>
+
+                <separator string="Packing Information" colspan="2"
+                           style="font-weight: bold;font-size: 1.1em; border-bottom: 1px solid grey;"/>
+                <field name="product_attribute_2_id" placeholder="Pcs in a pallet"/>
+                <field name="product_attribute_3_id" placeholder="Pcs in a layer/tray"/>
+                <field name="minimum_ordering_qty" placeholder="Minimum Ordering QTY"/>
+                <field name="product_packing_nature_id" placeholder="Packing Nature"/>
+                <field name="product_packing_type_id" placeholder="Packing Type"/>
+                <field name="product_packsize_id" placeholder="Packing Size"/>
+
+                <separator string="Misc" colspan="2"
+                           style="font-weight: bold;font-size: 1.1em; border-bottom: 1px solid grey;"/>
+
 
             </xpath>
         </field>
@@ -37,7 +45,6 @@
                 <field name="product_type_id" placeholder="Product Nature"/>
                 <field name="product_manufacture_id" placeholder="Product Manufacture"/>
                 <field name="product_formula_id" placeholder="Formula"/>
-                <field name="product_packsize_id" placeholder="Product Pack Size"/>
                 <field name="product_core_id" placeholder="Product Core"/>
                 <field name="product_storage_id" placeholder="Storage"/>
 
@@ -45,12 +52,14 @@
                 <field name="product_division_id" placeholder="Product Division"/>
                 <field name="product_vendor_name_id" placeholder="Vendor Name"/>
                 <field name="product_life_stage_id" placeholder="Life Stage"/>
-                <field name="product_packing_type_id" placeholder="Packing Type"/>
                 <field name="product_material_id" placeholder="Product Material"/>
                 <field name="product_attribute_1_id" placeholder="Sales Contribution Class"/>
-                <field name="product_attribute_2_id" placeholder="Attribute 2"/>
-                <field name="product_attribute_3_id" placeholder="Attribute 3"/>
-                <field name="product_packing_size_id" placeholder="Attribute 4"/>
+                <field name="product_attribute_2_id" placeholder="Pcs in a pallet"/>
+                <field name="product_attribute_3_id" placeholder="Pcs in a layer/tray"/>
+                <field name="minimum_ordering_qty" placeholder="Minimum Ordering QTY"/>
+                <field name="product_packing_nature_id" placeholder="Packing Nature"/>
+                <field name="product_packing_type_id" placeholder="Packing Type"/>
+                <field name="product_packsize_id" placeholder="Packing Size"/>
 
             </xpath>
         </field>

@@ -10,8 +10,6 @@ class ProductTemplate(models.Model):
         "product.manufacture", string="Manufacturer")
     product_formula_id = fields.Many2one(
         "product.formula", string="Generic")
-    product_packsize_id = fields.Many2one(
-        "product.packsize", string="Product Pack Size")
     product_core_id = fields.Many2one(
         "product.core", string="Core Product")
     product_storage_id = fields.Many2one(
@@ -32,8 +30,11 @@ class ProductTemplate(models.Model):
     product_attribute_1_id = fields.Many2one(
         "attribute.1", string="Sales Contribution Class")
     product_attribute_2_id = fields.Many2one(
-        "attribute.2", string="Attribute 2")
+        "attribute.2", string="Pcs in a pallet")
     product_attribute_3_id = fields.Many2one(
-        "attribute.3", string="Attribute 3")
-    product_packing_size_id = fields.Many2one(
-        "packing.size", string="Attribute 4")
+        "attribute.3", string="Pcs in a layer/tray")
+    product_packing_nature_id = fields.Many2one(
+        "packing.nature", string="Packing Nature")
+    minimum_ordering_qty = fields.Float(string="Minimum Ordering Quantity")
+    product_packsize_id = fields.Many2one(
+        "product.packsize", string="Packing Size")

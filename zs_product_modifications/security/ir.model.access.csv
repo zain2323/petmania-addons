@@ -11,7 +11,8 @@ access_vendor_name,access_vendor_name,model_vendor_name,base.group_user,1,1,1,1
 access_life_stage,access_life_stage,model_life_stage,base.group_user,1,1,1,1
 access_packing_type,access_packing_type,model_packing_type,base.group_user,1,1,1,1
 access_product_material,access_product_material,model_product_material,base.group_user,1,1,1,1
-access_packing_size,access_packing_size,model_packing_size,base.group_user,1,1,1,1
 access_attribute_1,access_attribute_1,model_attribute_1,base.group_user,1,1,1,1
 access_attribute_2,access_attribute_2,model_attribute_2,base.group_user,1,1,1,1
 access_attribute_3,access_attribute_3,model_attribute_3,base.group_user,1,1,1,1
+access_packing_nature,access_packing_nature,model_packing_nature,base.group_user,1,1,1,1
+

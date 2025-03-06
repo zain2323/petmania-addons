@@ -45,21 +45,21 @@
                 />
 
                 <filter
-                        string="Attribute 2"
+                        string="Pcs in a pallet"
                         name="attribute_2"
                         context="{'group_by':'product_attribute_2_id'}"
                 />
 
                 <filter
-                        string="Attribute 3"
+                        string="Pcs in a layer/tray"
                         name="attribute_3"
                         context="{'group_by':'product_attribute_2_id'}"
                 />
 
                 <filter
-                        string="Product Attribute 4"
-                        name="packing_size"
-                        context="{'group_by':'product_packing_size_id'}"
+                        string="Packing Nature"
+                        name="packing_nature"
+                        context="{'group_by':'product_packing_nature_id'}"
                 />
             </filter>
         </field>

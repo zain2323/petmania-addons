@@ -16,14 +16,16 @@ class SaleReport(models.Model):
         "packing.type", string="Packing Type")
     product_material_id = fields.Many2one(
         "product.material", string="Product Material")
-    product_packing_size_id = fields.Many2one(
-        "packing.size", string="Attribute 4")
     product_attribute_1_id = fields.Many2one(
         "attribute.1", string="Sales Contribution Class")
     product_attribute_2_id = fields.Many2one(
-        "attribute.2", string="Attribute 2")
+        "attribute.2", string="Pcs in a pallet")
     product_attribute_3_id = fields.Many2one(
-        "attribute.3", string="Attribute 3")
+        "attribute.3", string="Pcs in a layer/tray")
+    product_packing_nature_id = fields.Many2one(
+        "packing.nature", string="Packing Nature")
+    product_packsize_id = fields.Many2one(
+        "product.packsize", string="Packing Size")
 
     def _group_by_sale(self, groupby=""):
         res = super()._group_by_sale(groupby)
@@ -34,10 +36,11 @@ class SaleReport(models.Model):
         , t.product_life_stage_id
         , t.product_packing_type_id
         , t.product_material_id
-        , t.product_packing_size_id
+        , t.product_packing_nature_id
         , t.product_attribute_1_id
         , t.product_attribute_2_id
         , t.product_attribute_3_id
+        , t.product_packsize_id
         """
         return res
 
@@ -48,8 +51,9 @@ class SaleReport(models.Model):
         fields["product_life_stage_id"] = ", t.product_life_stage_id as product_life_stage_id"
         fields["product_packing_type_id"] = ", t.product_packing_type_id as product_packing_type_id"
         fields["product_material_id"] = ", t.product_material_id as product_material_id"
-        fields["product_packing_size_id"] = ", t.product_packing_size_id as product_packing_size_id"
+        fields["product_packing_nature_id"] = ", t.product_packing_nature_id as product_packing_nature_id"
         fields["product_attribute_1_id"] = ", t.product_attribute_1_id as product_attribute_1_id"
         fields["product_attribute_2_id"] = ", t.product_attribute_2_id as product_attribute_2_id"
         fields["product_attribute_3_id"] = ", t.product_attribute_3_id as product_attribute_3_id"
+        fields["product_packsize_id"] = ", t.product_packsize_id as product_packsize_id"
         return super()._select_additional_fields(fields)

@@ -23,7 +23,7 @@ class ProductPackSize(models.Model):
     _name = "product.packsize"
     _description = "Product Pack Size"
 
-    name = fields.Char("Product PackSize", required=True)
+    name = fields.Char("Packing Size", required=True)
 
 class ProductCore(models.Model):
     _name = "product.core"
@@ -74,26 +74,26 @@ class ProductMaterial(models.Model):
 
     name = fields.Char("Product Material", required=True)
 
-class PackingSize(models.Model):
-    _name = "packing.size"
-    _description = "Packing Size"
+class PackingNature(models.Model):
+    _name = "packing.nature"
+    _description = "Packing Nature"
 
-    name = fields.Char("Packing Size", required=True)
+    name = fields.Char("Packing Nature", required=True)
 
 class Attribute1(models.Model):
     _name = "attribute.1"
     _description = "Attribute 1"
 
-    name = fields.Char("Sales Contribution Class (3 Months)", required=True)
+    name = fields.Char("Sales Contribution Class", required=True)
 
 class Attribute2(models.Model):
     _name = "attribute.2"
     _description = "Attribute 2"
 
-    name = fields.Char("Sales Contribution Class (6 Months)", required=True)
+    name = fields.Char("Pcs in a pallet", required=True)
 
 class Attribute3(models.Model):
     _name = "attribute.3"
     _description = "Attribute 3"
 
-    name = fields.Char("Attribute 3", required=True)
+    name = fields.Char("Pcs in a layer/tray", required=True)
