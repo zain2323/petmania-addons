@@ -125,6 +125,7 @@
                 <field name="ads_half_year" placeholder="ADS (6 Months)"/>
                 <field name="product_scm_grading_id" placeholder="SCM grading"/>
                 <field name="product_attribute_1_id" placeholder="Sales Contribution Class"/>
+                <field name="company_rank" placeholder="Company Rank"/>
 
                 <separator string="Product Information" colspan="2"
                            style="font-weight: bold;font-size: 1.1em; border-bottom: 1px solid grey;"/>

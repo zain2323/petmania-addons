@@ -25,6 +25,61 @@ class ProductTemplate(models.Model):
     custom_uom_id = fields.Many2one('uom.uom', string="Uom")
     uom_pricing = fields.Float('Uom (Pricing)')
 
+    company_rank = fields.Char(string="Company Rank", compute='_compute_company_rank')
+
+    product_rank = fields.Integer(string="Product Rank", compute="_compute_ranks")
+    category_rank = fields.Integer(string="Category Rank", compute="_compute_ranks")
+    brand_rank = fields.Integer(string="Brand Rank", compute="_compute_ranks")
+
+    def _compute_company_rank(self):
+        for rec in self:
+            rec.company_rank = f"{rec.category_rank or 0}-{rec.brand_rank or 0}-{rec.product_rank or 0}"
+
+    def _compute_ranks(self):
+        """Compute product, category, and brand ranking based on last 180 days POS sales."""
+        date_threshold =(datetime.now() + timedelta(hours=5)).date() - timedelta(days=180)
+
+        # Fetch POS order lines for the last 180 days
+        pos_lines = self.env['pos.order.line'].search([
+            ('order_id.date_order', '>=', date_threshold)
+        ])
+
+        # Compute total sales for products, categories, and brands
+        product_sales = {}
+        category_sales = {}
+        brand_sales = {}
+
+        for line in pos_lines:
+            product = line.product_id.product_tmpl_id
+            category = product.categ_id
+            brand = product.product_brand_id if hasattr(product, 'product_brand_id') else None
+
+            product_sales[product.id] = product_sales.get(product.id, 0) + line.price_subtotal_incl
+            category_sales[category.id] = category_sales.get(category.id, 0) + line.price_subtotal_incl
+            if brand:
+                brand_sales[brand.id] = brand_sales.get(brand.id, 0) + line.price_subtotal_incl
+
+        # Sort and rank products
+        sorted_products = sorted(product_sales.items(), key=lambda x: x[1], reverse=True)
+        product_ranks = {pid: rank + 1 for rank, (pid, _) in enumerate(sorted_products)}
+
+        # Sort and rank categories
+        sorted_categories = sorted(category_sales.items(), key=lambda x: x[1], reverse=True)
+        category_ranks = {cid: rank + 1 for rank, (cid, _) in enumerate(sorted_categories)}
+
+        # Sort and rank brands
+        sorted_brands = sorted(brand_sales.items(), key=lambda x: x[1], reverse=True)
+        brand_ranks = {bid: rank + 1 for rank, (bid, _) in enumerate(sorted_brands)}
+
+        # Update product ranks
+        for product in self:
+            product.product_rank = product_ranks.get(product.id, 0)
+            product.category_rank = category_ranks.get(product.categ_id.id, 0)
+            product.brand_rank = brand_ranks.get(product.product_brand_id.id, 0) if hasattr(product, 'product_brand_id') else 0
+
+
+
+
     @api.depends('standard_price', 'list_price')
     def _compute_profit(self):
         for record in self:
