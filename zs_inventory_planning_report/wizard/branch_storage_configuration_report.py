@@ -31,6 +31,7 @@ class BranchConfigStorageData(models.TransientModel):
     reordering_id = fields.Many2one('stock.warehouse.orderpoint', string='Reordering Rule')
     min_qty = fields.Char(string='Min QTY')
     max_qty = fields.Char(string='Max QTY')
+    ads = fields.Char(string='ads')
 
 
 class BranchStorageConfigurationReportWizard(models.TransientModel):
@@ -84,10 +85,10 @@ class BranchStorageConfigurationReportWizard(models.TransientModel):
 
             reordering_rule = self.env['stock.warehouse.orderpoint'].search(
                 [('product_id', '=', product.id), ('company_id', '=', self.env.company.id)], limit=1)
-
-            if reordering_rule:
-               min_qty = reordering_rule.product_min_qty
-               max_qty = reordering_rule.product_max_qty
+            ads = float(max(float(product.ads_quarterly or 0), float(product.ads_half_year or 0)))
+            if product.storage_config_id:
+                min_qty = reordering_rule.min_days * ads
+                max_qty = reordering_rule.max_days * ads
 
             products_dict.append({
                 'product_name': product.name,
@@ -100,6 +101,7 @@ class BranchStorageConfigurationReportWizard(models.TransientModel):
                 'reordering_id': reordering_rule.id,
                 'storage_config_id': product.storage_config_id.id,
                 'basis_of_configuration': product.storage_config_basis,
+                'ads': ads,
                 'min_qty': min_qty,
                 'max_qty': max_qty,
                 'company_id': self.env.company.id,
@@ -123,6 +125,7 @@ class BranchStorageConfigurationReportWizard(models.TransientModel):
                 'reordering_id': product_data['reordering_id'],
                 'storage_config_id': product_data['storage_config_id'],
                 'basis_of_configuration': product_data['basis_of_configuration'],
+                'ads': product_data['ads'],
                 'min_qty': product_data['min_qty'],
                 'max_qty': product_data['max_qty'],
                 'company_id': product_data['company_id'],

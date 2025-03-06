@@ -48,6 +48,7 @@
                     <field name="brand_name"/>
                     <field name="barcode"/>
                     <field name="cost"/>
+                    <field name="ads"/>
                     <field name="basis_of_configuration"/>
                     <field name="min_qty"/>
                     <field name="max_qty"/>
