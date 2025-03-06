@@ -21,12 +21,13 @@ class AccountInvoiceReport(models.Model):
     product_attribute_2_id = fields.Many2one(
         "attribute.2", string="Pcs in a pallet")
     product_attribute_3_id = fields.Many2one(
-        "attribute.3", string="Pcs in a layer/tray")
+        "attribute.3", string="Pcs in a layer")
     product_packing_nature_id = fields.Many2one(
         "packing.nature", string="Packing Nature")
     product_packsize_id = fields.Many2one(
         "product.packsize", string="Packing Size")
-
+    product_pcs_in_a_tray = fields.Many2one(
+        "pcs.tray", string="Pcs in a try")
 
     @api.model
     def _select(self):
@@ -42,6 +43,7 @@ class AccountInvoiceReport(models.Model):
             , template.product_attribute_2_id as product_attribute_2_id
             , template.product_attribute_3_id as product_attribute_3_id
             , template.product_packsize_id as product_packsize_id
+            , template.product_pcs_in_a_tray as product_pcs_in_a_tray
             """
         return select_str
 
@@ -60,5 +62,6 @@ class AccountInvoiceReport(models.Model):
         , template.product_attribute_2_id
         , template.product_attribute_3_id
         , template.product_packsize_id
+        , template.product_pcs_in_a_tray
         """
         return group_by_str

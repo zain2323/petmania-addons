@@ -21,11 +21,13 @@ class SaleReport(models.Model):
     product_attribute_2_id = fields.Many2one(
         "attribute.2", string="Pcs in a pallet")
     product_attribute_3_id = fields.Many2one(
-        "attribute.3", string="Pcs in a layer/tray")
+        "attribute.3", string="Pcs in a layer")
     product_packing_nature_id = fields.Many2one(
         "packing.nature", string="Packing Nature")
     product_packsize_id = fields.Many2one(
         "product.packsize", string="Packing Size")
+    product_pcs_in_a_tray = fields.Many2one(
+        "pcs.tray", string="Pcs in a try")
 
     def _group_by_sale(self, groupby=""):
         res = super()._group_by_sale(groupby)
@@ -41,6 +43,7 @@ class SaleReport(models.Model):
         , t.product_attribute_2_id
         , t.product_attribute_3_id
         , t.product_packsize_id
+        , t.product_pcs_in_a_tray
         """
         return res
 
@@ -56,4 +59,5 @@ class SaleReport(models.Model):
         fields["product_attribute_2_id"] = ", t.product_attribute_2_id as product_attribute_2_id"
         fields["product_attribute_3_id"] = ", t.product_attribute_3_id as product_attribute_3_id"
         fields["product_packsize_id"] = ", t.product_packsize_id as product_packsize_id"
+        fields["product_pcs_in_a_tray"] = ", t.product_pcs_in_a_tray as product_pcs_in_a_tray"
         return super()._select_additional_fields(fields)

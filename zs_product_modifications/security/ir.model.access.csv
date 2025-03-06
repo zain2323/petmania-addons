@@ -15,4 +15,5 @@ access_attribute_1,access_attribute_1,model_attribute_1,base.group_user,1,1,1,1
 access_attribute_2,access_attribute_2,model_attribute_2,base.group_user,1,1,1,1
 access_attribute_3,access_attribute_3,model_attribute_3,base.group_user,1,1,1,1
 access_packing_nature,access_packing_nature,model_packing_nature,base.group_user,1,1,1,1
+access_pcs_tray,access_pcs_tray,model_pcs_tray,base.group_user,1,1,1,1
 

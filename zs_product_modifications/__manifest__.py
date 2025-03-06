@@ -25,6 +25,7 @@
         "views/attribute_1_view.xml",
         "views/attribute_2_view.xml",
         "views/attribute_3_view.xml",
+        "views/pcs_tray_view.xml",
 
         "views/account_invoice_report_view.xml",
         "views/sale_report_view.xml",

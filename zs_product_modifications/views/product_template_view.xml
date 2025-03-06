@@ -22,14 +22,16 @@
 
                 <separator string="Packing Information" colspan="2"
                            style="font-weight: bold;font-size: 1.1em; border-bottom: 1px solid grey;"/>
-                <field name="product_attribute_2_id" placeholder="Pcs in a pallet"/>
-                <field name="product_attribute_3_id" placeholder="Pcs in a layer/tray"/>
-                <field name="minimum_ordering_qty" placeholder="Minimum Ordering QTY"/>
-                <field name="product_packing_nature_id" placeholder="Packing Nature"/>
-                <field name="product_packing_type_id" placeholder="Packing Type"/>
                 <field name="product_packsize_id" placeholder="Packing Size"/>
+                <field name="product_packing_type_id" placeholder="Packing Type"/>
+                <field name="product_packing_nature_id" placeholder="Packing Nature"/>
+                <field name="product_attribute_2_id" placeholder="Pcs in a pallet"/>
+                <field name="product_attribute_3_id" placeholder="Pcs in a layer"/>
+                <field name="product_pcs_in_a_tray" placeholder="Pcs in a tray"/>
+                <field name="minimum_ordering_qty" placeholder="Minimum Ordering QTY"/>
 
-                <separator string="Misc" colspan="2"
+
+                <separator string="Tags" colspan="2"
                            style="font-weight: bold;font-size: 1.1em; border-bottom: 1px solid grey;"/>
 
 
@@ -54,12 +56,13 @@
                 <field name="product_life_stage_id" placeholder="Life Stage"/>
                 <field name="product_material_id" placeholder="Product Material"/>
                 <field name="product_attribute_1_id" placeholder="Sales Contribution Class"/>
-                <field name="product_attribute_2_id" placeholder="Pcs in a pallet"/>
-                <field name="product_attribute_3_id" placeholder="Pcs in a layer/tray"/>
-                <field name="minimum_ordering_qty" placeholder="Minimum Ordering QTY"/>
-                <field name="product_packing_nature_id" placeholder="Packing Nature"/>
-                <field name="product_packing_type_id" placeholder="Packing Type"/>
                 <field name="product_packsize_id" placeholder="Packing Size"/>
+                <field name="product_packing_type_id" placeholder="Packing Type"/>
+                <field name="product_packing_nature_id" placeholder="Packing Nature"/>
+                <field name="product_attribute_2_id" placeholder="Pcs in a pallet"/>
+                <field name="product_attribute_3_id" placeholder="Pcs in a layer"/>
+                <field name="product_pcs_in_a_tray" placeholder="Pcs in a tray"/>
+                <field name="minimum_ordering_qty" placeholder="Minimum Ordering QTY"/>
 
             </xpath>
         </field>

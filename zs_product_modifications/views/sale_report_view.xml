@@ -51,7 +51,7 @@
                 />
 
                 <filter
-                        string="Pcs in a layer/tray"
+                        string="Pcs in a layer"
                         name="attribute_3"
                         context="{'group_by':'product_attribute_2_id'}"
                 />
@@ -60,6 +60,11 @@
                         string="Packing Nature"
                         name="packing_nature"
                         context="{'group_by':'product_packing_nature_id'}"
+                />
+                <filter
+                        string="Pcs in a tray"
+                        name="pcs_tray"
+                        context="{'group_by':'product_pcs_in_a_tray'}"
                 />
             </filter>
         </field>

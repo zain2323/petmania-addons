@@ -96,4 +96,10 @@ class Attribute3(models.Model):
     _name = "attribute.3"
     _description = "Attribute 3"
 
-    name = fields.Char("Pcs in a layer/tray", required=True)
+    name = fields.Char("Pcs in a layer", required=True)
+
+class PcsTray(models.Model):
+    _name = "pcs.tray"
+    _description = "Pcs Tray"
+
+    name = fields.Char("Pcs in a tray", required=True)

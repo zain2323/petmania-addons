@@ -32,7 +32,9 @@ class ProductTemplate(models.Model):
     product_attribute_2_id = fields.Many2one(
         "attribute.2", string="Pcs in a pallet")
     product_attribute_3_id = fields.Many2one(
-        "attribute.3", string="Pcs in a layer/tray")
+        "attribute.3", string="Pcs in a layer")
+    product_pcs_in_a_tray = fields.Many2one(
+        "pcs.tray", string="Pcs in a try")
     product_packing_nature_id = fields.Many2one(
         "packing.nature", string="Packing Nature")
     minimum_ordering_qty = fields.Float(string="Minimum Ordering Quantity")
