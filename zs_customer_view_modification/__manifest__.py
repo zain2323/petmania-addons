@@ -8,13 +8,15 @@
     'version': '15.0.0.1',
 
     'category': 'Base',
-    'depends': ['base', 'sale', 'zs_product_company_type'],
+    'depends': ['base', 'sale', 'contacts'],
 
     'data': [
         'data/assign_customer_categories.xml',
         'security/ir.model.access.csv',
         'views/partner_view.xml',
         'views/vet_pet_view.xml',
+        'views/customer_category_config_views.xml',
+        'views/customer_tag_views.xml',
     ],
 
     'installable': True,

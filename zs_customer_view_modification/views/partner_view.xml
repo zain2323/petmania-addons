@@ -5,35 +5,57 @@
         <field name="inherit_id" ref="base.view_partner_form"/>
         <field eval="2" name="priority"/>
         <field name="arch" type="xml">
+            <xpath expr="//div[@class='o_address_format']" position="before">
+                <separator string="Address Information" colspan="2"
+                           style="font-weight: bold;font-size: 1.1em; border-bottom: 1px solid grey;"/>
+            </xpath>
+            <xpath expr="//field[@name='function']" position="before">
+                <separator string="Misc" colspan="2"
+                           style="font-weight: bold;font-size: 1.1em; border-bottom: 1px solid grey;"/>
+            </xpath>
             <xpath expr="//field[@name='vat']" position="after">
+                <separator string="Customer Class" colspan="2"
+                           style="font-weight: bold;font-size: 1.1em; border-bottom: 1px solid grey;"/>
                 <field name="customer_category" string="Customer Category"/>
                 <field name="revenue_stream_ids" widget="many2many_tags"/>
+                <field name="customer_tag_ids" widget="many2many_tags"/>
+
+                <separator string="Frequent Purchases" colspan="2"
+                           style="font-weight: bold;font-size: 1.1em; border-bottom: 1px solid grey;"/>
+                <field name="frequent_products" readonly="1">
+                    <tree>
+                        <field name="name" string="Product Name"/>
+                        <field name="list_price" string="Sale Price"/>
+                        <!--                            <field name="purchase_count" string="Purchase Count"/>-->
+                        <field name="default_code" string="Internal Reference"/>
+                        <field name="categ_id" string="Category"/>
+                    </tree>
+                </field>
+
+                <separator string="Purchase Stats" colspan="2"
+                           style="font-weight: bold;font-size: 1.1em; border-bottom: 1px solid grey;"/>
+                <field name="purchase_count" readonly="1"/>
+                <field name="purchase_total" readonly="1" widget="monetary"/>
+
+
+                <separator string="Pets" colspan="2"
+                           style="font-weight: bold;font-size: 1.1em; border-bottom: 1px solid grey;"/>
+                <field name="pet_ids" readonly="1">
+                    <tree>
+                        <field name="name" string="Pet Name"/>
+                        <field name="species" string="Specie"/>
+                        <field name="breed" string="Breed"/>
+                        <field name="gender" string="Gender"/>
+                        <field name="age" string="Age"/>
+                    </tree>
+                </field>
+
             </xpath>
 
             <xpath expr="//div[@name='button_box']" position="inside">
                 <button name="action_view_pets" type="object" class="oe_stat_button" icon="fa-paw">
                     <field name="pet_count" string="Pets" widget="statinfo"/>
                 </button>
-            </xpath>
-            <!-- Add the new notebook pages -->
-            <xpath expr="//notebook//page[@name='contact_addresses']" position="before">
-                <page string="Frequent Purchases">
-                    <field name="frequent_products" readonly="1">
-                        <tree>
-                            <field name="name" string="Product Name"/>
-                            <field name="list_price" string="Sale Price"/>
-                            <!--                            <field name="purchase_count" string="Purchase Count"/>-->
-                            <field name="default_code" string="Internal Reference"/>
-                            <field name="categ_id" string="Category"/>
-                        </tree>
-                    </field>
-                </page>
-                <page string="Purchase Statistics">
-                    <group>
-                        <field name="purchase_count" readonly="1"/>
-                        <field name="purchase_total" readonly="1" widget="monetary"/>
-                    </group>
-                </page>
             </xpath>
         </field>
     </record>

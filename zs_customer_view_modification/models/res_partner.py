@@ -19,51 +19,107 @@ class ResPartner(models.Model):
     purchase_total = fields.Float(compute='_compute_purchase_stats', string='Total Purchases')
     frequent_products = fields.Many2many('product.product', compute='_compute_frequent_products',
                                          string='Frequent Products')
+    customer_tag_ids = fields.Many2many('customer.tag.config', string='Customer tags')
 
     revenue_stream_ids = fields.Many2many(
-        'product.company.type',
-        string='Revenue Streams (Last 6 months)',
+        'product.category',
+        string='Revenue Streams',
     )
 
+    def _update_customer_tags(self):
+        partners = self.env['res.partner'].search([])
+        partners.write({'customer_tag_ids': [(5, 0, 0)]})
+
+        configs = self.env['customer.tag.config'].search([('active', '=', True)])
+        tag_ids = defaultdict(list)
+        for config in configs:
+            if config.duration_type == 'monthly':
+                duration = fields.Date.to_string(fields.Date.today() - relativedelta(months=1))
+            elif config.duration_type == 'quarterly':
+                duration = fields.Date.to_string(fields.Date.today() - relativedelta(months=3))
+            elif config.duration_type == 'biannual':
+                duration = fields.Date.to_string(fields.Date.today() - relativedelta(months=6))
+            else:
+                duration = fields.Date.to_string(fields.Date.today() - relativedelta(months=12))
+
+            pos_orders = self.env['pos.order'].search([
+                ('state', 'in', ['paid', 'done', 'invoiced']),
+                ('date_order', '>=', duration)
+            ])
+
+            partner_revenues = defaultdict(float)
+
+            for order in pos_orders:
+                if order.partner_id:
+                    lines = order.lines.filtered(lambda l: l.product_id.categ_id.id == config.product_category_id.id)
+                    for line in lines:
+                        value = line.price_subtotal_incl if config.criteria_type == 'value' else 1
+                        partner_revenues[order.partner_id] += value
+
+            for partner, value in partner_revenues.items():
+                if value >= config.threshold_value:
+                    tag_ids[partner].append(config.id)
+
+        for partner, tags in tag_ids.items():
+            partner.customer_tag_ids = [(6, 0, list(tags))]
+
     def _compute_revenue_streams(self):
-        half_year = fields.Date.to_string(fields.Date.today() - relativedelta(months=6))
+        partners = self.env['res.partner'].search([])
+        partners.write({'revenue_stream_ids': [(5, 0, 0)]})
+
+        duration = fields.Date.to_string(fields.Date.today() - relativedelta(months=1))
         pos_orders = self.env['pos.order'].search([
             ('state', 'in', ['paid', 'done', 'invoiced']),
-            ('date_order', '>=', half_year)
+            ('date_order', '>=', duration)
         ])
+
         partner_revenue_streams = defaultdict(set)
 
         for order in pos_orders:
             if order.partner_id:
                 for line in order.lines:
                     product = line.product_id
-                    if product.company_type:
-                        partner_revenue_streams[order.partner_id].add(product.company_type.id)
+                    if product.detailed_type == 'service':
+                        partner_revenue_streams[order.partner_id].add(product.categ_id.id)
         for partner, revenue_streams in partner_revenue_streams.items():
             partner.revenue_stream_ids = [(6, 0, list(revenue_streams))]
 
     def _update_customer_categories(self):
-        # Define thresholds
-        prestige_threshold = 50000
-        platinum_threshold = 25000
+        configs = self.env['customer.category.config'].search([('active', '=', True)])
 
-        one_year_ago = fields.Date.to_string(fields.Date.today() - relativedelta(months=6))
-        # Get total spending in the last year
-        pos_orders = self.env['pos.order'].search([
-            ('state', 'in', ['paid', 'done', 'invoiced']),
-            ('date_order', '>=', one_year_ago)
-        ])
-        partner_revenues = defaultdict(float)
-        for order in pos_orders:
-            if order.partner_id:
-                partner_revenues[order.partner_id] += order.amount_total
-        for partner, revenues in partner_revenues.items():
-            if revenues >= prestige_threshold:
-                partner.customer_category = 'prestige'
-            elif revenues >= platinum_threshold:
-                partner.customer_category = 'platinum'
+        for config in configs:
+            if config.duration_type == 'monthly':
+                duration = fields.Date.to_string(fields.Date.today() - relativedelta(months=1))
+            elif config.duration_type == 'quarterly':
+                duration = fields.Date.to_string(fields.Date.today() - relativedelta(months=3))
+            elif config.duration_type == 'biannual':
+                duration = fields.Date.to_string(fields.Date.today() - relativedelta(months=6))
             else:
-                partner.customer_category = 'gold'
+                duration = fields.Date.to_string(fields.Date.today() - relativedelta(months=12))
+
+            threshold_lines = config.threshold_line_ids.sorted(lambda l: -l.threshold_value)
+
+            # Get total spending in the last year
+            pos_orders = self.env['pos.order'].search([
+                ('state', 'in', ['paid', 'done', 'invoiced']),
+                ('date_order', '>=', duration)
+            ])
+
+            partner_revenues = defaultdict(float)
+            for order in pos_orders:
+                if order.partner_id:
+                    if config.criteria_type == 'value':
+                        partner_revenues[order.partner_id] += order.amount_total
+                    else:
+                        partner_revenues[order.partner_id] += 1
+
+            for partner, revenues in partner_revenues.items():
+                if revenues >= threshold_lines[0].threshold_value:
+                    partner.customer_category = 'prestige'
+                elif revenues >= threshold_lines[1].threshold_value:
+                    partner.customer_category = 'platinum'
+                else:
+                    partner.customer_category = 'gold'
 
     def _compute_purchase_stats(self):
         for partner in self:

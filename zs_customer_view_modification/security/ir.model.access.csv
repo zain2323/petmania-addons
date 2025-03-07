@@ -1,2 +1,6 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_vet_pet,customer.attributes,model_vet_pet,,1,1,1,1
+access_vet_pet,vet_pet,model_vet_pet,,1,1,1,1
+access_customer_category_config,customer_category_config,model_customer_category_config,,1,1,1,1
+access_customer_category_threshold_line,customer_category_threshold_line,model_customer_category_threshold_line,,1,1,1,1
+access_customer_tag_config,customer_tag_config,model_customer_tag_config,,1,1,1,1
+

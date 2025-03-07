@@ -22,6 +22,17 @@
             <field name="numbercall">-1</field>
             <field name="active">True</field>
         </record>
+        <record id="ir_cron_assign_customer_tags" model="ir.cron">
+            <field name="name">Assign Customer Tags</field>
+            <field name="model_id" ref="base.model_res_partner"/>
+            <field name="state">code</field>
+            <field name="code">model._update_customer_tags()</field>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="active">True</field>
+        </record>
     </data>
 </odoo>
 
