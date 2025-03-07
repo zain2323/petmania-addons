@@ -37,7 +37,7 @@ class ProductTemplate(models.Model):
 
     def _compute_ranks(self):
         """Compute product, category, and brand ranking based on last 180 days POS sales."""
-        date_threshold =(datetime.now() + timedelta(hours=5)).date() - timedelta(days=180)
+        date_threshold = (datetime.now() + timedelta(hours=5)).date() - timedelta(days=180)
 
         # Fetch POS order lines for the last 180 days
         pos_lines = self.env['pos.order.line'].search([
@@ -75,10 +75,8 @@ class ProductTemplate(models.Model):
         for product in self:
             product.product_rank = product_ranks.get(product.id, 0)
             product.category_rank = category_ranks.get(product.categ_id.id, 0)
-            product.brand_rank = brand_ranks.get(product.product_brand_id.id, 0) if hasattr(product, 'product_brand_id') else 0
-
-
-
+            product.brand_rank = brand_ranks.get(product.product_brand_id.id, 0) if hasattr(product,
+                                                                                            'product_brand_id') else 0
 
     @api.depends('standard_price', 'list_price')
     def _compute_profit(self):

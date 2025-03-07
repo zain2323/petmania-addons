@@ -87,8 +87,8 @@ class BranchStorageConfigurationReportWizard(models.TransientModel):
                 [('product_id', '=', product.id), ('company_id', '=', self.env.company.id)], limit=1)
             ads = float(max(float(product.ads_quarterly or 0), float(product.ads_half_year or 0)))
             if product.storage_config_id:
-                min_qty = reordering_rule.min_days * ads
-                max_qty = reordering_rule.max_days * ads
+                min_qty = product.storage_config_id.min_days * ads
+                max_qty = product.storage_config_id.max_days * ads
 
             products_dict.append({
                 'product_name': product.name,

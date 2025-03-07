@@ -87,8 +87,7 @@ class BranchValueConfigurationReportWizard(models.TransientModel):
             reordering_rule = self.env['stock.warehouse.orderpoint'].search(
                 [('product_id', '=', product.id), ('company_id', '=', self.env.company.id)], limit=1)
 
-
-
+            range = ""
             if product.value_config_id:
                 if product.value_config_id.product_id:
                     min_qty = product.value_config_id.min_qty
