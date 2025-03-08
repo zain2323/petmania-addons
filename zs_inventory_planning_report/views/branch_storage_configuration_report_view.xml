@@ -52,6 +52,7 @@
                     <field name="basis_of_configuration"/>
                     <field name="min_qty"/>
                     <field name="max_qty"/>
+                    <field name="range"/>
                     <field name="reordering_id"/>
                 </tree>
             </field>
