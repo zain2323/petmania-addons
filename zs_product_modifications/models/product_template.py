@@ -34,9 +34,13 @@ class ProductTemplate(models.Model):
     product_attribute_3_id = fields.Many2one(
         "attribute.3", string="Pcs in a layer")
     product_pcs_in_a_tray = fields.Many2one(
-        "pcs.tray", string="Pcs in a try")
+        "pcs.tray", string="Pcs in a tray")
     product_packing_nature_id = fields.Many2one(
         "packing.nature", string="Packing Nature")
-    minimum_ordering_qty = fields.Float(string="Minimum Ordering Quantity")
+    minimum_ordering_qty = fields.Selection([
+        ('pcs_in_a_pallet', 'Pcs in a pallet'),
+        ('pcs_in_a_layer', 'Pcs in a layer'),
+        ('pcs_in_a_tray', 'Pcs in a tray')
+    ], string='Minimum Ordering QTY', default='pcs_in_a_pallet')
     product_packsize_id = fields.Many2one(
         "product.packsize", string="Packing Size")

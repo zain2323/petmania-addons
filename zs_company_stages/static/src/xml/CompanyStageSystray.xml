@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
     <t t-name="CompanyStageSystray">
-        <div class="o_systray_item o_company_stage_systray">
-            <span class="o_company_stage">Loading...</span>
+        <div class="o_systray_item o_company_stage_systray" style="display: flex; align-items: center; gap: 5px; padding: 5px;">
+            <strong style="font-size: 14px;">
+                <span class="fa fa-balance-scale o_company_stage_icon" style="font-size: 18px;"/>
+                <span class="o_company_stage o_bold_text" style="font-weight: bold; font-size: 14px; color: #017e84;">Loading...</span>
+            </strong>
         </div>
     </t>
 </templates>

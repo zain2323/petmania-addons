@@ -10,6 +10,15 @@ _logger = logging.getLogger(__name__)
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
+    standard_price = fields.Float(
+        'Cost Price', compute='_compute_standard_price',
+        inverse='_set_standard_price', search='_search_standard_price',
+        digits='Product Price', groups="base.group_user",
+        help="""In Standard Price & AVCO: value of the product (automatically computed in AVCO).
+        In FIFO: value of the next unit that will leave the stock (automatically computed).
+        Used to value the product when the purchase cost is not known (e.g. inventory adjustment).
+        Used to compute margins on sale orders.""")
+
     ads_quarterly = fields.Char(string="ADS (3 Months)", company_dependent=True)
     ads_half_year = fields.Char(string="ADS (6 Months)", company_dependent=True)
     storage_config_id = fields.Many2one('min.max.config.storage', string='Min Config By Storage',
@@ -22,10 +31,10 @@ class ProductTemplate(models.Model):
     profit_percent = fields.Float(string="Profit Percent", compute="_compute_profit", store=True)
     profit_value = fields.Float(string="Profit Value", compute="_compute_profit", store=True)
 
-    custom_uom_id = fields.Many2one('uom.uom', string="Uom")
-    uom_pricing = fields.Float('Uom (Pricing)')
+    custom_uom_id = fields.Many2one('uom.uom', string="UoM")
+    uom_pricing = fields.Float('UoM (Pricing)')
 
-    company_rank = fields.Char(string="Company Rank", compute='_compute_company_rank')
+    company_rank = fields.Char(string="C-B-P Rank", compute='_compute_company_rank')
 
     product_rank = fields.Integer(string="Product Rank", compute="_compute_ranks")
     category_rank = fields.Integer(string="Category Rank", compute="_compute_ranks")

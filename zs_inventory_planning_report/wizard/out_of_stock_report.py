@@ -28,14 +28,14 @@ class OutOfStockData(models.TransientModel):
     product_name = fields.Char(string='Product Name')
     min_qty = fields.Integer(string='Min QTY Planned')
     max_qty = fields.Integer(string='Max QTY Planned')
-    out_of_stock_days = fields.Float(string='Out-Of-Stock Days')
+    out_of_stock_days = fields.Float(string='O-O-S Days')
     sale_loss_value = fields.Float(string='Sale Loss')
     sale_loss_qty = fields.Float(string='Sale Loss QTY')
     ads = fields.Float(string='ADS')
     sale_price = fields.Float(string='Sale price')
     scm_grading = fields.Char(string='SCM Grading')
     qty_available = fields.Integer(string='Available QTY')
-    out_of_stock_qty = fields.Integer(string='Out Of Stock QTY')
+    out_of_stock_qty = fields.Integer(string='O-O-S QTY')
 
 
 class OutOfStockReportWizard(models.TransientModel):

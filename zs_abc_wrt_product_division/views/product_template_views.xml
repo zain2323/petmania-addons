@@ -86,16 +86,19 @@
                 <div name="standard_price_uom" groups="base.group_user"
                      attrs="{'invisible': [('product_variant_count', '&gt;', 1), ('is_product_variant', '=', False)]}"
                      class="o_row">
-                    <field name="standard_price" widget="monetary"
+                    <field name="standard_price" string="Cost Price" widget="monetary"
                            options="{'currency_field': 'cost_currency_id', 'field_digits': True}"/>
-                    <span groups="uom.group_uom" class="oe_read_only">per
-                        <field name="uom_name"/>
-                    </span>
+<!--                    <span groups="uom.group_uom" class="oe_read_only">per-->
+<!--                        <field name="uom_name"/>-->
+<!--                    </span>-->
                 </div>
                 <field name="profit_value" string="Profit Value"/>
                 <field name="profit_percent" string="Profit %"/>
-                <field name="custom_uom_id" string="Uom"/>
-                <field name="uom_pricing" string="Uom (Pricing)"/>
+            </xpath>
+
+            <xpath expr="//field[@name='taxes_id']" position="before">
+                <field name="custom_uom_id" string="UoM"/>
+                <field name="uom_pricing" string="UoM (Pricing)"/>
             </xpath>
 
         </field>
@@ -119,13 +122,6 @@
         <field name="inherit_id" ref="product.product_template_only_form_view"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='uom_po_id']" position="after">
-                <separator string="SCM Information" colspan="2"
-                           style="font-weight: bold;font-size: 1.1em; border-bottom: 1px solid grey;"/>
-                <field name="ads_quarterly" placeholder="ADS (3 Months)"/>
-                <field name="ads_half_year" placeholder="ADS (6 Months)"/>
-                <field name="product_scm_grading_id" placeholder="SCM grading"/>
-                <field name="product_attribute_1_id" placeholder="Sales Contribution Class"/>
-                <field name="company_rank" placeholder="Company Rank"/>
 
                 <separator string="Product Information" colspan="2"
                            style="font-weight: bold;font-size: 1.1em; border-bottom: 1px solid grey;"/>
@@ -133,6 +129,15 @@
                 <field name="product_division_id"/>
                 <field name="categ_id"/>
                 <field name="product_brand_id"/>
+
+                <separator string="SCM Information" colspan="2"
+                           style="font-weight: bold;font-size: 1.1em; border-bottom: 1px solid grey;"/>
+                <field name="ads_quarterly" placeholder="ADS (3 Months)"/>
+                <field name="ads_half_year" placeholder="ADS (6 Months)"/>
+                <field name="product_scm_grading_id" placeholder="SCM grading"/>
+                <field name="product_attribute_1_id" placeholder="Sales Contribution Class"/>
+                <field name="company_rank" placeholder="C-B-P Rank"/>
+
             </xpath>
         </field>
     </record>

@@ -27,7 +27,7 @@ class AccountInvoiceReport(models.Model):
     product_packsize_id = fields.Many2one(
         "product.packsize", string="Packing Size")
     product_pcs_in_a_tray = fields.Many2one(
-        "pcs.tray", string="Pcs in a try")
+        "pcs.tray", string="Pcs in a tray")
 
     @api.model
     def _select(self):

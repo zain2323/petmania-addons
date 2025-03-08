@@ -47,15 +47,15 @@
                     <field name="category_name"/>
                     <field name="brand_name"/>
                     <field name="scm_grading"/>
-                    <field name="ads"/>
                     <field name="sale_price"/>
+                    <field name="ads"/>
                     <field name="out_of_stock_days"/>
+                    <field name="out_of_stock_qty"/>
                     <field name="sale_loss_qty"/>
                     <field name="sale_loss_value"/>
                     <field name="min_qty"/>
                     <field name="max_qty"/>
                     <!--                    <field name="qty_available"/>-->
-                    <field name="out_of_stock_qty"/>
                 </tree>
             </field>
         </record>
