@@ -5,3 +5,4 @@ from . import inventory_optimisation_report
 from . import out_of_stock_report
 from . import branch_storage_configuration_report
 from . import branch_value_configuration_report
+from . import product_account_report

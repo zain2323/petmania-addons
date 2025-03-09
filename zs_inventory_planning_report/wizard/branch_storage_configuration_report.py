@@ -1,6 +1,7 @@
 from odoo import fields, models, api, _
 from datetime import datetime, time
 import pytz
+import math
 
 try:
     from odoo.tools.misc import xlsxwriter
@@ -89,8 +90,8 @@ class BranchStorageConfigurationReportWizard(models.TransientModel):
             ads = float(max(float(product.ads_quarterly or 0), float(product.ads_half_year or 0)))
             range = ""
             if product.storage_config_id:
-                min_qty = product.storage_config_id.min_days * ads
-                max_qty = product.storage_config_id.max_days * ads
+                min_qty = math.ceil(product.storage_config_id.min_days * ads)
+                max_qty = math.ceil(product.storage_config_id.max_days * ads)
                 range = f'{product.storage_config_id.min_days}-{product.storage_config_id.max_days}'
 
             products_dict.append({

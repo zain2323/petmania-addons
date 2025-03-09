@@ -22,6 +22,7 @@
         'views/out_of_stock_report_view.xml',
         'views/branch_storage_configuration_report_view.xml',
         'views/branch_value_configuration_report_view.xml',
+        'views/product_account_report_view.xml',
     ],
     'assets': {
         'point_of_sale.assets': [
