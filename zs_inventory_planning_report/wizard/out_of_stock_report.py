@@ -35,7 +35,7 @@ class OutOfStockData(models.TransientModel):
     sale_price = fields.Float(string='Sale price')
     scm_grading = fields.Char(string='SCM Grading')
     qty_available = fields.Integer(string='Available QTY')
-    out_of_stock_qty = fields.Integer(string='O-O-S QTY')
+    out_of_stock_qty = fields.Integer(string='Deficient QTY')
 
 
 class OutOfStockReportWizard(models.TransientModel):
