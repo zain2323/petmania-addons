@@ -20,3 +20,6 @@ access_branch_config_value_data,branch_config_value_data,model_branch_config_val
 
 access_product_account_report_wizard,product_account_report_wizard,model_product_account_report_wizard,,1,1,1,1
 access_product_account_data,product_account_data,model_product_account_data,,1,1,1,1
+
+access_product_pricelist_report_wizard,product_pricelist_report_wizard,model_product_pricelist_report_wizard,,1,1,1,1
+access_product_pricelist_data,product_pricelist_data,model_product_pricelist_data,,1,1,1,1
