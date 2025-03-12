@@ -9,7 +9,7 @@
             <field name="interval_number">1</field>
             <field name="interval_type">days</field>
             <field name="numbercall">-1</field>
-            <field name="active">True</field>
+            <field name="active">False</field>
         </record>
         <record id="ir_cron_assign_customer_revenue_streams" model="ir.cron">
             <field name="name">Assign Customer Revenue Streams</field>
@@ -20,7 +20,7 @@
             <field name="interval_number">1</field>
             <field name="interval_type">days</field>
             <field name="numbercall">-1</field>
-            <field name="active">True</field>
+            <field name="active">False</field>
         </record>
         <record id="ir_cron_assign_customer_tags" model="ir.cron">
             <field name="name">Assign Customer Tags</field>
@@ -31,7 +31,7 @@
             <field name="interval_number">1</field>
             <field name="interval_type">days</field>
             <field name="numbercall">-1</field>
-            <field name="active">True</field>
+            <field name="active">False</field>
         </record>
     </data>
 </odoo>

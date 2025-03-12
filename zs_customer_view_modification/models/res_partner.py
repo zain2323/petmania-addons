@@ -2,7 +2,9 @@ from dateutil.relativedelta import relativedelta
 from odoo import fields, models, tools, api, _
 from collections import defaultdict
 from odoo.exceptions import UserError
+import logging
 
+_logger = logging.getLogger(__name__)
 
 class ResPartner(models.Model):
     _inherit = "res.partner"
@@ -115,11 +117,14 @@ class ResPartner(models.Model):
 
             for partner, revenues in partner_revenues.items():
                 if revenues >= threshold_lines[0].threshold_value:
-                    partner.customer_category = 'prestige'
+                    query = f"""UPDATE res_partner SET customer_category = 'prestige' WHERE id = {partner.id}"""
+                    self.env.cr.execute(query)
                 elif revenues >= threshold_lines[1].threshold_value:
-                    partner.customer_category = 'platinum'
+                    query = f"""UPDATE res_partner SET customer_category = 'platinum' WHERE id = {partner.id}"""
+                    self.env.cr.execute(query)
                 else:
-                    partner.customer_category = 'gold'
+                    query = f"""UPDATE res_partner SET customer_category = 'gold' WHERE id = {partner.id}"""
+                    self.env.cr.execute(query)
 
     def _compute_purchase_stats(self):
         for partner in self:

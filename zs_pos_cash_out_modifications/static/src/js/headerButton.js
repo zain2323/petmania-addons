@@ -12,7 +12,7 @@ odoo.define('zs_pos_cash_out_modifications.pos_header_button', function (require
         async onClick() {
 
             // Check if cashier has cashed out
-            if (!this.env.pos.pos_session.is_cashed_out) {
+            if (!this.env.pos.pos_session.is_cashed_out || !this.env.pos.pos_session.is_cashed_out_last) {
                 await Gui.showPopup('ErrorPopup', {
                     'title': _t('Error'),
                     'body': _t('Please cash out first before closing the session'),
