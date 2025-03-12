@@ -50,7 +50,7 @@ class InventoryAuditData(models.Model):
                     quant = self.env['stock.quant'].with_context(inventory_mode=True).search(
                         [('product_id', '=', line.product_id.id), ('location_id.usage', '=', 'internal')])
                     if quant:
-                        quant['inventory_quantity'] = line['counted_qty']
+                        quant['inventory_quantity'] = line.product_id.qty_available + line['difference']
                         quant._compute_inventory_quantity_set()
                         quant._compute_inventory_diff_quantity()
                         quant.action_apply_inventory()
@@ -126,7 +126,7 @@ class AuditLines(models.Model):
                 quant = self.env['stock.quant'].with_context(inventory_mode=True).search(
                     [('product_id', '=', line.product_id.id), ('location_id.usage', '=', 'internal')])
                 if quant:
-                    quant['inventory_quantity'] = line['counted_qty']
+                    quant['inventory_quantity'] = line.product_id.qty_available +  line['difference']
                     quant._compute_inventory_quantity_set()
                     quant._compute_inventory_diff_quantity()
                     quant.action_apply_inventory()
