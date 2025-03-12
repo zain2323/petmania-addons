@@ -69,10 +69,8 @@ class ResPartner(models.Model):
         partners = self.env['res.partner'].search([])
         partners.write({'revenue_stream_ids': [(5, 0, 0)]})
 
-        duration = fields.Date.to_string(fields.Date.today() - relativedelta(months=1))
         pos_orders = self.env['pos.order'].search([
             ('state', 'in', ['paid', 'done', 'invoiced']),
-            ('date_order', '>=', duration)
         ])
 
         partner_revenue_streams = defaultdict(set)
