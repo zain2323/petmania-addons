@@ -21,6 +21,7 @@ class InventoryAuditData(models.Model):
     scm_officer_id = fields.Many2one('res.users', string='SCM Officer', required=False)
     line_ids = fields.One2many("inventory.audit.line", "audit_id", string="Audit Lines")
     audit_line_count = fields.Integer(string="Audit Line Count", compute="_compute_audit_line_count")
+    company_id = fields.Many2one('res.company', string='Company')
 
     @api.model
     def create(self, vals):
@@ -48,9 +49,9 @@ class InventoryAuditData(models.Model):
             for line in rec['line_ids']:
                 if line.difference != 0:
                     quant = self.env['stock.quant'].with_context(inventory_mode=True).search(
-                        [('product_id', '=', line.product_id.id), ('location_id.usage', '=', 'internal')])
+                        [('product_id', '=', line.product_id.id), ('location_id.usage', '=', 'internal'), ('company_id', '=', self.env.company.id)])
                     if quant:
-                        quant['inventory_quantity'] = line.product_id.qty_available + line.difference
+                        quant.inventory_quantity = line.product_id.qty_available + line.difference
                         quant._compute_inventory_quantity_set()
                         quant._compute_inventory_diff_quantity()
                         quant.action_apply_inventory()
@@ -124,9 +125,9 @@ class AuditLines(models.Model):
         for line in self:
             if line.difference != 0:
                 quant = self.env['stock.quant'].with_context(inventory_mode=True).search(
-                    [('product_id', '=', line.product_id.id), ('location_id.usage', '=', 'internal')])
+                    [('product_id', '=', line.product_id.id), ('location_id.usage', '=', 'internal'), ('company_id', '=', self.env.company.id)])
                 if quant:
-                    quant['inventory_quantity'] = line.product_id.qty_available + line.difference
+                    quant.inventory_quantity = line.product_id.qty_available + line.difference
                     quant._compute_inventory_quantity_set()
                     quant._compute_inventory_diff_quantity()
                     quant.action_apply_inventory()
@@ -194,6 +195,7 @@ class CustomerWiseSalesAnalysisReport(models.TransientModel):
         inventory_data = self.env['inventory.audit.data'].create({
             "scm_officer_id": self.env.user.id,
             'name': f"{self.env.company.name}-Audit-{self.id}",
+            'company_id': self.env.company.id
         })
         serial_no = 1
         for product_data in products_data:

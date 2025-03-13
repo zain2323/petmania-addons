@@ -57,6 +57,12 @@
         </field>
     </record>
 
+    <record id="audit_company_rule" model="ir.rule">
+        <field name="name">Audit By Company</field>
+        <field name="model_id" ref="model_inventory_audit_data"/>
+        <field name="domain_force">['|',('company_id','=',False),('company_id', 'in', company_ids)]</field>
+    </record>
+
     <record id="view_audit_line_tree" model="ir.ui.view">
         <field name="name">audit.line.tree</field>
         <field name="model">inventory.audit.line</field>
@@ -131,21 +137,21 @@
                     </group>
                     <!--                    <notebook>-->
                     <!--                        <page string="Audit Lines">-->
-<!--                                                <field name="line_ids" attrs="{'readonly': [('state', '=', 'confirm')]}">-->
-<!--                                                    <tree editable="bottom">-->
-<!--                                                        <field name="franchise_name"/>-->
-<!--                                                        <field name="division_name"/>-->
-<!--                                                        <field name="category_name"/>-->
-<!--                                                        <field name="brand_name"/>-->
-<!--                                                        <field name="product_name"/>-->
-<!--                                                        <field name="barcode"/>-->
-<!--                                                        <field name="qty_available"-->
-<!--                                                               groups="zs_inventory_planning_report.group_scm_officers"/>-->
-<!--                                                        <field name="counted_qty"/>-->
-<!--                                                        <field name="difference" groups="zs_inventory_planning_report.group_scm_officers"/>-->
-<!--                                                        <field name="remarks"/>-->
-<!--                                                    </tree>-->
-<!--                                                </field>-->
+                    <!--                                                <field name="line_ids" attrs="{'readonly': [('state', '=', 'confirm')]}">-->
+                    <!--                                                    <tree editable="bottom">-->
+                    <!--                                                        <field name="franchise_name"/>-->
+                    <!--                                                        <field name="division_name"/>-->
+                    <!--                                                        <field name="category_name"/>-->
+                    <!--                                                        <field name="brand_name"/>-->
+                    <!--                                                        <field name="product_name"/>-->
+                    <!--                                                        <field name="barcode"/>-->
+                    <!--                                                        <field name="qty_available"-->
+                    <!--                                                               groups="zs_inventory_planning_report.group_scm_officers"/>-->
+                    <!--                                                        <field name="counted_qty"/>-->
+                    <!--                                                        <field name="difference" groups="zs_inventory_planning_report.group_scm_officers"/>-->
+                    <!--                                                        <field name="remarks"/>-->
+                    <!--                                                    </tree>-->
+                    <!--                                                </field>-->
                     <!--                        </page>-->
                     <!--                    </notebook>-->
                 </sheet>
