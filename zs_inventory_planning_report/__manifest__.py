@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
     'name': 'Inventory Planning Report',
-    'version': '15.0.0.5',
+    'version': '15.0.0.3',
     'author': 'Zain Siddiqui',
     'license': 'OPL-1',
     'sequence': 25,

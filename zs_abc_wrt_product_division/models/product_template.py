@@ -262,10 +262,10 @@ class ProductTemplate(models.Model):
                             scm_grading_name = 'AS (DAILY) CATEGORY'
                     # either B or C
                     else:
-                        if product.product_tmpl_id.product_division_id and product.product_tmpl_id.product_division_id.name.lower() not in ['accessories']:
+                        if product.product_tmpl_id.product_division_id and product.product_tmpl_id.product_division_id.name.lower() in ['accessories']:
                             scm_grading_name = 'FC (WEEKLY) CATEGORY'
                         else:
-                            scm_grading_name = 'AS (WEEKLY) CATEGORY'
+                            scm_grading_name = 'AT (WEEKLY) CATEGORY'
 
                     scm_grading = self.env['scm.grading'].search([('name', '=', scm_grading_name)])
                     if scm_grading:

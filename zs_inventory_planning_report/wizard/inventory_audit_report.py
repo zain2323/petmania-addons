@@ -50,7 +50,7 @@ class InventoryAuditData(models.Model):
                     quant = self.env['stock.quant'].with_context(inventory_mode=True).search(
                         [('product_id', '=', line.product_id.id), ('location_id.usage', '=', 'internal')])
                     if quant:
-                        quant['inventory_quantity'] = line.product_id.qty_available + line['difference']
+                        quant['inventory_quantity'] = line.product_id.qty_available + line.difference
                         quant._compute_inventory_quantity_set()
                         quant._compute_inventory_diff_quantity()
                         quant.action_apply_inventory()
@@ -101,7 +101,7 @@ class AuditLines(models.Model):
     barcode = fields.Char(string='Barcode')
     qty_available = fields.Integer(string='System Count')
     counted_qty = fields.Integer(string='Physical Count')
-    difference = fields.Integer(string='QTY Difference', compute='_compute_difference')
+    difference = fields.Integer(string='QTY Difference', compute='_compute_difference', store=True)
     remarks = fields.Char(string='Remarks')
     status = fields.Char(string='Status')
 
@@ -126,7 +126,7 @@ class AuditLines(models.Model):
                 quant = self.env['stock.quant'].with_context(inventory_mode=True).search(
                     [('product_id', '=', line.product_id.id), ('location_id.usage', '=', 'internal')])
                 if quant:
-                    quant['inventory_quantity'] = line.product_id.qty_available +  line['difference']
+                    quant['inventory_quantity'] = line.product_id.qty_available + line.difference
                     quant._compute_inventory_quantity_set()
                     quant._compute_inventory_diff_quantity()
                     quant.action_apply_inventory()
