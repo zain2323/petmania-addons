@@ -4,7 +4,7 @@
     "category": "Product",
     "author": "Zain Siddiqui",
     "license": "AGPL-3",
-    "depends": ["sale", "product"],
+    "depends": ["sale", "product", "product_brand", "zs_product_company_type"],
     "data": [
         "security/ir.model.access.csv",
         "views/product_template_view.xml",
@@ -29,6 +29,8 @@
 
         "views/account_invoice_report_view.xml",
         "views/sale_report_view.xml",
+
+        "wizard/product_attributes_views.xml",
     ],
     "installable": True,
     "auto_install": False,
