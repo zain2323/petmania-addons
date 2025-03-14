@@ -5,6 +5,8 @@
     'author': 'Zain Siddiqui',
     'depends': ['base', 'point_of_sale'],
     'data': [
+        'security/ir.model.access.csv',
+        'views/pos_employee_secret_key.xml'
     ],
     'assets': {
         'point_of_sale.assets': [

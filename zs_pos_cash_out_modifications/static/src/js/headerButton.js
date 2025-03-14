@@ -21,7 +21,11 @@ odoo.define('zs_pos_cash_out_modifications.pos_header_button', function (require
             }
 
             // Continue with the default close session process
-            await super.onClick();
+            const info = await this.env.pos.getClosePosInfo();
+            console.log(info)
+            info.state.acceptClosing = true;
+            this.showPopup('ClosePosPopup', { info: info });
+            // await super.onClick();
         }
     };
 
