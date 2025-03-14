@@ -37,7 +37,7 @@
             </field>
         </record>
 
-        <record id="view_out_of_stock_report_data_tree" model="ir.ui.view">
+        <record id="view_out_product_pricelist_data_tree" model="ir.ui.view">
             <field name="name">product.pricelist.report.data.tree</field>
             <field name="model">product.pricelist.data</field>
             <field name="arch" type="xml">

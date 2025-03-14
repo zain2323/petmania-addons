@@ -13,7 +13,7 @@
         'data/product_actions.xml',
         'data/optimize_quantities.xml',
         'data/audit_sequence.xml',
-        'data/adjust_inventory.xml',
+        # 'data/adjust_inventory.xml',
         'views/inventory_audit_report_view.xml',
         'views/inventory_planning_report_view.xml',
         'views/inventory_planning_view.xml',
