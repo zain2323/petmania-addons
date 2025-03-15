@@ -177,7 +177,7 @@ class ProductAttributesReport(models.TransientModel):
                     if hasattr(value, 'id'):
                         has_value = bool(value.id)
                     else:
-                        has_value = bool(value) if type(value) not in [int, float] else True
+                        has_value = bool(value)
 
                     if has_value:
                         filled_count += 1

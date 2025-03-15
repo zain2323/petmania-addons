@@ -28,8 +28,8 @@ class ProductTemplate(models.Model):
     storage_config_basis = fields.Char(string='Storage Config Basis', compute='_compute_storage_config_id')
     value_config_basis = fields.Char(string='Value Config Basis', compute='_compute_value_config_id')
 
-    profit_percent = fields.Float(string="Profit Percent", compute="_compute_profit", store=True)
-    profit_value = fields.Float(string="Profit Value", compute="_compute_profit", store=True)
+    profit_percent = fields.Float(string="Profit Percent", compute="_compute_profit")
+    profit_value = fields.Float(string="Profit Value", compute="_compute_profit")
 
     custom_uom_id = fields.Many2one('uom.uom', string="UoM")
     uom_pricing = fields.Float('UoM (Pricing)')
@@ -87,7 +87,6 @@ class ProductTemplate(models.Model):
             product.brand_rank = brand_ranks.get(product.product_brand_id.id, 0) if hasattr(product,
                                                                                             'product_brand_id') else 0
 
-    @api.depends('standard_price', 'list_price')
     def _compute_profit(self):
         for record in self:
             cost_price = record.standard_price
