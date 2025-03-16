@@ -69,8 +69,11 @@
             <field name="target">new</field>
         </record>
 
+        <menuitem id="zs_franchise_support_menu" name="Franchise Support"
+                  parent="zs_inventory_planning_report.menu_scm_reports" sequence="2"/>
+
         <menuitem id="zs_out_of_stock_report_view" name="Out Of Stock Report"
                   action="zs_out_of_stock_report_view_action"
-                  parent="zs_inventory_planning_report.menu_scm_reports" sequence="4"/>
+                  parent="zs_inventory_planning_report.zs_franchise_support_menu" sequence="1"/>
     </data>
 </odoo>

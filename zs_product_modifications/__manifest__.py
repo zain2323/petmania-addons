@@ -1,6 +1,6 @@
 {
     "name": "Product Modifications",
-    "version": "15.0.0.4",
+    "version": "15.0.0.5",
     "category": "Product",
     "author": "Zain Siddiqui",
     "license": "AGPL-3",

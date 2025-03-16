@@ -185,10 +185,16 @@
         <field name="res_model">inventory.audit.data</field>
         <field name="view_mode">tree,form</field>
     </record>
+
     <menuitem id="menu_scm_reports" name="Zain SCM Reports" parent="stock.menu_stock_root" sequence="11"/>
-    <menuitem id="menu_inventory_audit" name="Audit Data" parent="menu_scm_reports"
-              action="action_inventory_audit_data" sequence="3"/>
+
+    <menuitem id="zs_branch_storage_audit_menu" name="Branch Audit"
+              parent="zs_inventory_planning_report.menu_scm_reports" sequence="2"/>
+
+    <menuitem id="menu_inventory_audit" name="Audit Data" parent="zs_inventory_planning_report.zs_branch_storage_audit_menu"
+              action="action_inventory_audit_data" sequence="2"/>
+
     <menuitem id="zs_inventory_audit_report" name="Inventory Audit Report"
               action="zs_inventory_audit_report_action"
-              parent="menu_scm_reports" sequence="2"/>
+              parent="zs_inventory_planning_report.zs_branch_storage_audit_menu" sequence="1"/>
 </odoo>

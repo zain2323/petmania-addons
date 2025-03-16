@@ -43,6 +43,6 @@
 
         <menuitem id="zs_product_attributes_report" name="Product Attributes Report"
                   action="zs_product_attributes_report_action"
-                  parent="zs_inventory_planning_report.menu_scm_reports" sequence="14"/>
+                  parent="zs_inventory_planning_report.zs_head_scm_menu" sequence="5"/>
     </data>
 </odoo>

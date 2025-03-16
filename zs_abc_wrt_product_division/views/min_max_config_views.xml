@@ -84,6 +84,6 @@
             id="menu_min_max_config"
             action="action_min_max_config"
             sequence="8"
-            parent="zs_inventory_planning_report.menu_scm_reports"
+            parent="zs_inventory_planning_report.zs_branch_storage_configuration_menu"
     />
 </odoo>

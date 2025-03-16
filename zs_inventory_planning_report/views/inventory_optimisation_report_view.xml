@@ -67,6 +67,6 @@
 
         <menuitem id="zs_inventory_optimisation_report" name="Inventory Optimisation Report"
                   action="zs_inventory_optimisation_report_action"
-                  parent="zs_inventory_planning_report.menu_scm_reports" sequence="3"/>
+                  parent="zs_inventory_planning_report.zs_head_scm_menu" sequence="2"/>
     </data>
 </odoo>

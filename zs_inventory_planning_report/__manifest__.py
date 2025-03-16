@@ -2,11 +2,11 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
     'name': 'Inventory Planning Report',
-    'version': '15.0.0.4',
+    'version': '15.0.0.5',
     'author': 'Zain Siddiqui',
     'license': 'OPL-1',
     'sequence': 25,
-    'depends': ['stock', 'sale', 'zs_product_company_type', 'product'],
+    'depends': ['stock', 'sale', 'zs_product_company_type', 'product', 'zs_product_modifications'],
     'data': [
         'security/ir.model.access.csv',
         'data/groups.xml',

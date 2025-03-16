@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
     'name' : 'ABC Sales Analysis Reports',
-    'version' : '15.0.17.0',
+    'version' : '15.0.18.0',
     'price' : 179,
     'currency'  :'EUR',
     'category': 'sale',

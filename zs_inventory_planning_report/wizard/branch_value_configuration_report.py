@@ -20,8 +20,8 @@ class BranchConfigValueData(models.TransientModel):
 
     wizard_id = fields.Many2one('branch.value.config.report.wizard', string='Wizard', required=True, ondelete='cascade')
     company_id = fields.Many2one('res.company', string='Company', required=True)
-    franchise_name = fields.Char(string='Franchise Name')
-    division_name = fields.Char(string='Division Name')
+    franchise_name = fields.Char(string='Franchise Division')
+    division_name = fields.Char(string='Product Division')
     category_name = fields.Char(string='Category Name')
     brand_name = fields.Char(string='Brand Name')
     product_name = fields.Char(string='Product Name')

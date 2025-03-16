@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
     'name' : 'Sales Contribution Classification',
-    'version' : '15.0.0.0.6',
+    'version' : '15.0.0.0.7',
     'license' : 'OPL-1',
     'sequence': 25,
     'depends' : ['sale_stock', 'sale', 'zs_scm_grading', 'zs_product_company_type', 'product_brand', 'zs_inventory_planning_report'],

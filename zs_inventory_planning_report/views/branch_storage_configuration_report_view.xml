@@ -67,8 +67,12 @@
             <field name="target">new</field>
         </record>
 
+
+        <menuitem id="zs_branch_storage_configuration_menu" name="Branch Configuration"
+                  parent="zs_inventory_planning_report.menu_scm_reports" sequence="5"/>
+
         <menuitem id="zs_branch_storage_configuration_view" name="Min Max Configuration By ADS - Report"
                   action="zs_branch_storage_configuration_report_action"
-                  parent="zs_inventory_planning_report.menu_scm_reports" sequence="5"/>
+                  parent="zs_inventory_planning_report.zs_branch_storage_configuration_menu" sequence="1"/>
     </data>
 </odoo>

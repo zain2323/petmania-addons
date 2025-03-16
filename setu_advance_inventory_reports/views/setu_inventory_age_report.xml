@@ -45,8 +45,8 @@
         </record>
 
         <menuitem id="setu_age_report_menu" action="setu_age_report_action"
-                  parent="zs_inventory_planning_report.menu_scm_reports"
-                  sequence="11" />
+                  parent="zs_inventory_planning_report.zs_franchise_support_menu"
+                  sequence="2" />
 
         <record id="setu_inventory_age_bi_report_tree" model="ir.ui.view">
             <field name="name">setu.inventory.age.bi.report.tree</field>

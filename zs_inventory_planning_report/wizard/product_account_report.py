@@ -22,8 +22,8 @@ class ProductAccountData(models.TransientModel):
     wizard_id = fields.Many2one('product.account.report.wizard', string='Wizard', required=True)
     company_id = fields.Many2one('res.company', string='Company', required=True)
     product_id = fields.Many2one('product.product', string='Product Id')
-    franchise_name = fields.Char(string='Franchise Name')
-    division_name = fields.Char(string='Division Name')
+    franchise_name = fields.Char(string='Franchise Division')
+    division_name = fields.Char(string='Product Division')
     category_name = fields.Char(string='Category Name')
     brand_name = fields.Char(string='Brand Name')
     product_name = fields.Char(string='Product Name')
@@ -31,6 +31,7 @@ class ProductAccountData(models.TransientModel):
     sale_price = fields.Float(string='Sale Price')
     cost_price = fields.Float(string='Cost Price')
     margin = fields.Float(string='Margin')
+    margin_percent = fields.Float(string='Margin %')
     income_account_id = fields.Many2one('account.account', string="Income Account")
     expense_account_id = fields.Many2one('account.account', string="Expense Account")
 
@@ -43,8 +44,8 @@ class OutOfStockReportWizard(models.TransientModel):
     product_category_ids = fields.Many2many('product.category', string='Product Categories')
     product_brand_ids = fields.Many2many('product.brand', string='Product Brands')
     product_ids = fields.Many2many('product.product', string='Products')
-    start_date = fields.Date(string='Start Date')
-    end_date = fields.Date(string='End Date')
+    start_date = fields.Date(string='Start Date', required=True)
+    end_date = fields.Date(string='End Date', required=True)
 
     def action_view_pivot(self):
         self.populate_pivot_data()
@@ -121,7 +122,7 @@ class OutOfStockReportWizard(models.TransientModel):
             cost_price = data['cost']
             quantity = data['quantity']
             margin = data['margin']
-            margin_percent = data['margin_percent']
+            margin_percent = ((sale_price - cost_price) / cost_price) * 100 if cost_price > 0 else 0
             income_account_id = None
             expense_account_id = None
             if product.categ_id:
@@ -139,6 +140,7 @@ class OutOfStockReportWizard(models.TransientModel):
                 'sale_price': sale_price,
                 'cost_price': cost_price,
                 'margin': margin,
+                'margin_percent': margin_percent,
                 'income_account_id': income_account_id,
                 'expense_account_id': expense_account_id,
                 'company_id': self.env.company.id,
@@ -162,6 +164,7 @@ class OutOfStockReportWizard(models.TransientModel):
                 'sale_price': product_data['sale_price'],
                 'cost_price': product_data['cost_price'],
                 'margin': product_data['margin'],
+                'margin_percent': product_data['margin_percent'],
                 'income_account_id': product_data['income_account_id'],
                 'expense_account_id': product_data['expense_account_id'],
                 'company_id': product_data['company_id'],

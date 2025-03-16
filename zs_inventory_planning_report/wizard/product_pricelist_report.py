@@ -23,14 +23,18 @@ class ProductPricelistData(models.TransientModel):
     wizard_id = fields.Many2one('product.pricelist.report.wizard', string='Wizard', required=True)
     company_id = fields.Many2one('res.company', string='Company', required=True)
     product_id = fields.Many2one('product.product', string='Product Id')
-    franchise_name = fields.Char(string='Franchise Name')
-    division_name = fields.Char(string='Division Name')
+    franchise_name = fields.Char(string='Franchise Division')
+    division_name = fields.Char(string='Product Division')
     category_name = fields.Char(string='Category Name')
     brand_name = fields.Char(string='Brand Name')
     product_name = fields.Char(string='Product Name')
+    master_pricelist_id = fields.Many2one('product.pricelist', string='Master Pricelist')
+    selected_pricelist_id = fields.Many2one('product.pricelist', string='Selected Pricelist')
+    master_pricelist_price = fields.Float(string='MSPL-SP')
     sale_price = fields.Float(string='Sale Price')
     cost_price = fields.Float(string='Cost Price')
     margin = fields.Float(string='Margin')
+    margin_percent = fields.Float(string='Margin %')
     income_account_id = fields.Many2one('account.account', string="Income Account")
     expense_account_id = fields.Many2one('account.account', string="Expense Account")
 
@@ -43,7 +47,8 @@ class ProductPricelistReportWizard(models.TransientModel):
     product_category_ids = fields.Many2many('product.category', string='Product Categories')
     product_brand_ids = fields.Many2many('product.brand', string='Product Brands')
     product_ids = fields.Many2many('product.product', string='Products')
-    pricelist_id = fields.Many2one('product.pricelist', string='Pricelist')
+    master_pricelist_id = fields.Many2one('product.pricelist', string='Master Pricelist', required=True)
+    pricelist_id = fields.Many2one('product.pricelist', string='Pricelist', required=True)
 
     def action_view_pivot(self):
         self.populate_pivot_data()
@@ -71,7 +76,7 @@ class ProductPricelistReportWizard(models.TransientModel):
     def _get_data_for_products(self):
         domain = []
         item_ids = self.pricelist_id.item_ids
-        _logger.critical([i.product_tmpl_id for i in item_ids])
+        master_item_ids = self.master_pricelist_id.item_ids
         if self.franchise_division_ids:
             domain.append(('company_type', 'in', self.franchise_division_ids.ids))
 
@@ -91,13 +96,18 @@ class ProductPricelistReportWizard(models.TransientModel):
         products_dict = []
         for product in products:
             item = self._filter_pricelist_by_product(item_ids, product.product_tmpl_id.id)
+            master_item = self._filter_pricelist_by_product(master_item_ids, product.product_tmpl_id.id)
             if len(item) > 0:
                 item = item[0]
+            if len(master_item) > 0:
+                master_item = master_item[0]
                 # raise UserError(f"{product.name} has multiple prices set in the specified pricelist")
-            sale_price =  self.convert_currency_to_float(item.price) if item else 0
+            sale_price =  self.pricelist_id.get_product_price(product, 1, None)
+            master_pricelist_price = self.master_pricelist_id.get_product_price(product, 1, None)
             cost_price = product.standard_price
-            _logger.critical(sale_price)
+
             margin = sale_price - cost_price
+            margin_percent = ((sale_price - cost_price) / cost_price) * 100 if cost_price > 0 else 0
 
             income_account_id = None
             expense_account_id = None
@@ -112,9 +122,13 @@ class ProductPricelistReportWizard(models.TransientModel):
                 'category_name': product.categ_id.name,
                 'franchise_name': product.company_type.name,
                 'division_name': product.product_division_id.name,
+                'master_pricelist_id': self.master_pricelist_id.id,
+                'selected_pricelist_id': self.pricelist_id.id,
                 'sale_price': sale_price,
+                'master_pricelist_price': master_pricelist_price,
                 'cost_price': cost_price,
                 'margin': margin,
+                'margin_percent': margin_percent,
                 'income_account_id': income_account_id,
                 'expense_account_id': expense_account_id,
                 'company_id': self.env.company.id,
@@ -134,9 +148,13 @@ class ProductPricelistReportWizard(models.TransientModel):
                 'division_name': product_data['division_name'],
                 'category_name': product_data['category_name'],
                 'brand_name': product_data['brand_name'],
+                'master_pricelist_id': product_data['master_pricelist_id'],
+                'selected_pricelist_id': product_data['selected_pricelist_id'],
+                'master_pricelist_price': product_data['master_pricelist_price'],
                 'sale_price': product_data['sale_price'],
                 'cost_price': product_data['cost_price'],
                 'margin': product_data['margin'],
+                'margin_percent': product_data['margin_percent'],
                 'income_account_id': product_data['income_account_id'],
                 'expense_account_id': product_data['expense_account_id'],
                 'company_id': product_data['company_id'],

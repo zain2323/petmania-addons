@@ -52,6 +52,7 @@
                     <field name="sale_price" sum="Total sales"/>
                     <field name="cost_price" sum="Total cost"/>
                     <field name="margin" sum="Total margin"/>
+                    <field name="margin_percent"/>
                     <field name="income_account_id"/>
                     <field name="expense_account_id"/>
                 </tree>
@@ -69,6 +70,6 @@
 
         <menuitem id="zs_product_account_report_view" name="Product Account Report"
                   action="zs_product_account_report_view_action"
-                  parent="zs_inventory_planning_report.menu_scm_reports" sequence="4"/>
+                  parent="zs_inventory_planning_report.zs_head_scm_menu" sequence="3"/>
     </data>
 </odoo>
