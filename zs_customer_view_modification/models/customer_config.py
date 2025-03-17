@@ -11,10 +11,11 @@ class CustomerCategoryConfig(models.Model):
 
     # Duration settings
     duration_type = fields.Selection([
-        ('monthly', 'Monthly'),
-        ('quarterly', 'Quarterly'),
-        ('biannual', 'Bi-Annual'),
-        ('yearly', 'Yearly'),
+        ('monthly', 'Last 30 days'),
+        ('quarterly', 'Last 90 days'),
+        ('biannual', 'Last 180 days'),
+        ('yearly', 'Last 365 days'),
+        ('lifetime', 'Life Time'),
     ], string='Duration', required=True, default='yearly')
 
     # Criteria type
@@ -53,13 +54,14 @@ class CustomerTagConfig(models.Model):
 
     name = fields.Char(string='Tag Name', required=True)
     active = fields.Boolean(default=True)
-    product_category_id = fields.Many2one('product.category', string='Product Category', required=True)
+    product_category_id = fields.Many2many('product.category', string='Product Category', required=True)
     # Duration settings
     duration_type = fields.Selection([
-        ('monthly', 'Monthly'),
-        ('quarterly', 'Quarterly'),
-        ('biannual', 'Bi-Annual'),
-        ('yearly', 'Yearly'),
+        ('monthly', 'Last 30 days'),
+        ('quarterly', 'Last 90 days'),
+        ('biannual', 'Last 180 days'),
+        ('yearly', 'Last 365 days'),
+        ('lifetime', 'Life Time'),
     ], string='Duration', required=True, default='yearly')
     criteria_type = fields.Selection([
         ('value', 'By Order Value'),

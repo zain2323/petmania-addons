@@ -17,6 +17,7 @@
                 <separator string="Customer Class" colspan="2"
                            style="font-weight: bold;font-size: 1.1em; border-bottom: 1px solid grey;"/>
                 <field name="customer_category" string="Customer Category"/>
+                <field name="revenue_stream_time_period" string="Revenue Stream Time Period"/>
                 <field name="revenue_stream_ids" widget="many2many_tags"/>
                 <field name="customer_tag_ids" widget="many2many_tags"/>
 
@@ -59,4 +60,26 @@
             </xpath>
         </field>
     </record>
+
+    <record id="view_partner_kanban_inherit" model="ir.ui.view">
+        <field name="name">res.partner.kanban.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.res_partner_kanban_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//kanban[@class='o_res_partner_kanban']" position="inside">
+                <div class="oe_kanban_content">
+                    <span class="badge badge-primary">
+                        <field name="customer_category"/>
+                    </span>
+                </div>
+                <div class="oe_kanban_content">
+                    <span class="badge badge-info">
+                        <field name="customer_tag_ids"/>
+                    </span>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+
 </odoo>

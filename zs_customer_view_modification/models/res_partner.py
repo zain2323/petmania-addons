@@ -6,6 +6,7 @@ import logging
 
 _logger = logging.getLogger(__name__)
 
+
 class ResPartner(models.Model):
     _inherit = "res.partner"
 
@@ -27,6 +28,13 @@ class ResPartner(models.Model):
         'product.category',
         string='Revenue Streams',
     )
+    revenue_stream_time_period = fields.Selection([
+        ('monthly', 'Last 30 days'),
+        ('quarterly', 'Last 90 days'),
+        ('biannual', 'Last 180 days'),
+        ('yearly', 'Last 365 days'),
+        ('lifetime', 'Life Time'),
+    ], string='Duration', required=True, default='quarterly')
 
     def _update_customer_tags(self):
         partners = self.env['res.partner'].search([])
@@ -41,19 +49,24 @@ class ResPartner(models.Model):
                 duration = fields.Date.to_string(fields.Date.today() - relativedelta(months=3))
             elif config.duration_type == 'biannual':
                 duration = fields.Date.to_string(fields.Date.today() - relativedelta(months=6))
-            else:
+            elif config.duration_type == 'yearly':
                 duration = fields.Date.to_string(fields.Date.today() - relativedelta(months=12))
+            else:
+                duration = None
 
-            pos_orders = self.env['pos.order'].search([
+            domain = [
                 ('state', 'in', ['paid', 'done', 'invoiced']),
-                ('date_order', '>=', duration)
-            ])
+            ]
+            if duration:
+                domain.append(('date_order', '>=', duration))
+
+            pos_orders = self.env['pos.order'].search(domain)
 
             partner_revenues = defaultdict(float)
 
             for order in pos_orders:
                 if order.partner_id:
-                    lines = order.lines.filtered(lambda l: l.product_id.categ_id.id == config.product_category_id.id)
+                    lines = order.lines.filtered(lambda l: l.product_id.categ_id.id in config.product_category_id.ids)
                     for line in lines:
                         value = line.price_subtotal_incl if config.criteria_type == 'value' else 1
                         partner_revenues[order.partner_id] += value
@@ -66,14 +79,24 @@ class ResPartner(models.Model):
             partner.customer_tag_ids = [(6, 0, list(tags))]
 
     def _compute_revenue_streams(self):
-        partners = self.env['res.partner'].search([])
-        partners.write({'revenue_stream_ids': [(5, 0, 0)]})
+        self.write({'revenue_stream_ids': [(5, 0, 0)]})
 
-        duration = fields.Date.to_string(fields.Date.today() - relativedelta(months=3))
-        pos_orders = self.env['pos.order'].search([
-            ('state', 'in', ['paid', 'done', 'invoiced']),
-            ('date_order', '>=', duration)
-        ])
+        if self.revenue_stream_time_period == 'monthly':
+            duration = fields.Date.to_string(fields.Date.today() - relativedelta(months=1))
+        elif self.revenue_stream_time_period == 'quarterly':
+            duration = fields.Date.to_string(fields.Date.today() - relativedelta(months=3))
+        elif self.revenue_stream_time_period == 'biannual':
+            duration = fields.Date.to_string(fields.Date.today() - relativedelta(months=6))
+        elif self.revenue_stream_time_period == 'yearly':
+            duration = fields.Date.to_string(fields.Date.today() - relativedelta(months=12))
+        else:
+            duration = None
+        domain = [('state', 'in', ['paid', 'done', 'invoiced']),
+                  ('partner_id', '=', self.id)]
+        if duration:
+            domain.append(('date_order', '>=', duration))
+
+        pos_orders = self.env['pos.order'].search(domain)
 
         partner_revenue_streams = defaultdict(set)
 
@@ -96,16 +119,18 @@ class ResPartner(models.Model):
                 duration = fields.Date.to_string(fields.Date.today() - relativedelta(months=3))
             elif config.duration_type == 'biannual':
                 duration = fields.Date.to_string(fields.Date.today() - relativedelta(months=6))
-            else:
+            elif config.duration_type == 'yearly':
                 duration = fields.Date.to_string(fields.Date.today() - relativedelta(months=12))
+            else:
+                duration = None
 
             threshold_lines = config.threshold_line_ids.sorted(lambda l: -l.threshold_value)
 
+            domain = [('state', 'in', ['paid', 'done', 'invoiced'])]
+            if duration:
+                domain.append(('date_order', '>=', duration))
             # Get total spending in the last year
-            pos_orders = self.env['pos.order'].search([
-                ('state', 'in', ['paid', 'done', 'invoiced']),
-                ('date_order', '>=', duration)
-            ])
+            pos_orders = self.env['pos.order'].search(domain)
 
             partner_revenues = defaultdict(float)
             for order in pos_orders:

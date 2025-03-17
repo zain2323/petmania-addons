@@ -11,17 +11,6 @@
             <field name="numbercall">-1</field>
             <field name="active">False</field>
         </record>
-        <record id="ir_cron_assign_customer_revenue_streams" model="ir.cron">
-            <field name="name">Assign Customer Revenue Streams</field>
-            <field name="model_id" ref="base.model_res_partner"/>
-            <field name="state">code</field>
-            <field name="code">model._compute_revenue_streams()</field>
-            <field name="user_id" ref="base.user_root"/>
-            <field name="interval_number">1</field>
-            <field name="interval_type">days</field>
-            <field name="numbercall">-1</field>
-            <field name="active">False</field>
-        </record>
         <record id="ir_cron_assign_customer_tags" model="ir.cron">
             <field name="name">Assign Customer Tags</field>
             <field name="model_id" ref="base.model_res_partner"/>
@@ -32,6 +21,15 @@
             <field name="interval_type">days</field>
             <field name="numbercall">-1</field>
             <field name="active">False</field>
+        </record>
+        <record model="ir.actions.server" id="action_compute_revenue_streams">
+            <field name="name">Assign Customer Revenue Streams</field>
+            <field name="model_id" ref="base.model_res_partner"/>
+            <field name="binding_model_id" ref="base.model_res_partner"/>
+            <field name="state">code</field>
+            <field name="code">
+                records.sudo()._compute_revenue_streams()
+            </field>
         </record>
     </data>
 </odoo>
