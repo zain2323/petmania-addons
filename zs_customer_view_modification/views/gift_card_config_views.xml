@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_gift_card_config_form" model="ir.ui.view">
+        <field name="name">gift.card.config.form</field>
+        <field name="model">gift.card.config</field>
+        <field name="arch" type="xml">
+            <form string="Gift Card Configuration">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_generate_gift_cards" type="object"
+                                string="Generate Gift Cards" class="oe_stat_button" icon="fa-gift"/>
+                    </div>
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="Configuration Name"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="active"/>
+                            <field name="gift_card_amount"/>
+                            <field name="customer_category"/>
+                            <field name="validity_days"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Required Tags">
+                            <field name="customer_tag_ids" widget="many2many_tags"/>
+                            <p class="text-muted">Customers must have all these tags along with the specified category to be eligible for gift cards.</p>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_gift_card_config_tree" model="ir.ui.view">
+        <field name="name">gift.card.config.tree</field>
+        <field name="model">gift.card.config</field>
+        <field name="arch" type="xml">
+            <tree string="Gift Card Configurations">
+                <field name="name"/>
+                <field name="customer_category"/>
+                <field name="gift_card_amount"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_gift_card_config" model="ir.actions.act_window">
+        <field name="name">Gift Card Configurations</field>
+        <field name="res_model">gift.card.config</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new gift card configuration
+            </p>
+            <p>
+                Set up rules to automatically generate gift cards for customers matching specific categories and tags.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_gift_card_config"
+              name="Gift Card Configurations"
+              action="action_gift_card_config"
+              parent="contacts.res_partner_menu_config"
+              sequence="3"/>
+</odoo>

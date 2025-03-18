@@ -8,7 +8,7 @@
     'version': '15.0.0.1',
 
     'category': 'Base',
-    'depends': ['base', 'sale', 'contacts'],
+    'depends': ['base', 'sale', 'contacts', 'point_of_sale'],
 
     'data': [
         'data/assign_customer_categories.xml',
@@ -17,7 +17,14 @@
         'views/vet_pet_view.xml',
         'views/customer_category_config_views.xml',
         'views/customer_tag_views.xml',
+        'views/gift_card_config_views.xml',
+        'views/gift_card_history_views.xml',
     ],
+    'assets': {
+        'point_of_sale.assets': [
+            'zs_customer_view_modification/src/static/js/clientScreen.js',
+        ],
+    },
 
     'installable': True,
     'auto_install': False,

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Update Gift Card Config Form View to include history -->
+    <record id="view_gift_card_config_form_with_history" model="ir.ui.view">
+        <field name="name">gift.card.config.form.history</field>
+        <field name="model">gift.card.config</field>
+        <field name="inherit_id" ref="view_gift_card_config_form"/>
+        <field name="arch" type="xml">
+            <notebook position="inside">
+                <page string="Generation History">
+                    <field name="gift_card_history_ids" readonly="1">
+                        <tree>
+                            <field name="partner_id"/>
+                            <field name="gift_card_id"/>
+                            <field name="generation_date"/>
+                        </tree>
+                    </field>
+                </page>
+            </notebook>
+        </field>
+    </record>
+
+    <!-- Gift Card Generation History Form -->
+    <record id="view_gift_card_generation_history_form" model="ir.ui.view">
+        <field name="name">gift.card.generation.history.form</field>
+        <field name="model">gift.card.generation.history</field>
+        <field name="arch" type="xml">
+            <form string="Gift Card Generation History">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="config_id"/>
+                            <field name="partner_id"/>
+                        </group>
+                        <group>
+                            <field name="gift_card_id"/>
+                            <field name="generation_date"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Gift Card Generation History Tree -->
+    <record id="view_gift_card_generation_history_tree" model="ir.ui.view">
+        <field name="name">gift.card.generation.history.tree</field>
+        <field name="model">gift.card.generation.history</field>
+        <field name="arch" type="xml">
+            <tree string="Gift Card Generation History">
+                <field name="config_id"/>
+                <field name="partner_id"/>
+                <field name="gift_card_id"/>
+                <field name="generation_date"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Gift Card Generation History Action -->
+    <record id="action_gift_card_generation_history" model="ir.actions.act_window">
+        <field name="name">Gift Card Generation History</field>
+        <field name="res_model">gift.card.generation.history</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Menu item for Gift Card History -->
+    <menuitem id="menu_gift_card_generation_history"
+              name="Gift Card History"
+              action="action_gift_card_generation_history"
+              parent="contacts.res_partner_menu_config"
+              sequence="3"/>
+</odoo>
