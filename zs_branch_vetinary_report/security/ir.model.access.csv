@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_vet_machine_config,vet_machine_config,model_vet_machine_config,,1,1,1,1
+
+access_vet_daily_machine_report,vet_daily_machine_report,model_vet_daily_machine_report,,1,1,1,1
+access_vet_daily_machine_report_line,vet_daily_machine_report_line,model_vet_daily_machine_report_line,,1,1,1,1
+
+access_vet_generate_report_wizard,vet_generate_report_wizard,model_vet_generate_report_wizard,,1,1,1,1
+
+access_vet_consolidated_machine_report,vet_consolidated_machine_report,model_vet_consolidated_machine_report,,1,1,1,1

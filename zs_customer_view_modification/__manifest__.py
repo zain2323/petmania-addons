@@ -22,7 +22,11 @@
     ],
     'assets': {
         'point_of_sale.assets': [
+            # 'zs_customer_view_modification/src/static/js/GiftCardPopup.js',
             'zs_customer_view_modification/src/static/js/clientScreen.js',
+        ],
+        'web.assets_qweb': [
+            # 'zs_customer_view_modification/src/static/xml/gift_card_popup.xml',
         ],
     },
 

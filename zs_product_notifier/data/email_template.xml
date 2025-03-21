@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Email template with reliable ctx handling -->
+        <record id="email_template_product_change_notification" model="mail.template">
+            <field name="name">Product Change Notification</field>
+            <field name="model_id" ref="product.model_product_template"/>
+            <field name="subject">{{ ctx.get('subject') or 'Product Update Notification' }}</field>
+            <field name="email_from">{{ user.email_formatted or company.email_formatted }}</field>
+            <field name="email_to">{{ ctx.get('email_to', '') }}</field>
+            <field name="body_html" type="html">
+                <div>
+                    <t t-raw="ctx.get('body_html')"/>
+                </div>
+                <p>--<br/>This is an automated notification from your Odoo system.</p>
+            </field>
+            <field name="auto_delete" eval="True"/>
+        </record>
+    </data>
+</odoo>

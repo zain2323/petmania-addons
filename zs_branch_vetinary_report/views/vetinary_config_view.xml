@@ -1,0 +1,65 @@
+<!-- views/machine_config_views.xml -->
+<odoo>
+    <record id="view_machine_config_form" model="ir.ui.view">
+        <field name="name">vet.machine.config.form</field>
+        <field name="model">vet.machine.config</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="status"/>
+                        <field name="company_id" groups="base.group_multi_company"/>
+                        <field name="active" widget="boolean_toggle"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_machine_config_tree" model="ir.ui.view">
+        <field name="name">vet.machine.config.tree</field>
+        <field name="model">vet.machine.config</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="status"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_machine_config_search" model="ir.ui.view">
+        <field name="name">vet.machine.config.search</field>
+        <field name="model">vet.machine.config</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <filter string="Available" name="available" domain="[('status', '=', 'available')]"/>
+                <filter string="Not Available" name="not_available" domain="[('status', '=', 'not_available')]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Status" name="group_by_status" context="{'group_by': 'status'}"/>
+                    <filter string="Branch" name="group_by_company" context="{'group_by': 'company_id'}"
+                            groups="base.group_multi_company"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_machine_config" model="ir.actions.act_window">
+        <field name="name">Machines</field>
+        <field name="res_model">vet.machine.config</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first machine!
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="zs_vet_config_menu" name="Veterinary Machine Config"
+              action="action_machine_config"
+              parent="zs_inventory_planning_report.zs_head_scm_menu" sequence="5"/>
+
+</odoo>

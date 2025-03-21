@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="GiftCardPopup" owl="1">
+        <div role="dialog" class="modal-dialog">
+            <div class="popup popup-info">
+                <header class="title">
+                    <t t-esc="props.title" />
+                </header>
+                <main class="body">
+                    <p>Customer <t t-esc="props.customerName" /> has a gift card:</p>
+                    <div class="gift-card-details" style="padding: 10px; margin: 10px 0; background-color: #f8f9fa; border-radius: 4px;">
+                        <div style="margin-bottom: 8px;">
+                            <strong>Code: </strong>
+                            <span class="gift-card-code" style="font-family: monospace; padding: 3px 6px; background: #e9ecef; border-radius: 3px;" t-esc="props.code" />
+                        </div>
+                        <div style="margin-bottom: 8px;">
+                            <strong>Balance: </strong>
+                            <span t-esc="props.balance" />
+                        </div>
+                        <t t-if="props.expiration">
+                            <div>
+                                <strong>Expiration: </strong>
+                                <span t-esc="props.expiration" />
+                            </div>
+                        </t>
+                    </div>
+                </main>
+                <footer class="footer">
+                    <div class="button confirm" t-on-click="confirm">
+                        <t t-esc="props.confirmText" />
+                    </div>
+                    <div class="button icon copy" t-on-click="copyToClipboard">
+                        <i class="fa fa-copy" role="img"
+                           aria-label="Copy gift card code"
+                           title="Copy gift card code"></i>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </t>
+
+</templates>
