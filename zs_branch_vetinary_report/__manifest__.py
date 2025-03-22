@@ -9,11 +9,7 @@
     'depends': ['stock', 'sale', 'zs_inventory_planning_report'],
     'data': [
         'security/ir.model.access.csv',
-        # 'data/groups.xml',
-        # 'data/product_actions.xml',
-        # 'data/optimize_quantities.xml',
-        # 'data/audit_sequence.xml',
-        # 'data/adjust_inventory.xml',
+        'data/generate_vetinary_report.xml',
         'views/vetinary_config_view.xml',
         'views/vet_machine_report_view.xml',
         'views/vet_machine_report_wizard_view.xml',
