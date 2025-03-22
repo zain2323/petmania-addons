@@ -92,6 +92,7 @@ class ProductTemplate(models.Model):
                     <p><strong>Internal Reference:</strong> {products.default_code or 'N/A'}</p>
                     <p><strong>Sales Price:</strong> {products.list_price}</p>
                     <p><strong>Cost Price:</strong> {products.standard_price}</p>
+                    <p><strong>Created By:</strong> {self.env.user.name}</p>
                 </div>
                 """
 
@@ -103,6 +104,7 @@ class ProductTemplate(models.Model):
                     <div style="margin-left:10px;">
                         <p><strong>Name:</strong> {product.name}</p>
                         <p><strong>Internal Reference:</strong> {product.default_code or 'N/A'}</p>
+                        <p><strong>Archived By:</strong> {self.env.user.name}</p>
                     </div>
                     """
 
@@ -120,11 +122,11 @@ class ProductTemplate(models.Model):
 
                 subject = f"Product(s) Deleted"
                 body = f"""
-                <h3 style="color:#1a73e8;">Products Deleted</h3>
                 <div style="margin-left:10px;">
                 """
                 for name in product_names:
                     body += f"<p>- {name}</p>"
+                body += f"<p>- Deleted by: {self.env.user.name}</p>"
                 body += "</div>"
 
             elif change_type == 'price_change':
@@ -137,6 +139,7 @@ class ProductTemplate(models.Model):
                         <p><strong>Internal Reference:</strong> {product.default_code or 'N/A'}</p>
                         <p><strong>Sales Price:</strong> {product.list_price}</p>
                         <p><strong>Cost Price:</strong> {product.standard_price}</p>
+                        <p><strong>Changed By:</strong> {self.env.user.name}</p>
                     </div>
                     """
 
