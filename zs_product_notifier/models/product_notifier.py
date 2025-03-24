@@ -166,3 +166,64 @@ class ProductTemplate(models.Model):
             _logger.info(f"Product notification email sent to {email_to}")
         except Exception as e:
             _logger.error(f"Failed to send product notification email: {str(e)}")
+
+
+class ProductPricelistItem(models.Model):
+    _inherit = 'product.pricelist.item'
+
+    def _send_product_notification(self, change_type, products, original, current):
+        """Send email notification for pricelist price changes"""
+        configs = self.env['product.notifier.config'].sudo().search([('active', '=', True)])
+        if not configs:
+            return
+
+        for config in configs:
+            # Skip if the notification for this change type is disabled
+            if (change_type == 'archive' and not config.notify_on_archive) or \
+                    (change_type == 'create' and not config.notify_on_create) or \
+                    (change_type == 'unlink' and not config.notify_on_unlink) or \
+                    (change_type == 'price_change' and not config.notify_on_price_change):
+                continue
+
+            email_to = config.notification_email
+
+            # Prepare email content based on change type
+            if change_type == 'price_change':
+                subject = f"Product: {products.name} price changed in  price list: {current.pricelist_id.name}"
+                body = f"""
+                <h3 style="color:#1a73e8;">Price changed in price list</h3>
+                <div style="margin-left:10px;">
+                    <p><strong>Name:</strong> {products.name}</p>
+                    <p><strong>Name:</strong> {current.pricelist_id.name}</p>
+                    <p><strong>Internal Reference:</strong> {products.default_code or 'N/A'}</p>
+                    <p><strong>Old Price list Price:</strong> {original['fixed_price']}</p>
+                    <p><strong>New Price list Price:</strong> {current.fixed_price}</p>
+                    <p><strong>Cost Price:</strong> {products.standard_price}</p>
+                    <p><strong>Created By:</strong> {self.env.user.name}</p>
+                </div>
+                """
+
+            # Send the email (for cases other than archive and price_change)
+            products._send_email(email_to, subject, body)
+
+    def write(self, vals):
+        # Store the original records before modification
+        original_records = self.sudo().read(['product_tmpl_id', 'fixed_price'])
+
+        # Perform the write operation
+        res = super(ProductPricelistItem, self).write(vals)
+
+        # Check if price has changed
+        if 'fixed_price' in vals:
+            for original in original_records:
+                # Find the current record
+                current_record = self
+                # Get the product template
+                product_tmpl = current_record.product_tmpl_id
+
+                if product_tmpl:
+                    # Send notification about pricelist price change
+                    self._send_product_notification('price_change', product_tmpl,
+                                                                            original, current_record)
+
+        return res

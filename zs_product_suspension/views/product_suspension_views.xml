@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Product Suspension Configuration Form View -->
+    <record id="product_suspension_config_form" model="ir.ui.view">
+        <field name="name">product.suspension.config.form</field>
+        <field name="model">product.suspension.config</field>
+        <field name="arch" type="xml">
+            <form string="Product Suspension Configuration">
+                <sheet>
+                    <group>
+                        <field name="product_id"/>
+                        <field name="days_no_purchase"/>
+                        <field name="invoice_streak"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_suspension_config" model="ir.actions.act_window">
+        <field name="name">Suspension Config</field>
+        <field name="res_model">product.suspension.config</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_create">
+                Create your first Product Suspension Config
+            </p>
+        </field>
+    </record>
+
+    <menuitem
+            name="Product Suspension Config"
+            id="menu_product_suspension_config"
+            action="action_suspension_config"
+            sequence="100"
+            parent="zs_inventory_planning_report.zs_head_scm_menu"
+    />
+
+    <!-- Suspended Products Tree View -->
+    <record id="suspended_products_tree" model="ir.ui.view">
+        <field name="name">suspended.products.tree</field>
+        <field name="model">product.template</field>
+        <field name="arch" type="xml">
+            <tree string="Suspended Products" decoration-muted="is_suspended">
+                <field name="name"/>
+                <field name="suspension_date"/>
+                <field name="is_suspended"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Suspended Products Action -->
+    <record id="action_suspended_products" model="ir.actions.act_window">
+        <field name="name">Suspended Products</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">product.template</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('is_suspended', '=', True)]</field>
+    </record>
+
+    <!-- Menu Item for Suspended Products -->
+    <menuitem
+            id="menu_suspended_products"
+            name="Suspended Products"
+            parent="stock.menu_stock_inventory_control"
+            action="action_suspended_products"
+            sequence="3"/>
+
+    <!-- Inherit Product Form to Add Suspension Fields -->
+    <record id="product_template_form_inherit" model="ir.ui.view">
+        <field name="name">product.template.form.inherit</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <field name="detailed_type" position="after">
+                <field name="is_suspended"/>
+                <field name="suspension_date" attrs="{'invisible': [('is_suspended', '=', False)]}"/>
+            </field>
+        </field>
+    </record>
+</odoo>

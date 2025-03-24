@@ -89,6 +89,7 @@ class StockRule(models.Model):
 
             domain = rule._make_po_get_domain(procurement.company_id, procurement.values, partner)
             domain += (('scm_grading_id', '=', order_point.scm_grading_id.id),)
+            domain += (('is_suspended', '=', False),)
             procurements_by_po_domain[domain].append((procurement, rule))
 
         if errors:

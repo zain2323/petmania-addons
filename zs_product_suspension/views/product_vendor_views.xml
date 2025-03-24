@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="product_vendor_form_inherit" model="ir.ui.view">
+        <field name="name">product.vendor.form.inherit</field>
+        <field name="model">vendor.name</field>
+        <field name="inherit_id" ref="zs_product_modifications.vendor_name_view"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="is_discontinued"/>
+            </field>
+        </field>
+    </record>
+</odoo>

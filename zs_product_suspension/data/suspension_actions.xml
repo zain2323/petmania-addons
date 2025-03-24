@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record model="ir.actions.server" id="action_suspend_product">
+            <field name="name">Suspend product</field>
+            <field name="model_id" ref="zs_product_suspension.model_product_template"/>
+            <field name="binding_model_id" ref="zs_product_suspension.model_product_template"/>
+            <field name="state">code</field>
+            <field name="code">
+                records.action_suspend_product()
+            </field>
+        </record>
+
+        <record model="ir.actions.server" id="action_unsuspend_product">
+            <field name="name">UnSuspend product</field>
+            <field name="model_id" ref="zs_product_suspension.model_product_template"/>
+            <field name="binding_model_id" ref="zs_product_suspension.model_product_template"/>
+            <field name="state">code</field>
+            <field name="code">
+                records.action_unsuspend_product()
+            </field>
+        </record>
+
+    </data>
+</odoo>
