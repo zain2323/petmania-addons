@@ -61,6 +61,7 @@ class DailyMachineReportLine(models.Model):
         ('not_operational', 'Not Operational')
     ], string='Operational Status', required=True, default='operational')
     availability_status = fields.Selection(related='machine_id.status', string='Availability Status', readonly=True)
+    remarks = fields.Char(string='Remarks')
 
     @api.depends('report_id.state')
     def _compute_readonly(self):

@@ -23,6 +23,7 @@
                                     <field name="machine_id" options="{'no_create': True}"/>
                                     <field name="availability_status"/>
                                     <field name="operational_status"/>
+                                    <field name="remarks"/>
                                     <field name="readonly" invisible="1"/>
                                 </tree>
                             </field>
