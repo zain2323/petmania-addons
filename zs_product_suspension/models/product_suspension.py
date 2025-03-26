@@ -8,8 +8,8 @@ from datetime import datetime, timedelta
 class ProductSuspensionConfig(models.Model):
     _name = 'product.suspension.config'
     _description = 'Product Suspension Configuration'
-
-    product_id = fields.Many2one('product.product', string='Product')
+    name = fields.Char('Name', required=True)
+    product_ids = fields.Many2many('product.product', string='Product')
     days_no_purchase = fields.Integer(
         string='Days Without Purchase',
         help='Number of days without purchase to suspend a product'
@@ -30,18 +30,21 @@ class ProductSuspensionConfig(models.Model):
 
             #  suspending products not purchased in x days
             cutoff_date = (datetime.now() + timedelta(hours=5)) - timedelta(days=config.days_no_purchase)
-            purchase_orders = self.env['purchase.order'].search(
-                [('state', '=', 'purchase'), ('create_date', '>=', cutoff_date)])
-            is_purchased = False
-            for po in purchase_orders:
-                lines = po.order_line.filtered(lambda l: l.product_id.id == config.product_id.id)
-                # if any purchase exist then breaking out of loop since the product is purchased
-                if lines:
-                    is_purchased = True
-                    break
-            # if not purchased and is not suspended already
-            if config.product_id.purchase_ok and not config.product_id.is_suspended and not is_purchased:
-                config.product_id.is_suspended = True
+            # Get products that have been purchased recently
+            purchased_product_ids = self.env['purchase.order.line'].search([
+                ('order_id.state', '=', 'purchase'),
+                ('create_date', '>=', cutoff_date),
+                ('product_id', 'in', config.product_ids.ids)
+            ]).mapped('product_id.id')
+
+            # Determine products to suspend (those in config but NOT in purchased products)
+            to_suspend = config.product_ids.filtered(lambda p: p.id not in purchased_product_ids and not p.is_suspended)
+
+            # Suspend the products
+            to_suspend.write({
+                'is_suspended': True,
+                'suspension_date': fields.Datetime.now()
+            })
 
             # TODO implement streak
 
