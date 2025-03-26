@@ -17,6 +17,18 @@
         </field>
     </record>
 
+    <record id="product_suspension_config_tree" model="ir.ui.view">
+        <field name="name">product.suspension.config.tree</field>
+        <field name="model">product.suspension.config</field>
+        <field name="arch" type="xml">
+            <tree string="Suspension Config">
+                <field name="product_id"/>
+                <field name="days_no_purchase"/>
+                <field name="invoice_streak"/>
+            </tree>
+        </field>
+    </record>
+
     <record id="action_suspension_config" model="ir.actions.act_window">
         <field name="name">Suspension Config</field>
         <field name="res_model">product.suspension.config</field>

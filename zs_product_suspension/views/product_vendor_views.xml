@@ -5,9 +5,11 @@
         <field name="model">vendor.name</field>
         <field name="inherit_id" ref="zs_product_modifications.vendor_name_view"/>
         <field name="arch" type="xml">
-            <field name="name" position="after">
-                <field name="is_discontinued"/>
-            </field>
+            <xpath expr="//div[@class='oe_title']" position="inside">
+                <group>
+                    <field name="is_discontinued"/>
+                </group>
+            </xpath>
         </field>
     </record>
 </odoo>
