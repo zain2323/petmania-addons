@@ -49,7 +49,8 @@ class InventoryAuditData(models.Model):
             for line in rec['line_ids']:
                 if line.difference != 0:
                     quant = self.env['stock.quant'].with_context(inventory_mode=True).search(
-                        [('product_id', '=', line.product_id.id), ('location_id.usage', '=', 'internal'), ('company_id', '=', self.env.company.id)])
+                        [('product_id', '=', line.product_id.id), ('location_id.usage', '=', 'internal'),
+                         ('company_id', '=', self.env.company.id)])
                     if quant:
                         quant.inventory_quantity = line.product_id.qty_available + line.difference
                         quant._compute_inventory_quantity_set()
@@ -105,6 +106,8 @@ class AuditLines(models.Model):
     difference = fields.Integer(string='QTY Difference', compute='_compute_difference', store=True)
     remarks = fields.Char(string='Remarks')
     status = fields.Char(string='Status')
+    is_suspended = fields.Boolean(string='Suspended', default=False)
+    suspension_reason = fields.Char(string='Suspension Reason')
 
     @api.depends("qty_available", "counted_qty")
     def _compute_difference(self):
@@ -125,7 +128,8 @@ class AuditLines(models.Model):
         for line in self:
             if line.difference != 0:
                 quant = self.env['stock.quant'].with_context(inventory_mode=True).search(
-                    [('product_id', '=', line.product_id.id), ('location_id.usage', '=', 'internal'), ('company_id', '=', self.env.company.id)])
+                    [('product_id', '=', line.product_id.id), ('location_id.usage', '=', 'internal'),
+                     ('company_id', '=', self.env.company.id)])
                 if quant:
                     quant.inventory_quantity = line.product_id.qty_available + line.difference
                     quant._compute_inventory_quantity_set()
@@ -184,6 +188,8 @@ class CustomerWiseSalesAnalysisReport(models.TransientModel):
                 'division_name': product.product_division_id.name,
                 'barcode': product.barcode,
                 'qty_available': product.qty_available,
+                'is_suspended': product.is_suspended,
+                'suspension_reason': product.suspension_reason,
                 'counted_qty': None,
                 'difference': 0,
                 'remarks': "",
@@ -213,6 +219,8 @@ class CustomerWiseSalesAnalysisReport(models.TransientModel):
                 'counted_qty': product_data['counted_qty'],
                 'difference': product_data['difference'],
                 'remarks': product_data['remarks'],
+                'is_suspended': product_data['is_suspended'],
+                'suspension_reason': product_data['suspension_reason'],
             })
             serial_no += 1
         return inventory_data

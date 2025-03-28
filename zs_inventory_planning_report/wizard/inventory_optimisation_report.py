@@ -32,6 +32,8 @@ class InventoryOptimisationData(models.TransientModel):
     qty_available = fields.Integer(string='System Count')
     optimisation_qty = fields.Integer(string='Optimisation QTY')
     status = fields.Char(string='Status')
+    is_suspended = fields.Boolean(string='Suspended', default=False)
+    suspension_reason = fields.Char(string='Suspension Reason')
 
     def _optimize_quantities(self):
         po = {}
@@ -172,6 +174,8 @@ class InventoryOptimisationReportWizard(models.TransientModel):
                 'qty_available': qty_available,
                 'optimisation_qty': optimisation_qty,
                 'status': status,
+                'is_suspended': product.is_suspended,
+                'suspension_reason': product.suspension_reason,
                 'company_id': self.env.company.id,
             })
         return products_dict
@@ -196,4 +200,6 @@ class InventoryOptimisationReportWizard(models.TransientModel):
                 'optimisation_qty': product_data['optimisation_qty'],
                 'status': product_data['status'],
                 'company_id': product_data['company_id'],
+                'is_suspended': product_data['is_suspended'],
+                'suspension_reason': product_data['suspension_reason'],
             })

@@ -82,7 +82,8 @@
                 <field name="status" groups="zs_inventory_planning_report.group_scm_officers"
                        decoration-info="status == 'ideal'" decoration-success="status == 'surplus'"
                        decoration-danger="status == 'deficient'"/>
-
+                <field name="is_suspended"/>
+                <field name="suspension_reason"/>
             </tree>
         </field>
     </record>
@@ -191,7 +192,8 @@
     <menuitem id="zs_branch_storage_audit_menu" name="Branch Audit"
               parent="zs_inventory_planning_report.menu_scm_reports" sequence="2"/>
 
-    <menuitem id="menu_inventory_audit" name="Audit Data" parent="zs_inventory_planning_report.zs_branch_storage_audit_menu"
+    <menuitem id="menu_inventory_audit" name="Audit Data"
+              parent="zs_inventory_planning_report.zs_branch_storage_audit_menu"
               action="action_inventory_audit_data" sequence="2"/>
 
     <menuitem id="zs_inventory_audit_report" name="Inventory Audit Report"

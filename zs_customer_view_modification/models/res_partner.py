@@ -26,8 +26,16 @@ class ResPartner(models.Model):
 
     revenue_stream_ids = fields.Many2many(
         'product.category',
-        string='Revenue Streams',
+        string='Revenue Streams Utilized',
     )
+    revenue_stream_not_utilized_ids = fields.Many2many(
+        'product.category',
+        'res_partner_revenue_not_utilized_rel',  # Different relation table
+        'partner_id',  # Column in the relation table pointing to res.partner
+        'category_id',  # Column in the relation table pointing to product.category
+        string='Revenue Streams Not Utilized',
+    )
+
     revenue_stream_time_period = fields.Selection([
         ('monthly', 'Last 30 days'),
         ('quarterly', 'Last 90 days'),
@@ -80,6 +88,10 @@ class ResPartner(models.Model):
 
     def _compute_revenue_streams(self):
         self.write({'revenue_stream_ids': [(5, 0, 0)]})
+        self.write({'revenue_stream_not_utilized_ids': [(5, 0, 0)]})
+
+        all_revenue_streams = [product.categ_id.id for product in self.env['product.product'].search([]) if
+                               product.detailed_type == 'service']
 
         if self.revenue_stream_time_period == 'monthly':
             duration = fields.Date.to_string(fields.Date.today() - relativedelta(months=1))
@@ -99,7 +111,6 @@ class ResPartner(models.Model):
         pos_orders = self.env['pos.order'].search(domain)
 
         partner_revenue_streams = defaultdict(set)
-
         for order in pos_orders:
             if order.partner_id:
                 for line in order.lines:
@@ -108,6 +119,8 @@ class ResPartner(models.Model):
                         partner_revenue_streams[order.partner_id].add(product.categ_id.id)
         for partner, revenue_streams in partner_revenue_streams.items():
             partner.revenue_stream_ids = [(6, 0, list(revenue_streams))]
+            difference = set(all_revenue_streams) - set(list(revenue_streams))
+            partner.revenue_stream_not_utilized_ids = [(6, 0, list(difference))]
 
     def _update_customer_categories(self):
         configs = self.env['customer.category.config'].search([('active', '=', True)])

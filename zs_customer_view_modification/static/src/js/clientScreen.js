@@ -4,6 +4,8 @@ odoo.define('zs_customer_view_modification.ClientListScreen', function (require)
     const ClientListScreen = require('point_of_sale.ClientListScreen');
     const Registries = require('point_of_sale.Registries');
 
+    const models = require('point_of_sale.models');
+
     // Extend the ClientListScreen class
     const PosClientListScreenInherit = ClientListScreen => class extends ClientListScreen {
         // Override the confirm method instead of clickClient

@@ -43,7 +43,8 @@ class ProductSuspensionConfig(models.Model):
             # Suspend the products
             to_suspend.write({
                 'is_suspended': True,
-                'suspension_date': fields.Datetime.now()
+                'suspension_date': fields.Datetime.now(),
+                'suspension_reason': "Not purchased in specified days"
             })
 
             # TODO implement streak
@@ -61,13 +62,15 @@ class ProductTemplate(models.Model):
         string='Suspension Date',
         tracking=True
     )
+    suspension_reason = fields.Char(string="Suspension Reason")
 
-    def action_suspend_product(self, reason=False):
+    def action_suspend_product(self, reason='manual'):
         """Manual product suspension"""
         for product in self:
             product.write({
                 'is_suspended': True,
-                'suspension_date': fields.Datetime.now()
+                'suspension_date': fields.Datetime.now(),
+                "suspension_reason": reason
             })
         return True
 
@@ -76,7 +79,8 @@ class ProductTemplate(models.Model):
         for product in self:
             product.write({
                 'is_suspended': False,
-                'suspension_date': False
+                'suspension_date': False,
+                'suspension_reason': ''
             })
         return True
 
@@ -98,7 +102,7 @@ class Brand(models.Model):
                     ('product_brand_id', '=', brand.id)
                 ])
                 if brand.is_discontinued:
-                    products.action_suspend_product()
+                    products.action_suspend_product(reason='Brand discontinued')
                 else:
                     products.action_unsuspend_product()
         return result
@@ -121,7 +125,7 @@ class Vendor(models.Model):
                     ('product_vendor_name_id', '=', vendor.id)
                 ])
                 if vendor.is_discontinued:
-                    products.action_suspend_product()
+                    products.action_suspend_product(reason='Vendor discontinued')
                 else:
                     products.action_unsuspend_product()
         return result

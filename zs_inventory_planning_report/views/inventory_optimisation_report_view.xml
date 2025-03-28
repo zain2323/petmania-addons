@@ -51,7 +51,10 @@
                     <field name="max_qty"/>
                     <field name="qty_available"/>
                     <field name="optimisation_qty"/>
-                    <field name="status" decoration-info="status == 'ideal'" decoration-success="status == 'surplus'" decoration-danger="status == 'deficient'"/>
+                    <field name="status" decoration-info="status == 'ideal'" decoration-success="status == 'surplus'"
+                           decoration-danger="status == 'deficient'"/>
+                    <field name="is_suspended"/>
+                    <field name="suspension_reason"/>
                 </tree>
             </field>
         </record>

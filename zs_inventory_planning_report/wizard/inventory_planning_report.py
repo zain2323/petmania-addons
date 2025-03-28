@@ -32,6 +32,8 @@ class CustomerSalesData(models.TransientModel):
     min_investment = fields.Float(string='Min Investment')
     max_qty = fields.Integer(string='Max QTY')
     max_investment = fields.Float(string='Max Investment')
+    is_suspended = fields.Boolean(string='Suspended', default=False)
+    suspension_reason = fields.Char(string='Suspension Reason')
 
 
 class CustomerWiseSalesAnalysisReport(models.TransientModel):
@@ -111,6 +113,8 @@ class CustomerWiseSalesAnalysisReport(models.TransientModel):
                 'category_name': product.categ_id.name,
                 'franchise_name': product.company_type.name,
                 'division_name': product.product_division_id.name,
+                'is_suspended': product.is_suspended,
+                'suspension_reason': product.suspension_reason,
                 'barcode': product.barcode,
                 'cost': product.standard_price,
                 'selected_method': selected_method,
@@ -142,4 +146,6 @@ class CustomerWiseSalesAnalysisReport(models.TransientModel):
                 'max_qty': product_data['max_qty'],
                 'max_investment': product_data['max_investment'],
                 'company_id': product_data['company_id'],
+                'is_suspended': product_data['is_suspended'],
+                'suspension_reason': product_data['suspension_reason'],
             })

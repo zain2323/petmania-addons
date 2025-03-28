@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Add image and tags field-->
+<templates id="template" xml:space="preserve">
+    <t t-name="ClientListScreen"
+       t-inherit="point_of_sale.ClientListScreen" owl="1"
+       t-inherit-mode="extension">
+        <xpath expr="//table[hasclass('client-list')]/thead/tr/th[3]"
+               position="after">
+            <th>Category</th>
+            <th>Tags</th>
+        </xpath>
+    </t>
+    <t t-name="ClientLine" t-inherit="point_of_sale.ClientLine" owl="1"
+       t-inherit-mode="extension">
+        <xpath expr="//tr[@t-att-data-id='props.partner.id']/td[3]"
+               position="after">
+             <td style="word-break: break-word;">
+                <t t-esc="props.partner.customer_category"/>
+            </td>
+            <td style="word-break: break-word;">
+                <t t-esc="props.partner.tags"/>
+            </td>
+        </xpath>
+    </t>
+</templates>

@@ -17,9 +17,10 @@
                 <separator string="Customer Class" colspan="2"
                            style="font-weight: bold;font-size: 1.1em; border-bottom: 1px solid grey;"/>
                 <field name="customer_category" string="Customer Category"/>
-                <field name="revenue_stream_time_period" string="Revenue Stream Time Period"/>
                 <field name="revenue_stream_ids" widget="many2many_tags"/>
+                <field name="revenue_stream_not_utilized_ids" widget="many2many_tags"/>
                 <field name="customer_tag_ids" widget="many2many_tags"/>
+                <field name="revenue_stream_time_period" string="Revenue Stream Time Period"/>
 
                 <separator string="Frequent Purchases" colspan="2"
                            style="font-weight: bold;font-size: 1.1em; border-bottom: 1px solid grey;"/>

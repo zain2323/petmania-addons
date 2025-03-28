@@ -17,8 +17,11 @@ class StockRule(models.Model):
         if not self._context.get('custom_order_point_function', False):
             return super(StockRule, self)._run_buy(procurements)
         procurements_by_po_domain = defaultdict(list)
+        # filtering procurements for non suspended products
         errors = []
         for procurement, rule in procurements:
+            if procurement.product_id.is_suspended:
+                continue
             domain = [('product_id', '=', procurement.product_id.id),
                       ('location_id', '=', procurement.location_id.id), ('trigger', '=', 'auto')]
             order_point = self.env['stock.warehouse.orderpoint'].search(domain, limit=1)
@@ -89,7 +92,6 @@ class StockRule(models.Model):
 
             domain = rule._make_po_get_domain(procurement.company_id, procurement.values, partner)
             domain += (('scm_grading_id', '=', order_point.scm_grading_id.id),)
-            domain += (('is_suspended', '=', False),)
             procurements_by_po_domain[domain].append((procurement, rule))
 
         if errors:

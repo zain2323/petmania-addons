@@ -16,6 +16,8 @@
                 <field name="min_investment" sum="Total min investment"/>
                 <field name="max_qty" sum="Total max qty"/>
                 <field name="max_investment" sum="Total max investment"/>
+                <field name="is_suspended"/>
+                <field name="suspension_reason"/>
             </tree>
         </field>
     </record>
