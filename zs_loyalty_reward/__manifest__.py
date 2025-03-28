@@ -10,17 +10,17 @@
     'data': [
         'security/ir.model.access.csv',
         "views/loyalty_reward_config_views.xml",
+        "views/customer_purchase_tracking_views.xml",
     ],
-    # 'assets': {
-    #     'point_of_sale.assets': [
-    #         'zs_pricelist_discount/static/src/js/models.js',
-    #         'zs_pricelist_discount/static/src/js/PricelistDiscount.js',
-    #
-    #     ],
-    #     # 'web.assets_qweb': [
-        #     'pos_access_right_restrictions/static/src/xml/TicketButton.xml',
-        # ],
-    # },
+    'assets': {
+        'point_of_sale.assets': [
+            'zs_loyalty_reward/static/src/js/RewardStreak.js',
+
+        ],
+        'web.assets_qweb': [
+            'zs_loyalty_reward/static/src/xml/reward_streak.xml'
+        ],
+    },
     'installable': True,
     'application': True,
     'auto_install': False,

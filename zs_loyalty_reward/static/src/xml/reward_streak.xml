@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates xml:space="preserve">
+    <t t-name="RewardStreakButton" owl="1">
+        <button class="control-button">
+            Check Streak
+        </button>
+    </t>
+</templates>

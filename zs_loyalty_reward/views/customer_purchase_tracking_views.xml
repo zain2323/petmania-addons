@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="customer_reward_tracking_tree" model="ir.ui.view">
+        <field name="name">customer.reward.tracking.tree</field>
+        <field name="model">customer.reward.tracking</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="partner_id"/>
+                <field name="reward_config_id"/>
+                <field name="first_purchase_date"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="customer_reward_tracking_form" model="ir.ui.view">
+        <field name="name">customer.reward.tracking.form</field>
+        <field name="model">customer.reward.tracking</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="partner_id"/>
+                            <field name="reward_config_id"/>
+                        </group>
+                        <group>
+                            <field name="first_purchase_date"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Purchase Lines" name="purchase_lines">
+                            <field name="purchase_line_ids" nolabel="1">
+                                <tree create="false" delete="false">
+                                    <field name="purchase_date"/>
+                                    <field name="product_id"/>
+                                    <field name="quantity"/>
+                                    <field name="pos_order_line_id"/>
+                                </tree>
+                                <form create="false" edit="false">
+                                    <sheet>
+                                        <group>
+                                            <field name="purchase_date"/>
+                                            <field name="product_id"/>
+                                            <field name="quantity"/>
+                                            <field name="is_redeemed"/>
+                                            <field name="pos_order_line_id"/>
+                                        </group>
+                                    </sheet>
+                                </form>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="action_customer_reward_tracking" model="ir.actions.act_window">
+        <field name="name">Customer Reward Tracking</field>
+        <field name="res_model">customer.reward.tracking</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No reward tracking records yet
+            </p>
+            <p>
+                Track customer purchases for loyalty rewards.
+                This view shows the progress of customers towards
+                earning free products based on repeated purchases.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_customer_reward_tracking" name="Customer Reward Tracking"
+              action="action_customer_reward_tracking"
+              parent="contacts.res_partner_menu_config" sequence="3"/>
+
+</odoo>

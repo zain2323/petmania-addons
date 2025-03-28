@@ -1,2 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_loyalty_reward_config,loyalty_reward_config,model_loyalty_reward_config,,1,1,1,1
+access_customer_reward_tracking,customer_reward_tracking,model_customer_reward_tracking,,1,1,1,1
+access_customer_reward_purchase_line,customer_reward_purchase_line,model_customer_reward_purchase_line,,1,1,1,1
