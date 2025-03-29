@@ -71,13 +71,30 @@ class CustomerTagConfig(models.Model):
     threshold_value = fields.Float(string='Threshold Value', required=True,
                                    help='Minimum amount or number of orders required to qualify')
 
+class GIftCardInherit(models.Model):
+    _inherit='gift.card'
 
-from odoo import models, fields, api
-from odoo.exceptions import UserError
-import logging
+    config_id = fields.Many2one('gift.card.config', string='Gift Card Configuration')
 
-_logger = logging.getLogger(__name__)
+    def get_applicable_products(self):
+        domain = []
+        if self.config_id.franchise_division_ids:
+            domain.append(('company_type', 'in', self.config_id.franchise_division_ids.ids))
 
+        if self.config_id.product_division_ids:
+            domain.append(('product_division_id', 'in', self.config_id.product_division_ids.ids))
+
+        if self.config_id.product_category_ids:
+            domain.append(('categ_id', 'in', self.config_id.product_category_ids.ids))
+
+        if self.config_id.product_brand_ids:
+            domain.append(('product_brand_id', 'in', self.config_id.product_brand_ids.ids))
+
+        if self.config_id.product_ids:
+            domain.append(('id', 'in', self.config_id.product_ids.ids))
+
+        products = self.env['product.product'].search(domain)
+        return products.ids
 
 class GiftCardConfig(models.Model):
     _name = 'gift.card.config'
@@ -89,6 +106,12 @@ class GiftCardConfig(models.Model):
     # Gift card amount settings
     gift_card_amount = fields.Float(string='Gift Card Amount', required=True,
                                     help='Amount to be loaded on generated gift cards')
+    # applicability
+    franchise_division_ids = fields.Many2many('product.company.type', string="Franchise Division")
+    product_division_ids = fields.Many2many('product.division', string="Product Division")
+    product_category_ids = fields.Many2many('product.category', string='Product Categories')
+    product_brand_ids = fields.Many2many('product.brand', string='Product Brands')
+    product_ids = fields.Many2many('product.product', string='Products')
 
     # Customer category requirements
     customer_category = fields.Selection([
@@ -170,6 +193,7 @@ class GiftCardConfig(models.Model):
                 'initial_amount': self.gift_card_amount,
                 'expired_date': expiration_date,
                 'company_id': self.env.company.id,
+                'config_id': self.id,
             }
             gift_card = self.env['gift.card'].create(gift_card_vals)
 

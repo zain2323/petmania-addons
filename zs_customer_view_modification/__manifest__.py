@@ -8,7 +8,7 @@
     'version': '15.0.0.1',
 
     'category': 'Base',
-    'depends': ['base', 'sale', 'contacts', 'point_of_sale'],
+    'depends': ['base', 'sale', 'contacts', 'point_of_sale', 'product_brand', 'zs_product_company_type', 'zs_product_modifications'],
 
     'data': [
         'data/assign_customer_categories.xml',
@@ -22,7 +22,7 @@
     ],
     'assets': {
         'point_of_sale.assets': [
-            # 'zs_customer_view_modification/src/static/js/GiftCardPopup.js',
+            'zs_customer_view_modification/static/src/js/GiftCardButton.js',
             'zs_customer_view_modification/static/src/js/clientScreen.js',
             'zs_customer_view_modification/static/src/js/ClientLine.js',
         ],

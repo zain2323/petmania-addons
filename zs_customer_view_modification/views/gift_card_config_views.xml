@@ -11,20 +11,35 @@
                                 string="Generate Gift Cards" class="oe_stat_button" icon="fa-gift"/>
                     </div>
                     <div class="oe_title">
-                        <h1><field name="name" placeholder="Configuration Name"/></h1>
+                        <h1>
+                            <field name="name" placeholder="Configuration Name"/>
+                        </h1>
                     </div>
                     <group>
+                        <field name="active"/>
+                        <field name="gift_card_amount"/>
+                        <field name="customer_category"/>
+                        <field name="validity_days"/>
+                    </group>
+                    <group expand="0" string="Filters">
                         <group>
-                            <field name="active"/>
-                            <field name="gift_card_amount"/>
-                            <field name="customer_category"/>
-                            <field name="validity_days"/>
+                            <field name="franchise_division_ids" widget="many2many_tags"
+                                   options="{'no_create_edit': True}"/>
+                            <field name="product_division_ids" widget="many2many_tags"
+                                   options="{'no_create_edit': True}"/>
+                            <field name="product_category_ids" widget="many2many_tags"
+                                   options="{'no_create_edit': True}"/>
+                            <field name="product_brand_ids" widget="many2many_tags"
+                                   options="{'no_create_edit': True}"/>
+                            <field name="product_ids" widget="many2many_tags" options="{'no_create_edit': True}"/>
                         </group>
                     </group>
                     <notebook>
                         <page string="Required Tags">
                             <field name="customer_tag_ids" widget="many2many_tags"/>
-                            <p class="text-muted">Customers must have all these tags along with the specified category to be eligible for gift cards.</p>
+                            <p class="text-muted">Customers must have all these tags along with the specified category
+                                to be eligible for gift cards.
+                            </p>
                         </page>
                     </notebook>
                 </sheet>
