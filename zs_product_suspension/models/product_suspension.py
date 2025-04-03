@@ -19,6 +19,11 @@ class ProductSuspensionConfig(models.Model):
         help='Number of times not invoiced from vendor consecutively but was present in RFQ'
     )
 
+    def unlink(self):
+        products = self.env['product.template'].search([('suspension_config', '=', self.id)])
+        products.action_unsuspend_product()
+        return super(ProductSuspensionConfig, self).unlink()
+
     @api.model
     def cron_suspend_products(self):
         """Suspend products with no purchase in x days"""
@@ -44,7 +49,8 @@ class ProductSuspensionConfig(models.Model):
             to_suspend.write({
                 'is_suspended': True,
                 'suspension_date': fields.Datetime.now(),
-                'suspension_reason': "Not purchased in specified days"
+                'suspension_reason': "Not purchased in specified days",
+                'suspension_config': config.id
             })
 
             # TODO implement streak
@@ -63,6 +69,7 @@ class ProductTemplate(models.Model):
         tracking=True
     )
     suspension_reason = fields.Char(string="Suspension Reason")
+    suspension_config = fields.Many2one('product.suspension.config', string='Suspension Configuration')
 
     def action_suspend_product(self, reason='manual'):
         """Manual product suspension"""
@@ -70,7 +77,7 @@ class ProductTemplate(models.Model):
             product.write({
                 'is_suspended': True,
                 'suspension_date': fields.Datetime.now(),
-                "suspension_reason": reason
+                "suspension_reason": reason,
             })
         return True
 
