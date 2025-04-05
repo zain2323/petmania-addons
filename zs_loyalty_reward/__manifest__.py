@@ -14,11 +14,13 @@
     ],
     'assets': {
         'point_of_sale.assets': [
+            'zs_loyalty_reward/static/src/js/models.js',
             'zs_loyalty_reward/static/src/js/RewardStreak.js',
 
         ],
         'web.assets_qweb': [
-            'zs_loyalty_reward/static/src/xml/reward_streak.xml'
+            'zs_loyalty_reward/static/src/xml/reward_streak.xml',
+            'zs_loyalty_reward/static/src/xml/custom_pos_reciept.xml'
         ],
     },
     'installable': True,

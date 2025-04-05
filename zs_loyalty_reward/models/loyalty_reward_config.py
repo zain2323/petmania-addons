@@ -1,11 +1,23 @@
 # -*- coding: utf-8 -*-
-from datetime import timedelta
+from datetime import timedelta, datetime
 
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 import logging
 
 logger = logging.getLogger(__name__)
+
+
+class ProductTemplateInherit(models.Model):
+    _inherit = 'product.product'
+    purchase_count = fields.Integer(string='Purchase Count', compute="_compute_purchase_count")
+
+    def _compute_purchase_count(self):
+        for rec in self:
+            rec.purchase_count = 0
+            config = self.env['loyalty.reward.config'].search([('product_id', '=', rec.id)], limit=1)
+            if config:
+                rec.purchase_count = config.purchase_count
 
 
 class PosOrderLine(models.Model):
@@ -77,10 +89,42 @@ class LoyaltyRewardConfig(models.Model):
         help='Number of days from the first purchase to accumulate the required count',
         default=20
     )
+    last_date_to_enter = fields.Date(string="Last date to enter")
+
+    def get_purchased_qty(self, partner_id=None):
+        if not partner_id:
+            return False
+
+        tracking = self.env['customer.reward.tracking'].search([
+            ('partner_id', '=', partner_id),
+            ('reward_config_id', '=', self.id),
+        ], limit=1)
+
+        if not tracking:
+            return False
+
+        qty = tracking.get_purchase_count()
+        return qty
+
+    def check_streak(self, partner_id=None):
+        if not partner_id:
+            return False
+
+        tracking = self.env['customer.reward.tracking'].search([
+            ('partner_id', '=', partner_id),
+            ('reward_config_id', '=', self.id),
+        ], limit=1)
+
+        if not tracking:
+            return False
+
+        # Check streak
+        status = tracking.check_steak()
+        return status
 
     def check_reward_streak(self, partner_id=None):
         """
-        RPC method to check if a partner has completed a reward streak
+        RPC method to check if a partner has completed a reward streak and redeem if it has
         """
         # If no partner_id is provided, raise an error
 
@@ -149,6 +193,40 @@ class CustomerRewardTracking(models.Model):
         help='Date of the first purchase in the current tracking period'
     )
 
+    def get_purchase_count(self):
+        self.ensure_one()
+        sorted_lines = self.purchase_line_ids.filtered(
+            lambda l: not l.is_redeemed
+        ).sorted(key=lambda l: l.purchase_date, reverse=True)
+        total_quantity = sum(line.quantity for line in sorted_lines)
+        return total_quantity
+
+    def check_steak(self):
+        self.ensure_one()
+
+        sorted_lines = self.purchase_line_ids.filtered(
+            lambda l: not l.is_redeemed
+        ).sorted(key=lambda l: l.purchase_date, reverse=True)
+        total_quantity = sum(line.quantity for line in sorted_lines)
+
+        # Check if the total quantity meets the required purchase count
+        logger.critical(f"total qty: {total_quantity}")
+        logger.critical(f"required qty: {self.reward_config_id.purchase_count}")
+        logger.critical(f"{total_quantity >= self.reward_config_id.purchase_count}")
+
+        if total_quantity >= self.reward_config_id.purchase_count:
+            # Check if the purchases are within the validity period
+            last_line = sorted_lines[0]  # Most recent line
+
+            days_diff = (last_line.purchase_date - self.first_purchase_date).days
+            logger.critical(f"days diff: {days_diff}")
+            logger.critical(f"condition: {days_diff <= self.reward_config_id.validity_days}")
+
+            if days_diff <= self.reward_config_id.validity_days:
+                return True
+
+        return False
+
     def check_streak_and_get_reward(self):
         """
         Check if the customer is eligible for a reward based on total quantity purchased
@@ -167,7 +245,10 @@ class CustomerRewardTracking(models.Model):
             first_line = sorted_lines[-1]  # Last chronological line
             last_line = sorted_lines[0]  # Most recent line
 
-            if (last_line.purchase_date - first_line.purchase_date).days <= self.reward_config_id.validity_days:
+            # days_diff = (last_line.purchase_date - first_line.purchase_date).days
+            days_diff = (last_line.purchase_date - self.first_purchase_date).days
+
+            if days_diff <= self.reward_config_id.validity_days:
                 # Determine how many lines to mark as redeemed
                 quantity_to_redeem = self.reward_config_id.purchase_count
                 redeemed_quantity = 0
@@ -187,7 +268,6 @@ class CustomerRewardTracking(models.Model):
                     [line.id for line in lines_to_redeem]
                 ).redeem_reward()
 
-                # Return the reward product
                 return self.reward_config_id.product_id
 
         return False
@@ -198,11 +278,12 @@ class CustomerRewardTracking(models.Model):
         Get or create a reward tracking for a customer and product
         """
         # Find applicable reward configuration
+        today = datetime.now().date() + timedelta(hours=5)
         reward_config = self.env['loyalty.reward.config'].search([
-            ('product_id', '=', product.id)
+            ('product_id', '=', product.id),
+            ('last_date_to_enter', '>=', today)
         ], limit=1)
 
-        # If no reward config exists, return False
         if not reward_config:
             return False
 

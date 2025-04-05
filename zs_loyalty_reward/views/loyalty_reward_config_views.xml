@@ -27,6 +27,7 @@
                         <group string="Reward Configuration">
                             <field name="purchase_count"/>
                             <field name="validity_days"/>
+                            <field name="last_date_to_enter"/>
                         </group>
                     </group>
                 </sheet>

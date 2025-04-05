@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
-from dateutil.relativedelta import relativedelta
 from datetime import datetime, timedelta
+import logging
+
+_logger = logging.getLogger(__name__)
 
 
 class ProductSuspensionConfig(models.Model):
@@ -43,7 +45,9 @@ class ProductSuspensionConfig(models.Model):
             ]).mapped('product_id.id')
 
             # Determine products to suspend (those in config but NOT in purchased products)
-            to_suspend = config.product_ids.filtered(lambda p: p.id not in purchased_product_ids and not p.is_suspended)
+            to_suspend = config.product_ids.filtered(
+                lambda p: p.id not in purchased_product_ids and not p.is_suspended and p.create_date and
+                          p.create_date <= cutoff_date)
 
             # Suspend the products
             to_suspend.write({
@@ -70,6 +74,63 @@ class ProductTemplate(models.Model):
     )
     suspension_reason = fields.Char(string="Suspension Reason")
     suspension_config = fields.Many2one('product.suspension.config', string='Suspension Configuration')
+    conversion_rate = fields.Float(string="Conversion Rate", compute="_compute_conversion_rate")
+
+    def get_out_of_stock_date(self):
+        last_out_of_stock_move = self.env['stock.move'].search([
+            ('product_id', '=', self.id),
+            ('state', '=', 'done'),
+            ('product_uom_qty', '>', 0),
+            ('company_id', '=', self.env.company.id)
+        ], order="date DESC", limit=1)
+
+        if last_out_of_stock_move:
+            last_out_of_stock_date = last_out_of_stock_move.date.date()
+        else:
+            last_out_of_stock_date = datetime.now().date()
+
+        return last_out_of_stock_date
+
+    @api.depends('qty_available')
+    def _compute_conversion_rate(self):
+        StockMove = self.env['stock.move']
+        POSLine = self.env['pos.order.line']
+        today = fields.Date.today()
+        two_years_ago = today - timedelta(days=730)
+
+        for product in self:
+            incoming_moves = StockMove.search([
+                ('product_id', '=', product.id),
+                ('date', '>=', two_years_ago),
+                ('location_dest_id.usage', '=', 'internal'),
+                ('location_id.usage', '=', 'supplier'),
+                ('state', '=', 'done')
+            ], order='date asc', limit=1)
+
+            if not incoming_moves:
+                product.conversion_rate = 0.0
+                continue
+
+            latest_stock_in_date = incoming_moves.date.date()
+
+            if product.qty_available > 0:
+                in_stock_last_date = today
+            else:
+                in_stock_last_date = self.get_out_of_stock_date()
+
+            days_diff = (in_stock_last_date - latest_stock_in_date).days or 1
+            _logger.critical(f"Stock In: {latest_stock_in_date}")
+            _logger.critical(f"Out of stock date: {in_stock_last_date}")
+            pos_lines = POSLine.search([
+                ('product_id', '=', product.id),
+                ('order_id.date_order', '>=', latest_stock_in_date),
+                ('order_id.date_order', '<=', in_stock_last_date),
+                ('order_id.state', 'in', ['paid', 'done', 'invoiced'])
+            ])
+            sold_qty = sum(pos_lines.mapped('qty'))
+            _logger.critical(f"sold qty {sold_qty}")
+
+            product.conversion_rate = sold_qty / days_diff
 
     def action_suspend_product(self, reason='manual'):
         """Manual product suspension"""

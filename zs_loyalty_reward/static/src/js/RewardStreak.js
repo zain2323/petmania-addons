@@ -6,11 +6,52 @@ odoo.define('zs_loyalty_reward.RewardStreakButton', function (require) {
     const {useListener} = require('web.custom_hooks');
     const Registries = require('point_of_sale.Registries');
     const {Gui} = require('point_of_sale.Gui');
+    const {useState} = owl.hooks;
 
     class RewardStreakButton extends PosComponent {
         constructor() {
             super(...arguments);
             useListener('click', this.onClick);
+        }
+
+        checkButtonStatus() {
+            console.log("just returning")
+            return true
+            // const order = this.env.pos.get_order();
+            // console.log("here")
+            // const partner = order.get_client();
+            // if (!partner) {
+            //     return false;
+            // }
+            // const orderLines = order.get_orderlines();
+            // const productIds = [...new Set(orderLines.map(line => line.product.id))];
+            //
+            // try {
+            //     const rewardConfigs = await this.rpc({
+            //         model: 'loyalty.reward.config',
+            //         method: 'search_read',
+            //         args: [
+            //             [['product_id', 'in', productIds]],
+            //             ['product_id', 'purchase_count']
+            //         ]
+            //     });
+            //     console.log("config", rewardConfigs)
+            //     if (rewardConfigs && rewardConfigs.length > 0) {
+            //         const config = rewardConfigs[0]
+            //         console.log("final config", config)
+            //         const hasStreak = await this.rpc({
+            //             model: 'loyalty.reward.config',
+            //             method: 'check_streak',
+            //             args: [config.id, partner.id]
+            //         });
+            //         console.log("has_streak", hasStreak)
+            //         return hasStreak
+            //     }
+            //     return false
+            // } catch (error) {
+            //     console.error('Error checking streak status:', error);
+            //     return false
+            // }
         }
 
         async onClick() {

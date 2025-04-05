@@ -63,15 +63,36 @@
         </field>
     </record>
 
-    <record id="view_product_template_tree_fields_suspension" model="ir.ui.view">
-        <field name="name">product.template.suspension.tree.view</field>
+    <!--    <record id="view_product_template_tree_fields_suspension" model="ir.ui.view">-->
+    <!--        <field name="name">product.template.suspension.tree.view</field>-->
+    <!--        <field name="model">product.template</field>-->
+    <!--        <field name="inherit_id" ref="product.product_template_tree_view"/>-->
+    <!--        <field name="arch" type="xml">-->
+    <!--            <xpath expr="//field[@name='name']" position="after">-->
+    <!--                <field name="suspension_date"/>-->
+    <!--                <field name="suspension_reason"/>-->
+    <!--                <field name="profit_percent" string="Margin %"/>-->
+    <!--            </xpath>-->
+    <!--        </field>-->
+    <!--    </record>-->
+
+
+    <record id="view_product_template_tree_suspended" model="ir.ui.view">
+        <field name="name">product.template.tree.suspended</field>
         <field name="model">product.template</field>
-        <field name="inherit_id" ref="product.product_template_tree_view"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='name']" position="after">
+            <tree>
+                <field name="name"/>
+                <field name="company_type"/>
+                <field name="product_division_id"/>
+                <field name="categ_id"/>
+                <field name="product_brand_id"/>
                 <field name="suspension_date"/>
                 <field name="suspension_reason"/>
-            </xpath>
+                <field name="profit_percent" string="Margin %"/>
+                <field name="conversion_rate" string="Conversion Rate"/>
+                <!-- add any other fields you want -->
+            </tree>
         </field>
     </record>
 
@@ -82,6 +103,9 @@
         <field name="res_model">product.template</field>
         <field name="view_mode">tree,form</field>
         <field name="domain">[('is_suspended', '=', True)]</field>
+        <field name="view_ids"
+               eval="[(5, 0, 0),(0, 0, {'view_mode': 'tree', 'view_id': ref('view_product_template_tree_suspended')})]"/>
+
     </record>
 
     <!-- Menu Item for Suspended Products -->

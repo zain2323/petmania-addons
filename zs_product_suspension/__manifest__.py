@@ -6,7 +6,7 @@
     'author':'Zain Siddiqui',
     'category': 'Sales',
     'license': 'LGPL-3',
-    'depends' : ['base', 'product', 'product_brand', 'zs_product_modifications'],
+    'depends' : ['base', 'product', 'product_brand', 'zs_product_modifications', 'zs_abc_wrt_product_division'],
     'data': [
         'security/ir.model.access.csv',
         'data/suspension_actions.xml',
