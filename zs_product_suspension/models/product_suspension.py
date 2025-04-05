@@ -76,12 +76,11 @@ class ProductTemplate(models.Model):
     suspension_config = fields.Many2one('product.suspension.config', string='Suspension Configuration')
     conversion_rate = fields.Float(string="Conversion Rate", compute="_compute_conversion_rate")
 
-    def get_out_of_stock_date(self):
+    def get_out_of_stock_date(self, product):
         last_out_of_stock_move = self.env['stock.move'].search([
-            ('product_id', '=', self.id),
+            ('product_id', '=', product.id),
             ('state', '=', 'done'),
             ('product_uom_qty', '>', 0),
-            ('company_id', '=', self.env.company.id)
         ], order="date DESC", limit=1)
 
         if last_out_of_stock_move:
@@ -116,7 +115,7 @@ class ProductTemplate(models.Model):
             if product.qty_available > 0:
                 in_stock_last_date = today
             else:
-                in_stock_last_date = self.get_out_of_stock_date()
+                in_stock_last_date = self.get_out_of_stock_date(product)
 
             days_diff = (in_stock_last_date - latest_stock_in_date).days or 1
             _logger.critical(f"Stock In: {latest_stock_in_date}")
