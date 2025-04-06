@@ -15,6 +15,7 @@
     'assets': {
         'point_of_sale.assets': [
             'zs_loyalty_reward/static/src/js/models.js',
+            'zs_loyalty_reward/static/src/js/PaymentScreen.js',
             'zs_loyalty_reward/static/src/js/RewardStreak.js',
 
         ],

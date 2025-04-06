@@ -104,13 +104,13 @@ odoo.define('zs_loyalty_reward.RewardStreakButton', function (require) {
                         if (product) {
                             // Add the free product to the order
                             order.add_product(product, {
-                                price: 0,
                                 quantity: 1,
                                 merge: false,
                                 extras: {
                                     is_reward: true
                                 }
                             });
+                            order.get_last_orderline().set_discount(99.99)
 
                             // Show success popup
                             Gui.showPopup('ConfirmPopup', {

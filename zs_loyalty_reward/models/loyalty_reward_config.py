@@ -193,6 +193,25 @@ class CustomerRewardTracking(models.Model):
         help='Date of the first purchase in the current tracking period'
     )
 
+    @api.model
+    def get_tracking_data(self, partner_id):
+        if not partner_id:
+            return {}
+
+        tracking_lines = self.search([('partner_id', '=', partner_id)])
+        result = {}
+
+        for tracking in tracking_lines:
+            product_id = tracking.reward_config_id.product_id.id
+            purchase_qty = tracking.get_purchase_count()
+            required_qty = tracking.reward_config_id.purchase_count
+            result[product_id] = {
+                'filled': purchase_qty,
+                'required': required_qty,
+            }
+
+        return result
+
     def get_purchase_count(self):
         self.ensure_one()
         sorted_lines = self.purchase_line_ids.filtered(

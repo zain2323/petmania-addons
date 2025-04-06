@@ -4,7 +4,10 @@
         <xpath expr="//span[@class='price_display pos-receipt-right-align']" position="after">
             <!-- Display Reward Stars -->
             <div class="pos-receipt-left-padding">
-                 <t t-foreach="line.empty_stars" t-as="i">
+                  <t t-foreach="line.filled_stars" t-as="i" t-key="line.id">
+                    <span>★</span>
+                </t>
+                <t t-foreach="line.empty_stars" t-as="i" t-key="line.id">
                     <span>☆</span>
                 </t>
             </div>

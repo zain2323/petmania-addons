@@ -41,22 +41,27 @@ odoo.define('zs_loyalty_reward.models', function (require) {
         initialize: function (attributes, options) {
             _super_orderline.initialize.apply(this, arguments);
             this.purchase_count = this.get_purchase_count();
-            this.purchase_count = this.get_purchase_count();
         },
 
         export_for_printing: function () {
             const result = _super_orderline.export_for_printing.apply(this, arguments);
-            if (this.get_product().purchase_count) {
-                const purchase_count = this.get_product().purchase_count
-                console.log("pcount", purchase_count)
-                const order = this.order
-                const reward_configs = order.reward_configs
-                result.filled_stars = Array.from({length: purchase_count}, (_, i) => i);
-                result.empty_stars = Array.from({length: purchase_count}, (_, i) => i);
+            const product = this.get_product();
+            const order = this.order;
+            const client = order.get_client();
+            const tracking = client?.reward_tracking_data?.[product.id];
+            console.log("client", client)
+            console.log("tracking", tracking)
+            if (tracking) {
+                const remaining = tracking.required - tracking.filled;
+                console.log("remaining", remaining)
+
+                result.filled_stars = Array.from({length: tracking.filled}, (_, i) => i);
+                result.empty_stars = Array.from({length: remaining}, (_, i) => i);
             } else {
-                result.filled_stars = Array.from({length: 0}, (_, i) => i);
-                result.empty_stars = Array.from({length: 0}, (_, i) => i);
+                result.filled_stars = [];
+                result.empty_stars = [];
             }
+
             return result;
         },
 
