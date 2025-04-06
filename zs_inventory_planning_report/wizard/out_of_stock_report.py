@@ -60,20 +60,32 @@ class OutOfStockReportWizard(models.TransientModel):
         }
 
     def get_out_of_stock_days(self, product_id):
-        last_out_of_stock_move = self.env['stock.move'].search([
+        StockMove = self.env['stock.move']
+        current_date = fields.Date.today()
+        zero_date = fields.Date.today()
+
+        # On-hand is zero or negative, find the date it became <= 0
+        moves = StockMove.search([
             ('product_id', '=', product_id),
             ('state', '=', 'done'),
-            ('product_uom_qty', '>', 0),
-            ('company_id', '=', self.env.company.id)
-        ], order="date DESC", limit=1)
+            ('company_id', '=', self.env.company.id),
+            ('date', '<=', fields.Datetime.now())
+        ], order='date asc')
 
-        if last_out_of_stock_move:
-            last_out_of_stock_date = last_out_of_stock_move.date.date()
-            today = date.today()
-            return (today - last_out_of_stock_date).days
+        qty = 0.0
 
-        return 0
+        for move in moves:
+            if move.location_dest_id.usage == 'internal':
+                qty += move.product_uom_qty
+            elif move.location_id.usage == 'internal':
+                qty -= move.product_uom_qty
 
+            if qty <= 0:
+                zero_date = move.date.date()
+            else:
+                zero_date = fields.Date.today()
+
+        return (zero_date - current_date).days
 
     def _get_data_for_products(self):
         rules = self.env['stock.warehouse.orderpoint'].search([('company_id', '=', self.env.company.id)])

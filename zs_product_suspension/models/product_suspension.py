@@ -77,18 +77,34 @@ class ProductTemplate(models.Model):
     conversion_rate = fields.Float(string="Conversion Rate", compute="_compute_conversion_rate")
 
     def get_out_of_stock_date(self, product):
-        last_out_of_stock_move = self.env['stock.move'].search([
+        StockMove = self.env['stock.move']
+        onhand_qty = sum(self.env['stock.quant'].search([
             ('product_id', '=', product.id),
-            ('state', '=', 'done'),
-            ('product_uom_qty', '>', 0),
-        ], order="date DESC", limit=1)
+            ('location_id.usage', '=', 'internal')
+        ]).mapped('quantity'))
 
-        if last_out_of_stock_move:
-            last_out_of_stock_date = last_out_of_stock_move.date.date()
+        if onhand_qty > 0:
+            return fields.Date.today()
         else:
-            last_out_of_stock_date = datetime.now().date()
+            moves = StockMove.search([
+                ('product_id', '=', product.id),
+                ('state', '=', 'done'),
+            ], order='date asc')
 
-        return last_out_of_stock_date
+            qty = 0.0
+            last_zero_date = None
+            for move in moves:
+                if move.location_dest_id.usage == 'internal':
+                    qty += move.product_uom_qty
+                if move.location_id.usage == 'internal':
+                    qty -= move.product_uom_qty
+
+                if qty <= 0:
+                    last_zero_date = move.date.date()
+                else:
+                    last_zero_date = fields.Date.today()
+
+        return last_zero_date
 
     @api.depends('qty_available')
     def _compute_conversion_rate(self):
@@ -98,6 +114,9 @@ class ProductTemplate(models.Model):
         two_years_ago = today - timedelta(days=730)
 
         for product in self:
+            if not product.is_suspended:
+                product.conversion_rate = 0
+                continue
             incoming_moves = StockMove.search([
                 ('product_id', '=', product.id),
                 ('date', '>=', two_years_ago),
@@ -118,6 +137,7 @@ class ProductTemplate(models.Model):
                 in_stock_last_date = self.get_out_of_stock_date(product)
 
             days_diff = (in_stock_last_date - latest_stock_in_date).days or 1
+            _logger.critical(f"product name: {product.name}")
             _logger.critical(f"Stock In: {latest_stock_in_date}")
             _logger.critical(f"Out of stock date: {in_stock_last_date}")
             pos_lines = POSLine.search([
