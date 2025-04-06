@@ -13,6 +13,7 @@
                     <group>
                         <field name="report_date" attrs="{'readonly': [('state', '=', 'submitted')]}"/>
                         <field name="user_id" attrs="{'readonly': [('state', '=', 'submitted')]}"/>
+                        <field name="doctor_name" attrs="{'readonly': [('state', '=', 'submitted')]}"/>
                         <field name="company_id" groups="base.group_multi_company"
                                attrs="{'readonly': [('state', '=', 'submitted')]}"/>
                     </group>

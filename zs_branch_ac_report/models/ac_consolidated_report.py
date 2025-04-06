@@ -150,7 +150,7 @@ class ConsolidatedACMachineReport(models.Model):
                     column_counts[company.id]['NA'] += 1
                     row_counts[machine_name]['NA'] += 1
 
-                worksheet.write(row, col, status_text, cell_format_to_use)
+                worksheet.write(row, col, "", cell_format_to_use)
 
             # Write row summary
             row_summary = []

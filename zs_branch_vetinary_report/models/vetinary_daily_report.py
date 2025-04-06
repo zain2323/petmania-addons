@@ -9,8 +9,9 @@ class DailyMachineReport(models.Model):
     _order = 'report_date desc'
 
     report_date = fields.Date(string='Report Date', required=True, default=fields.Date.today)
-    user_id = fields.Many2one('res.users', string='Branch Manager', required=True,
+    user_id = fields.Many2one('res.users', string='Current User', required=True,
                               default=lambda self: self.env.user)
+    doctor_name = fields.Char(string='Doctor Name')
     company_id = fields.Many2one('res.company', string='Branch', required=True,
                                  default=lambda self: self.env.company)
     line_ids = fields.One2many('vet.daily.machine.report.line', 'report_id', string='Machines')
