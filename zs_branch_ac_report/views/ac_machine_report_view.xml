@@ -1,0 +1,86 @@
+<odoo>
+    <record id="view_daily_machine_report_form" model="ir.ui.view">
+        <field name="name">ac.daily.machine.report.form</field>
+        <field name="model">ac.daily.machine.report</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_submit" string="Submit Report" type="object"
+                            class="oe_highlight" attrs="{'invisible': [('state', '=', 'submitted')]}"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="report_date" attrs="{'readonly': [('state', '=', 'submitted')]}"/>
+                        <field name="user_id" attrs="{'readonly': [('state', '=', 'submitted')]}"/>
+                        <field name="company_id" groups="base.group_multi_company"
+                               attrs="{'readonly': [('state', '=', 'submitted')]}"/>
+                    </group>
+                    <notebook>
+                        <page string="Machines">
+                            <field name="line_ids" attrs="{'readonly': [('state', '=', 'submitted')]}">
+                                <tree editable="bottom">
+                                    <field name="machine_id" options="{'no_create': True}"/>
+                                    <field name="availability_status"/>
+                                    <field name="operational_status"/>
+                                    <field name="remarks"/>
+                                    <field name="readonly" invisible="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_daily_machine_report_tree" model="ir.ui.view">
+        <field name="name">ac.daily.machine.report.tree</field>
+        <field name="model">ac.daily.machine.report</field>
+        <field name="arch" type="xml">
+            <tree decoration-success="state=='submitted'" decoration-info="state=='draft'">
+                <field name="report_date"/>
+                <field name="user_id"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_daily_machine_report_search" model="ir.ui.view">
+        <field name="name">ac.daily.machine.report.search</field>
+        <field name="model">ac.daily.machine.report</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="report_date"/>
+                <field name="user_id"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <filter string="My Reports" name="my_reports" domain="[('user_id', '=', uid)]"/>
+                <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Submitted" name="submitted" domain="[('state', '=', 'submitted')]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Status" name="group_by_state" context="{'group_by': 'state'}"/>
+                    <filter string="Branch" name="group_by_company" context="{'group_by': 'company_id'}"
+                            groups="base.group_multi_company"/>
+                    <filter string="Date" name="group_by_date" context="{'group_by': 'report_date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_daily_machine_report" model="ir.actions.act_window">
+        <field name="name">Daily Machine Reports</field>
+        <field name="res_model">ac.daily.machine.report</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_my_reports': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first report!
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="zs_daily_machine_report" name="Historical AC Machine Records"
+              action="action_daily_machine_report"
+              parent="zs_inventory_planning_report.zs_head_scm_menu" sequence="8"/>
+</odoo>
