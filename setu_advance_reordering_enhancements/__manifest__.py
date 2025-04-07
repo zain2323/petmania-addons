@@ -2,7 +2,7 @@
 {
     # Module Info
     'name': "Advance Reordering Enhancements",
-    'version': '1.5',
+    'version': '1.6',
     'category': 'stock',
     'summary': """This module is for the enhancements of Advance Reordering module.
                1. Functionality to stock reordering by SCM Grading Category.""",
