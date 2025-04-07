@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="barcode_config_inherit" model="ir.ui.view">
+        <field name="name">barcode.config.inherit</field>
+        <field name="model">tdzebrabarcode.configuration</field>
+        <field name="type">form</field>
+        <field name="inherit_id" ref="td_zebra_barcode_labels.tdzebrabarcode_config_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='product_name']" position="after">
+                <field name="min_max_display"/>
+            </xpath>
+             <xpath expr="//field[@name='product_name_size']" position="after">
+                <field name="min_max_size"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

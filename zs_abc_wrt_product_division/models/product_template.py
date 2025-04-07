@@ -3,6 +3,7 @@ from datetime import datetime, timedelta, date
 from odoo.exceptions import UserError
 from dateutil.relativedelta import relativedelta
 import logging
+from collections import defaultdict
 
 _logger = logging.getLogger(__name__)
 
@@ -39,6 +40,8 @@ class ProductTemplate(models.Model):
     product_rank = fields.Integer(string="Product Rank", compute="_compute_ranks")
     category_rank = fields.Integer(string="Category Rank", compute="_compute_ranks")
     brand_rank = fields.Integer(string="Brand Rank", compute="_compute_ranks")
+    brand_classification = fields.Char(string="Brand Classification", compute="_compute_ranks")
+    category_classification = fields.Char(string="Category Classification", compute="_compute_ranks")
 
     def _compute_company_rank(self):
         for rec in self:
@@ -50,42 +53,69 @@ class ProductTemplate(models.Model):
 
         # Fetch POS order lines for the last 180 days
         pos_lines = self.env['pos.order.line'].search([
-            ('order_id.date_order', '>=', date_threshold)
+            ('order_id.date_order', '>=', date_threshold),
+            ('order_id.company_id.id', '=', self.env.company.id)
         ])
 
         # Compute total sales for products, categories, and brands
         product_sales = {}
-        category_sales = {}
-        brand_sales = {}
+        category_product_sales = defaultdict(lambda: defaultdict(float))
+        brand_product_sales = defaultdict(lambda: defaultdict(float))
 
         for line in pos_lines:
             product = line.product_id.product_tmpl_id
+            product_id = product.id
             category = product.categ_id
             brand = product.product_brand_id if hasattr(product, 'product_brand_id') else None
+            sale_amount = line.price_subtotal
 
-            product_sales[product.id] = product_sales.get(product.id, 0) + line.price_subtotal_incl
-            category_sales[category.id] = category_sales.get(category.id, 0) + line.price_subtotal_incl
+            product_sales[product.id] = product_sales.get(product.id, 0) + sale_amount
+            category_product_sales[category.id][product_id] += sale_amount
             if brand:
-                brand_sales[brand.id] = brand_sales.get(brand.id, 0) + line.price_subtotal_incl
+                brand_product_sales[brand.id][product_id] += sale_amount
 
         # Sort and rank products
         sorted_products = sorted(product_sales.items(), key=lambda x: x[1], reverse=True)
         product_ranks = {pid: rank + 1 for rank, (pid, _) in enumerate(sorted_products)}
 
-        # Sort and rank categories
-        sorted_categories = sorted(category_sales.items(), key=lambda x: x[1], reverse=True)
-        category_ranks = {cid: rank + 1 for rank, (cid, _) in enumerate(sorted_categories)}
+        # Per-category product ranking
+        category_ranks = {}
+        for category_id, prod_sales in category_product_sales.items():
+            sorted_cat = sorted(prod_sales.items(), key=lambda x: x[1], reverse=True)
+            category_ranks[category_id] = {pid: rank + 1 for rank, (pid, _) in enumerate(sorted_cat)}
 
-        # Sort and rank brands
-        sorted_brands = sorted(brand_sales.items(), key=lambda x: x[1], reverse=True)
-        brand_ranks = {bid: rank + 1 for rank, (bid, _) in enumerate(sorted_brands)}
-
+        # Per-brand product ranking
+        brand_ranks = {}
+        for brand_id, prod_sales in brand_product_sales.items():
+            sorted_brand = sorted(prod_sales.items(), key=lambda x: x[1], reverse=True)
+            brand_ranks[brand_id] = {pid: rank + 1 for rank, (pid, _) in enumerate(sorted_brand)}
+        # raise UserError(str(category_ranks).get(356))
         # Update product ranks
         for product in self:
+            category_rank = category_ranks.get(product.categ_id.id, {}).get(product.id, 0)
+            brand_rank = brand_ranks.get(product.product_brand_id.id, {}).get(product.id, 0) if hasattr(product,
+                                                                                                        'product_brand_id') else 0
             product.product_rank = product_ranks.get(product.id, 0)
-            product.category_rank = category_ranks.get(product.categ_id.id, 0)
-            product.brand_rank = brand_ranks.get(product.product_brand_id.id, 0) if hasattr(product,
-                                                                                            'product_brand_id') else 0
+            product.category_rank = category_rank
+            product.brand_rank = brand_rank
+
+            total_in_category = len(category_ranks.get(product.categ_id.id, {}))
+            total_in_brand = len(brand_ranks.get(product.product_brand_id.id, {})) if product.product_brand_id.id else 0
+            # Calculate percentiles
+            category_percent = (category_rank / total_in_category * 100) if total_in_category else 0
+            brand_percent = (brand_rank / total_in_brand * 100) if total_in_brand else 0
+
+            # Classification logic
+            def classify(percent):
+                if percent <= 30:
+                    return "Super"
+                elif percent <= 70:
+                    return "Leading"
+                else:
+                    return "Normal"
+
+            product.category_classification = classify(category_percent)
+            product.brand_classification = classify(brand_percent) if product.product_brand_id.id else "Normal"
 
     def _compute_profit(self):
         for record in self:
@@ -255,13 +285,15 @@ class ProductTemplate(models.Model):
                 # checking if scm category is not trial
                 if not product.product_tmpl_id.product_scm_grading_id.is_trial:
                     if scc.name == 'A':
-                        if product.product_tmpl_id.product_division_id and product.product_tmpl_id.product_division_id.name.lower() not in ['accessories']:
+                        if product.product_tmpl_id.product_division_id and product.product_tmpl_id.product_division_id.name.lower() not in [
+                            'accessories']:
                             scm_grading_name = 'FA (DAILY) CATEGORY'
                         else:
                             scm_grading_name = 'AS (DAILY) CATEGORY'
                     # either B or C
                     else:
-                        if product.product_tmpl_id.product_division_id and product.product_tmpl_id.product_division_id.name.lower() in ['accessories']:
+                        if product.product_tmpl_id.product_division_id and product.product_tmpl_id.product_division_id.name.lower() in [
+                            'accessories']:
                             scm_grading_name = 'FC (WEEKLY) CATEGORY'
                         else:
                             scm_grading_name = 'AT (WEEKLY) CATEGORY'

@@ -1,0 +1,34 @@
+<odoo>
+    <template id="report_product_tdzebrabarcode_min_max_inherit"
+              inherit_id="td_zebra_barcode_labels.report_product_tdzebrabarcode">
+
+        <!-- For the first column (left side) -->
+        <xpath expr="//td[contains(@t-attf-style, 'first_padding')]/t[@t-if='price_display']" position="after">
+            <t t-if="config.min_max_display">
+                <div t-attf-style="font-size:{{config.min_max_size or '7'}}px;">
+                    <span t-esc="line.get('min_0')"
+                          t-attf-style="font-size:{{config.min_max_size or '7'}}px;"/>
+                </div>
+                <div t-attf-style="font-size:{{config.min_max_size or '7'}}px;">
+                    <span t-esc="line.get('max_0')"
+                          t-attf-style="font-size:{{config.min_max_size or '7'}}px;"/>
+                </div>
+            </t>
+        </xpath>
+
+        <!-- For the second column (right side) -->
+        <xpath expr="//td[contains(@t-attf-style, 'second_padding')]/t[@t-if='price_display']" position="after">
+            <t t-if="config.min_max_display">
+                <div t-attf-style="font-size:{{config.min_max_size or '7'}}px;">
+                    <span t-esc="line.get('min_1')"
+                          t-attf-style="font-size:{{config.min_max_size or '7'}}px;"/>
+                </div>
+                <div t-attf-style="font-size:{{config.min_max_size or '7'}}px;">
+                    <span t-esc="line.get('max_1')"
+                          t-attf-style="font-size:{{config.min_max_size or '7'}}px;"/>
+                </div>
+            </t>
+        </xpath>
+
+    </template>
+</odoo>
