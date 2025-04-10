@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<odoo>
+    <data>
+        <record id="procurement_type_action" model="ir.actions.act_window">
+            <field name="name">Procurement Type</field>
+            <field name="res_model">procurement.type</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="procurement_type_view" model="ir.ui.view">
+            <field name="name">Procurement Type</field>
+            <field name="model">procurement.type</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name" string="Name"/>
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+         <menuitem id="procurement_type"
+                   name="Product Core"
+                   parent="sale.product_menu_catalog"
+                   sequence="4"
+                   action="procurement_type_action"/>
+    </data>
+</odoo>

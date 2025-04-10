@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <!-- <record id="view_recv_brand_tree" model="ir.ui.view">
+        <field name="name">brand.recievables.tree</field>
+        <field name="model">recv.brand</field>
+        <field name="arch" type="xml">
+            <tree editable="top">
+                <field name="name" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_brand_recievables" model="ir.actions.act_window">
+        <field name="name">Brand Recievables</field>
+        <field name="res_model">recv.brand</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+    <menuitem id="menu_recv_brand"
+              name="Brand Recievables"
+              parent="sale.menu_sale_config"
+              action="zs_brand_recievables.view_brand_recievables"
+              sequence="15"
+    /> -->
+
+
+    <record id="view_sale_order_inherit" model="ir.ui.view">
+        <field name="name">sale.order.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_shipping_id']" position="after">
+                <field name="recv_brand"/>
+            </xpath>
+        </field>
+    </record>
+
+
+    <record id="view_account_move_inherit" model="ir.ui.view">
+        <field name="name">account.move.inherit</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_shipping_id']" position="after">
+                <field name="recv_brand"/>
+            </xpath>
+        </field>
+    </record>
+
+
+    <record id="view_stock_picking_inherit" model="ir.ui.view">
+        <field name="name">stock.picking.inherit</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="recv_brand"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_brand_recievable_report">
+        <field name="name">Brand Recievable</field>
+        <field name="res_model">brand.recievable.report</field>
+        <field name="view_mode">pivot</field>
+    </record>
+
+    <record id="brand_recievable_report" model="ir.ui.view">
+        <field name="name">brand.recievable.report.pivot.view</field>
+        <field name="model">brand.recievable.report</field>
+        <field name="arch" type="xml">
+            <pivot string="Brand recievable Report">
+                <field name="recievable" type="measure"/>
+                    <field name="recv_brand" type="row"/>
+                    <!-- <field name="partner_ids" type="row"/> -->
+            </pivot>
+        </field>
+    </record>
+
+    <menuitem id="menu_brand_recv_report"
+        name="Brand Recievables Report"
+        parent="account.menu_finance_reports"
+        action="zs_brand_recievables.action_brand_recievable_report"
+        sequence="15"/>
+</odoo>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="discount_wizard" model="ir.ui.view">
+        <field name="name">discount_wizard.form.view</field>
+        <field name="model">discount.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group col="4">
+                      <div>
+                        <field name="discount" string="Discount"/>
+                      </div>
+                    </group>
+                </sheet>
+                <footer>
+                    <button class="btn-primary" string="Confirm"  name="action_done" type="object"/>
+                    <button class="btn-primary" string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

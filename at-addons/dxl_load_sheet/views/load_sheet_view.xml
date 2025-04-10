@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="load_sheet_tree" model="ir.ui.view">
+        <field name="name">load.sheet.tree</field>
+        <field name="model">load.sheet</field>
+        <field name="arch" type="xml">
+            <tree create="0">
+                <field name="name"/>
+                <field name="create_date" string="Date"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+    <record id="load_sheet_form" model="ir.ui.view">
+        <field name="name">load.sheet.view.form</field>
+        <field name="model">load.sheet</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Load Sheet" create="0">
+                <header>
+                    <button name="action_done"
+                            type="object"
+                            string="Post"
+                            class="btn btn-primary"
+                            states="draft"
+                            groups="dxl_load_sheet.group_load_sheet_supervisor,dxl_load_sheet.group_load_sheet_admin"/>
+                    <button name="action_reset"
+                            type="object"
+                            string="Reset to Draft"
+                            class="btn btn-secondary"
+                            attrs="{'invisible': ['|', ('is_admin', '=', False), ('state','!=','done')]}"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="sale_order_ids" widget="many2many_tags" readonly="1" string="Quotation Reference No.s"/>
+                        </group>
+                        <group>
+                            <field name="sales_orders" invisible="1"/>
+                            <field name="create_date" string="Date"/>
+                            <field name="is_supervisor" invisible="1"/>
+                            <field name="is_admin" invisible="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Product">
+                            <field name="load_sheet_lines">
+                                <tree editable="bottom" decoration-danger="difference &lt; 0" decoration-success="difference &gt;= 0">
+                                    <field name="product_id" readonly="1"/>
+                                    <field name="company_id" invisible="1"/>
+                                    <field name="quantity" readonly="1"/>
+                                    <field name="weight"/>
+                                    <field name="available_qty" attrs="{'readonly': [('parent.is_supervisor', '=', False)]}"/>
+                                    <field name="difference"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"
+                           groups="base.group_user"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                    <field name="activity_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_load_sheet_report" model="ir.actions.act_window">
+        <field name="name">Load Sheet Report</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">load.sheet</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="action_posted" model="ir.actions.server">
+        <field name="name">Generate Load Sheet</field>
+        <field name="model_id" ref="sale.model_sale_order"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">
+            action=record.open_wizard()
+        </field>
+    </record>
+
+    <menuitem
+        id="menu_load_sheet_report"
+        name="Load Sheet Report" 
+        parent="sale.menu_sale_report"
+        action="action_load_sheet_report"
+        sequence="100"/>
+</odoo>

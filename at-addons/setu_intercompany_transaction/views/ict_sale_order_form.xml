@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="ict_sale_order_form" model="ir.ui.view">
+            <field name="name">ict.sale.order.form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="priority">99</field>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='action_view_invoice']" position="before">
+                    <field name="ict_ids" invisible="1"/>
+                    <field name="ict_transfer_type" invisible="1"/>
+                    <button type="object" name="action_view_ict" class="oe_stat_button" icon="fa-truck"
+                            attrs="{'invisible': [('ict_count', '=', 0)]}">
+                        <label for="ict_count" string="ICT"
+                               attrs="{'invisible': [('ict_transfer_type','=','inter_warehouse')]}"/>
+                        <label for="ict_count" string="IWT"
+                               attrs="{'invisible': [('ict_transfer_type','=','inter_company')]}"/>
+                        <field name="ict_count" widget="statinfo" nolabel="1"/>
+                    </button>
+                </xpath>
+                <xpath expr="//button[@name='action_cancel']" position="after">
+                    <button name="action_create_interwarehouse" type="object" string="INTERWAREHOUSE TRANSFER"
+                            attrs="{'invisible': ['|','|','|','|',('intercompany_transfer_id','!=',False),('state','in',('done','cancel','sale')),('ict_count','>', 0),('stock_replenishment_priority','in',['refill_from_intercomapny','do_nothing']),'|',('sale_iwt_option','not in',['manual','as_per_company']),'&amp;',('sale_iwt_option','=','as_per_company'),('create_iwt_option','!=','manual')]}"
+                            class="btn-primary" context="{'iwt_manual':True}"/>
+
+                    <button name="action_create_intercompany" type="object" string="INTERCOMPANY TRANFER"
+                            attrs="{'invisible': ['|','|','|','|',('intercompany_transfer_id','!=',False),('state','in',('done','cancel')),('ict_count','>', 0),('stock_replenishment_priority','in',['refill_from_interwarehouse','do_nothing']), ('create_ict_option','!=','manual')]}"
+                            class="btn-primary" context="{'ict_manual':True}"/>
+                </xpath>
+                <field name="payment_term_id" position="after">
+                    <field name="intercompany_transfer_id" force_save="1"
+                           attrs="{'invisible':[('intercompany_transfer_id','=',False)]}"/>
+                    <field name="create_ict_option" invisible="1"/>
+                    <field name="create_iwt_option" invisible="1"/>
+                    <field name="stock_replenishment_priority" invisible="1"/>
+                    <field name="interwarehouse_channel_ids" invisible="1"/>
+                    <field name="intercompany_channel_id" force_save="1" domain="[('requestor_company_id','=',company_id)]"
+                           attrs="{'invisible': [('stock_replenishment_priority','in',['refill_from_interwarehouse','do_nothing'])], 'readonly':['|',('state','not in',('draft','sent')),('create_ict_option','!=','manual')]}"/>
+                    <field name="sale_iwt_option" widget="radio" force_save="1"
+                           attrs="{'invisible': [('stock_replenishment_priority','in',['refill_from_intercomapny','do_nothing'])],'readonly':['|', ('state','not in',('draft','sent')),('ict_count','>', 0)]}"/>
+                    <field name="interwarehouse_channel_id" domain="[('requestor_warehouse_id','=',warehouse_id)]"
+                           groups="stock.group_stock_multi_warehouses" options="{'no_create': True}" force_save="1"
+                           attrs="{'invisible': ['|',('stock_replenishment_priority','not in',['refill_from_interwarehouse']),('sale_iwt_option','not in',['manual','as_per_company'])], 'readonly':['|',('ict_count','>', 0),'|',('state','not in',('draft','sent')),'&amp;',('sale_iwt_option','!=','manual'),'|',('stock_replenishment_priority','not in',['refill_from_interwarehouse']),('create_iwt_option','!=','manual')]}"
+                    />
+                    <field name="distributed_replenish"
+                           attrs="{'invisible':[('sale_iwt_option','!=','always')],'readonly':[('state','not in',('draft','sent'))]}"
+                           force_save="1"/>
+                </field>
+                <field name="order_line" position="attributes">
+                    <attribute name="context">{'order_id':id}</attribute>
+                </field>
+                <xpath expr="//page[@name='order_lines']//tree//field[@name='price_subtotal']" position="after">
+                    <field name="interwarehouse_channel_id" optional="show" options="{'no_create': True}"
+                           groups="stock.group_stock_multi_warehouses" force_save="1"
+                           attrs="{'column_invisible': ['|',('parent.stock_replenishment_priority','not in',['refill_from_interwarehouse']),('parent.sale_iwt_option','not in',['manual','as_per_company'])], 'readonly':['|',('parent.ict_count','>', 0),'|',('parent.state','not in',('draft','sent')),'&amp;',('parent.sale_iwt_option','!=','manual'),'|',('parent.stock_replenishment_priority','not in',['refill_from_interwarehouse']),('parent.create_iwt_option','!=','manual')]}"></field>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
+
+
+
+
+
+
+

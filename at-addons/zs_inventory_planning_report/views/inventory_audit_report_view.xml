@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="zs_inventory_audit_report_form" model="ir.ui.view">
+        <field name="name">inventory.audit.report.wizard.form</field>
+        <field name="model">inventory.audit.report.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Inventory Audit Report">
+                <sheet string="Inventory Audit">
+                    <group expand="0" string="Filters">
+                        <group>
+                            <field name="franchise_division_ids" widget="many2many_tags"
+                                   options="{'no_create_edit': True}"/>
+                            <field name="product_division_ids" widget="many2many_tags"
+                                   options="{'no_create_edit': True}"/>
+                            <field name="product_category_ids" widget="many2many_tags"
+                                   options="{'no_create_edit': True}"/>
+                        </group>
+                        <group>
+                            <field name="product_brand_ids" widget="many2many_tags" options="{'no_create_edit': True}"/>
+                            <field name="product_ids" widget="many2many_tags" options="{'no_create_edit': True}"/>
+                        </group>
+                    </group>
+
+                </sheet>
+                <footer>
+                    <button name="action_view_pivot"
+                            string="View Data"
+                            type="object"
+                            class="oe_highlight"/>
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+
+            </form>
+        </field>
+    </record>
+
+
+    <record id="zs_inventory_audit_report_action" model="ir.actions.act_window">
+        <field name="name">Inventory Audit Report</field>
+        <field name="res_model">inventory.audit.report.wizard</field>
+        <field name="binding_view_types">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- Tree View for Inventory Audit Data -->
+    <record id="view_inventory_audit_data_tree" model="ir.ui.view">
+        <field name="name">inventory.audit.data.tree</field>
+        <field name="model">inventory.audit.data</field>
+        <field name="arch" type="xml">
+            <tree string="Inventory Audit Data">
+                <field name="assignee_id"/>
+                <field name="scm_officer_id"/>
+                <field name="state" widget="badge"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="audit_company_rule" model="ir.rule">
+        <field name="name">Audit By Company</field>
+        <field name="model_id" ref="model_inventory_audit_data"/>
+        <field name="domain_force">['|',('company_id','=',False),('company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record id="view_audit_line_tree" model="ir.ui.view">
+        <field name="name">audit.line.tree</field>
+        <field name="model">inventory.audit.line</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="serial_no" string="Serial No"/>
+                <field name="franchise_name"/>
+                <field name="division_name"/>
+                <field name="category_name"/>
+                <field name="brand_name"/>
+                <field name="product_name"/>
+                <field name="barcode"/>
+                <field name="qty_available" groups="zs_inventory_planning_report.group_scm_officers"/>
+                <field name="counted_qty"/>
+                <field name="difference" groups="zs_inventory_planning_report.group_scm_officers"/>
+                <field name="remarks"/>
+                <field name="status" groups="zs_inventory_planning_report.group_scm_officers"
+                       decoration-info="status == 'ideal'" decoration-success="status == 'surplus'"
+                       decoration-danger="status == 'deficient'"/>
+                <field name="is_suspended"/>
+                <field name="suspension_reason"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_inventory_audit_lines" model="ir.actions.act_window">
+        <field name="name">Audit Lines</field>
+        <field name="res_model">inventory.audit.line</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_audit_line_tree"/>
+        <field name="domain">[('audit_id', '=', active_id)]</field>
+        <field name="context">{'default_audit_id': active_id}</field>
+    </record>
+
+
+    <!-- Form View for Inventory Audit Data -->
+    <record id="view_inventory_audit_data_form" model="ir.ui.view">
+        <field name="name">inventory.audit.data.form</field>
+        <field name="model">inventory.audit.data</field>
+        <field name="arch" type="xml">
+            <form string="Inventory Audit Data">
+                <header>
+                    <button name="start_audit"
+                            states="draft" string="Start Audit" class="oe_highlight"
+                            type="object"/>
+                    <button name="submit_audit"
+                            states="start_audit" string="Submit" class="oe_highlight"
+                            type="object" groups="zs_inventory_planning_report.group_branch_officers"/>
+                    <button name="finish_audit"
+                            states="submit" string="Finish Audit" class="oe_highlight"
+                            type="object" groups="zs_inventory_planning_report.group_scm_officers"/>
+                    <field name="state" widget="statusbar" options="{'clickable': '1'}"
+                           readonly="1"/>
+                </header>
+                <sheet>
+                    <field name="audit_line_count" invisible="1"/>
+                    <div name="button_box" class="oe_button_box" position="inside">
+                        <button name="action_open_audit_lines" type="object"
+                                class="oe_stat_button" icon="fa-globe icon">
+                            <field name="audit_line_count" widget="statinfo"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="assignee_id" attrs="{'readonly':[('state','=','confirm')]}"/>
+                            <field name="scm_officer_id" attrs="{'readonly':[('state','=','confirm')]}"/>
+                        </group>
+                    </group>
+                    <!--                    <notebook>-->
+                    <!--                        <page string="Audit Lines">-->
+                    <!--                                                <field name="line_ids" attrs="{'readonly': [('state', '=', 'confirm')]}">-->
+                    <!--                                                    <tree editable="bottom">-->
+                    <!--                                                        <field name="franchise_name"/>-->
+                    <!--                                                        <field name="division_name"/>-->
+                    <!--                                                        <field name="category_name"/>-->
+                    <!--                                                        <field name="brand_name"/>-->
+                    <!--                                                        <field name="product_name"/>-->
+                    <!--                                                        <field name="barcode"/>-->
+                    <!--                                                        <field name="qty_available"-->
+                    <!--                                                               groups="zs_inventory_planning_report.group_scm_officers"/>-->
+                    <!--                                                        <field name="counted_qty"/>-->
+                    <!--                                                        <field name="difference" groups="zs_inventory_planning_report.group_scm_officers"/>-->
+                    <!--                                                        <field name="remarks"/>-->
+                    <!--                                                    </tree>-->
+                    <!--                                                </field>-->
+                    <!--                        </page>-->
+                    <!--                    </notebook>-->
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tree View for Inventory Audit Line -->
+    <record id="view_inventory_audit_line_tree" model="ir.ui.view">
+        <field name="name">inventory.audit.line.tree</field>
+        <field name="model">inventory.audit.line</field>
+        <field name="arch" type="xml">
+            <tree string="Audit Lines">
+                <field name="franchise_name"/>
+                <field name="division_name"/>
+                <field name="category_name"/>
+                <field name="brand_name"/>
+                <field name="product_name"/>
+                <field name="barcode"/>
+                <field name="qty_available" groups="zs_inventory_planning_report.group_scm_officers"/>
+                <field name="counted_qty"/>
+                <field name="difference" groups="zs_inventory_planning_report.group_scm_officers"/>
+                <field name="remarks"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Action for Inventory Audit Data -->
+    <record id="action_inventory_audit_data" model="ir.actions.act_window">
+        <field name="name">Inventory Audit</field>
+        <field name="res_model">inventory.audit.data</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_scm_reports" name="Zain SCM Reports" parent="stock.menu_stock_root" sequence="11"/>
+
+    <menuitem id="zs_branch_storage_audit_menu" name="Branch Audit"
+              parent="zs_inventory_planning_report.menu_scm_reports" sequence="2"/>
+
+    <menuitem id="menu_inventory_audit" name="Audit Data"
+              parent="zs_inventory_planning_report.zs_branch_storage_audit_menu"
+              action="action_inventory_audit_data" sequence="2"/>
+
+    <menuitem id="zs_inventory_audit_report" name="Inventory Audit Report"
+              action="zs_inventory_audit_report_action"
+              parent="zs_inventory_planning_report.zs_branch_storage_audit_menu" sequence="1"/>
+</odoo>

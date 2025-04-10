@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+
+    <record id="view_location_form_transit_warehouse" model="ir.ui.view">
+        <field name="name">stock.location.form.transit.warehouse</field>
+        <field name="model">stock.location</field>
+        <field name="inherit_id" ref="stock.view_location_form"/>
+        <field name="arch" type="xml">
+            
+            <xpath expr="//group[@name='additional_info']/field[@name='usage']" position="after">
+                <field name="parent_warehouse"/>
+            </xpath>
+            
+        </field>
+    </record>
+</odoo>

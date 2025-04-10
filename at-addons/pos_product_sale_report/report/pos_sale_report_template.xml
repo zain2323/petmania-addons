@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="brand_template">
+            <t t-call="web.html_container">
+                <t t-call="web.internal_layout">
+                    <!--                <t t-call="arabic_taxable_invoice.custom_internal_layout">-->
+                    <t t-set="o" t-value="company"/>
+                    <!--                    <style>-->
+                    <!--                        .black{-->
+                    <!--                        font-family: Tajawal-Black !important;-->
+                    <!--                        /*font-weight: bold;*/-->
+                    <!--                        }-->
+                    <!--                        .table-border {-->
+                    <!--                        border: 1px solid #808080 !important;-->
+                    <!--                        }-->
+                    <!--                        table{-->
+                    <!--                        margin-bottom: 3px !important;-->
+                    <!--                        }-->
+                    <!--                        .table tr td{-->
+                    <!--                        padding: 0.2rem 0.2rem !important;-->
+                    <!--                        }-->
+                    <!--                    </style>-->
+                    <div class="page">
+                        <div class="row">
+                            <div class="col-4">
+                                <table class="table  table-bordered " border="1">
+                                    <tr>
+                                        <td><b>Brands</b></td>
+                                        <td><t t-esc="brands" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Date From</b></td>
+                                        <td><t t-esc="date_from"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Date To</b></td>
+                                        <td><t t-esc="date_to"/></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <table class="table  table-bordered " border="1">
+                            <thead>
+                                <tr style="color:black; font-size:13px; border-bottom: 1px solid black; border-top: 1px solid black; text-align:center;font-weight:bold;">
+                                    <t t-foreach="cols" t-as="col">
+                                        <td style=" color:black; "><span t-esc="col"/></td>
+                                    </t>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="docs" t-as="doc">
+                                    <tr>
+                                        <t t-foreach="doc.items()" t-as="item">
+                                            <!--                                            <td><span t-esc="item[1]" /></td>-->
+                                            <t t-if="isinstance(item[1], (float, int))">
+                                                <td style="text-align:center;"><span t-esc="item[1]" /></td>
+                                            </t>
+                                            <t t-else="">
+                                                <td><span t-esc="item[1]" /></td>
+                                            </t>
+                                        </t>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                        <div class="footer text-center o_standard_footer">
+                            <span style="float:right;" t-attf-class="text-right" >
+                                Page:
+                                <span class="page"/>
+                                of
+                                <span class="topage"/>
+                            </span>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </template>
+
+    </data>
+</odoo>

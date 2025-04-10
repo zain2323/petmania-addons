@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+     <record id="action_product_grammage_report" model="ir.actions.server">
+        <field name="name">Product Grammage Report</field>
+        <field name="type">ir.actions.server</field>
+        <field name="model_id" ref="product.model_product_template"/>
+        <field name="state">code</field>
+        <field name="code">action = model.print_xlsx_grammage_report()</field>
+    </record>
+
+    <menuitem 
+        id="product_grammage_report_menu" action="action_product_grammage_report"
+        parent="stock.menu_warehouse_report"
+        sequence="10" />
+</odoo>

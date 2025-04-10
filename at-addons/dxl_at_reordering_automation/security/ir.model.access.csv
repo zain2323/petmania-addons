@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+dxl_at_reordering_automation.access_reordering_report_line,access_reordering_report_line,dxl_at_reordering_automation.model_reordering_report_line,base.group_user,1,1,1,1
+dxl_at_reordering_automation.access_reordering_report_wizard,access_reordering_report_wizard,dxl_at_reordering_automation.model_reordering_report_wizard,base.group_user,1,1,1,1

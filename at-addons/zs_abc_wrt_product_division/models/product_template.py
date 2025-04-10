@@ -1,0 +1,400 @@
+from odoo import fields, models, api, _
+from datetime import datetime, timedelta, date
+from odoo.exceptions import UserError
+from dateutil.relativedelta import relativedelta
+import logging
+from collections import defaultdict
+
+_logger = logging.getLogger(__name__)
+
+
+class WarehouseSpec(models.Model):
+    _name = 'warehouse.spec'
+
+    product_id = fields.Many2one('product.product', string="Product")
+    product_tmpl_id = fields.Many2one('product.template', string="Product")
+    ads_quarterly = fields.Char(string="ADS (3 Months)")
+    ads_half_year = fields.Char(string="ADS (6 Months)")
+    warehouse_id = fields.Many2one('stock.warehouse', string="Warehouse")
+
+    storage_config_id = fields.Many2one('min.max.config.storage', string='Min Config By Storage',
+                                        compute="_compute_storage_config_id")
+    value_config_id = fields.Many2one('min.max.config', string='Min Max Config By Value',
+                                      compute="_compute_value_config_id")
+    storage_config_basis = fields.Char(string='Storage Config Basis', compute='_compute_storage_config_id')
+    value_config_basis = fields.Char(string='Value Config Basis', compute='_compute_value_config_id')
+
+    def _compute_value_config_id(self):
+        for rec in self:
+            rec.value_config_id = False
+            rec.value_config_basis = None
+            # for product division
+            value_config_product_division = rec.env['min.max.config'].search(
+                [('product_division', '=', rec.product_tmpl_id.product_division_id.id), ('product_id', '=', False),
+                 ('brand_id', '=', False),
+                 ('product_category_id', '=', False), ('warehouse_id', '=', rec.warehouse_id.id)], limit=1)
+            if value_config_product_division and rec.product_tmpl_id.product_division_id:
+                rec.value_config_id = value_config_product_division.id
+                rec.value_config_basis = "Product Division"
+
+            # for product category
+            value_config_category = rec.env['min.max.config'].search(
+                [('product_category_id', '=', rec.product_tmpl_id.categ_id.id), ('product_id', '=', False),
+                 ('brand_id', '=', False),
+                 ('warehouse_id', '=', rec.warehouse_id.id)], limit=1)
+            if value_config_category and rec.product_tmpl_id.categ_id.id:
+                rec.value_config_id = value_config_category.id
+                rec.value_config_basis = "Category"
+
+            # for brand
+            value_config_brand = rec.env['min.max.config'].search(
+                [('brand_id', '=', rec.product_tmpl_id.product_brand_id.id), ('product_id', '=', False),
+                 ('warehouse_id', '=', rec.warehouse_id.id)], limit=1)
+            if value_config_brand and rec.product_tmpl_id.product_brand_id.id:
+                rec.value_config_id = value_config_brand.id
+                rec.value_config_basis = "Brand"
+
+            #  for product
+            # find out the min and max days of the product by value and storage
+            value_config_product = rec.env['min.max.config'].search(
+                [('product_id', '=', rec.product_id.id), ('warehouse_id', '=', rec.warehouse_id.id)], limit=1)
+            if value_config_product and rec.product_id.id:
+                rec.value_config_id = value_config_product.id
+                rec.value_config_basis = "Product"
+
+    def _compute_storage_config_id(self):
+        for rec in self:
+            rec.storage_config_id = False
+            rec.storage_config_basis = None
+            # for product division
+            storage_config_product_division = rec.env['min.max.config.storage'].search(
+                [('product_division', '=', rec.product_tmpl_id.product_division_id.id), ('product_id', '=', False),
+                 ('brand_id', '=', False),
+                 ('product_category_id', '=', False), ('warehouse_id', '=', rec.warehouse_id.id)], limit=1)
+            if storage_config_product_division and rec.product_tmpl_id.product_division_id.id:
+                rec.storage_config_id = storage_config_product_division.id
+                rec.storage_config_basis = "Product Division"
+
+            # for product category
+            storage_config_category = rec.env['min.max.config.storage'].search(
+                [('product_category_id', '=', rec.product_tmpl_id.categ_id.id), ('product_id', '=', False),
+                 ('brand_id', '=', False),
+                 ('warehouse_id', '=', rec.warehouse_id.id)], limit=1)
+            if storage_config_category and rec.product_tmpl_id.categ_id.id:
+                rec.storage_config_id = storage_config_category.id
+                rec.storage_config_basis = "Category"
+
+            # for brand
+            storage_config_brand = rec.env['min.max.config.storage'].search(
+                [('brand_id', '=', rec.product_tmpl_id.product_brand_id.id), ('warehouse_id', '=', rec.warehouse_id.id),
+                 ('product_id', '=', False), ], limit=1)
+            if storage_config_brand and rec.product_tmpl_id.id:
+                rec.storage_config_id = storage_config_brand.id
+                rec.storage_config_basis = "Brand"
+
+            # for product
+            storage_config_product = rec.env['min.max.config.storage'].search(
+                [('product_id', '=', rec.product_id.id), ('warehouse_id', '=', rec.warehouse_id.id)], limit=1)
+            if storage_config_product and rec.product_id.id:
+                rec.storage_config_id = storage_config_product.id
+                rec.storage_config_basis = "Product"
+
+
+class ProductTemplate(models.Model):
+    _inherit = 'product.template'
+
+    standard_price = fields.Float(
+        'Cost Price', compute='_compute_standard_price',
+        inverse='_set_standard_price', search='_search_standard_price',
+        digits='Product Price', groups="base.group_user",
+        help="""In Standard Price & AVCO: value of the product (automatically computed in AVCO).
+        In FIFO: value of the next unit that will leave the stock (automatically computed).
+        Used to value the product when the purchase cost is not known (e.g. inventory adjustment).
+        Used to compute margins on sale orders.""")
+
+    warehouse_spec_ids = fields.One2many(comodel_name='warehouse.spec', inverse_name='product_tmpl_id',
+                                         string='Warehouse spec ids ids')
+
+    profit_percent = fields.Float(string="Profit Percent", compute="_compute_profit")
+    profit_value = fields.Float(string="Profit Value", compute="_compute_profit")
+
+    custom_uom_id = fields.Many2one('uom.uom', string="UoM")
+    uom_pricing = fields.Float('UoM (Pricing)')
+
+    company_rank = fields.Char(string="C-B-P Rank", compute='_compute_company_rank')
+
+    product_rank = fields.Integer(string="Product Rank", compute="_compute_ranks")
+    category_rank = fields.Integer(string="Category Rank", compute="_compute_ranks")
+    brand_rank = fields.Integer(string="Brand Rank", compute="_compute_ranks")
+    brand_classification = fields.Char(string="Brand Classification", compute="_compute_ranks")
+    category_classification = fields.Char(string="Category Classification", compute="_compute_ranks")
+
+    ads_quarterly = fields.Char(string="ADS (3 Months)", compute='_compute_total_ads')
+    ads_half_year = fields.Char(string="ADS (6 Months)", compute='_compute_total_ads')
+
+    warehouse_config_id = fields.Many2one('min.max.config.warehouse', string="Company Warehouse Configuration",
+                                          compute='_compute_min_max_config_info')
+    warehouse_config_basis = fields.Char(string="Company Warehouse Configuration Basis",
+                                         compute='_compute_min_max_config_info')
+    lead_days = fields.Integer(string="Lead Days(Management)", compute="_compute_min_max_config_info")
+    safety_margin = fields.Float(string="Safety Margin", compute="_compute_min_max_config_info")
+    buffer_stock = fields.Integer(string="Buffer Stock", compute="_compute_min_max_config_info")
+    min_qty = fields.Integer(string="Min QTY", compute="_compute_min_max")
+    max_qty = fields.Integer(string="Max QTY", compute="_compute_min_max")
+
+    def _compute_min_max(self):
+        for rec in self:
+            # Ensure both are floats (in case ads fields are still Char)
+            ads_quarterly = float(rec.ads_quarterly or 0.0)
+            ads_half_year = float(rec.ads_half_year or 0.0)
+
+            ads = max(ads_quarterly, ads_half_year)
+            days = rec.lead_days + (rec.lead_days * (rec.safety_margin/100))
+
+            rec.min_qty = days * ads
+            rec.max_qty = (days * ads) + rec.buffer_stock
+
+    def _compute_min_max_config_info(self):
+        for rec in self:
+            rec.warehouse_config_id = False
+            # for product division
+            warehouse_config_product_division = rec.env['min.max.config.warehouse'].search(
+                [('product_division', '=', rec.product_division_id.id), ('product_id', '=', False),
+                 ('brand_id', '=', False),
+                 ('product_category_id', '=', False)], limit=1)
+            if warehouse_config_product_division and rec.product_division_id.id:
+                rec.warehouse_config_id = warehouse_config_product_division.id
+                rec.warehouse_config_basis = "Product Division"
+
+            # for product category
+            warehouse_config_category = rec.env['min.max.config.warehouse'].search(
+                [('product_category_id', '=', rec.categ_id.id), ('product_id', '=', False),
+                 ('brand_id', '=', False)], limit=1)
+            if warehouse_config_category and rec.categ_id.id:
+                rec.warehouse_config_id = warehouse_config_category.id
+                rec.warehouse_config_basis = "Category"
+
+            # for brand
+            warehouse_config_brand = rec.env['min.max.config.warehouse'].search(
+                [('brand_id', '=', rec.product_brand_id.id), ('product_id', '=', False), ], limit=1)
+            if warehouse_config_brand and rec.id:
+                rec.warehouse_config_id = warehouse_config_brand.id
+                rec.warehouse_config_basis = "Brand"
+
+            # for product
+            product = self.env['product.product'].search([('product_tmpl_id', '=', rec.id)], limit=1)
+            warehouse_config_product = rec.env['min.max.config.warehouse'].search(
+                [('product_id', '=', product.id)], limit=1)
+            if warehouse_config_product and product.id:
+                rec.warehouse_config_id = warehouse_config_product.id
+                rec.warehouse_config_basis = "Product"
+
+            if rec.warehouse_config_id:
+                rec.lead_days = rec.warehouse_config_id.lead_days
+                rec.safety_margin = rec.warehouse_config_id.safety_margin
+                rec.buffer_stock = rec.warehouse_config_id.buffer_stock
+            else:
+                rec.lead_days = False
+                rec.safety_margin = False
+                rec.buffer_stock = False
+
+    def _compute_total_ads(self):
+        for rec in self:
+            rec.ads_quarterly = sum(float(x or 0.0) for x in rec.warehouse_spec_ids.mapped('ads_quarterly'))
+            rec.ads_half_year = sum(float(x or 0.0) for x in rec.warehouse_spec_ids.mapped('ads_half_year'))
+
+    def _calculate_ads(self, months):
+        end_date = (datetime.now() + timedelta(hours=5)).date()
+        n_days = 90 if months == 3 else 180
+        start_date = end_date - timedelta(days=n_days)
+        company = self.env['res.company'].search([('id', '=', 1)])
+        warehouse_ids = [1, 2, 10]
+
+        # filtering warehouses
+        domain = [('id', 'in', warehouse_ids)] if warehouse_ids else []
+        warehouses = self.env['stock.warehouse'].search(domain)
+        field_name = 'ads_quarterly' if months == 3 else 'ads_half_year'
+
+        #  resetting and creating the spec records
+        products = self.env['product.product'].search([])
+        for product in products:
+            for warehouse in warehouses:
+                #  first resetting the ads to zero
+                spec = self.env['warehouse.spec'].search([
+                    ('product_id', '=', product.id),
+                    ('warehouse_id', '=', warehouse.id)
+                ], limit=1)
+                if not spec:
+                    self.env['warehouse.spec'].create({
+                        'product_id': product.id,
+                        'product_tmpl_id': product.product_tmpl_id.id,
+                        'warehouse_id': warehouse.id,
+                        field_name: '0.00',
+                    })
+                else:
+                    spec.write({field_name: '0.00'})
+        #
+        for warehouse in warehouses:
+            query = """Select * from get_abc_sales_analysis_data_v2('%s','%s','%s','%s','%s','%s', '%s')""" % (
+                {company.id}, {}, {}, {warehouse.id}, start_date, end_date, 'all')
+            self._cr.execute(query)
+            sales_data = self._cr.dictfetchall()
+            for sales_dict in sales_data:
+                try:
+                    product_id = sales_dict.get('product_id')
+                    sales_qty = sales_dict.get('sales_qty')
+                    ads = round(sales_qty / n_days, 2)
+                    product = self.env['product.product'].browse(product_id)
+
+                    spec = self.env['warehouse.spec'].search([
+                        ('product_id', '=', product.id),
+                        ('warehouse_id', '=', warehouse.id)
+                    ], limit=1)
+                    spec.write({field_name: ads})
+                except:
+                    pass
+
+    def _cron_calculate_ads(self):
+        """This will calculate the ads based on 3 and 6 months and assign it to the respective fields"""
+        # from respective reordering get its sales history for 3 and 6 months
+        self._calculate_ads(3)
+        self._calculate_ads(6)
+
+    def _compute_company_rank(self):
+        for rec in self:
+            rec.company_rank = f"{rec.category_rank or 0}-{rec.brand_rank or 0}-{rec.product_rank or 0}"
+
+    def _compute_ranks(self):
+        """Compute product, category, and brand ranking based on last 180 days POS sales."""
+        date_threshold = (datetime.now() + timedelta(hours=5)).date() - timedelta(days=180)
+
+        # Fetch POS order lines for the last 180 days
+        pos_lines = self.env['pos.order.line'].search([
+            ('order_id.date_order', '>=', date_threshold),
+            ('order_id.company_id.id', '=', self.env.company.id)
+        ])
+
+        # Compute total sales for products, categories, and brands
+        product_sales = {}
+        category_product_sales = defaultdict(lambda: defaultdict(float))
+        brand_product_sales = defaultdict(lambda: defaultdict(float))
+
+        for line in pos_lines:
+            product = line.product_id.product_tmpl_id
+            product_id = product.id
+            category = product.categ_id
+            brand = product.product_brand_id if hasattr(product, 'product_brand_id') else None
+            sale_amount = line.price_subtotal
+
+            product_sales[product.id] = product_sales.get(product.id, 0) + sale_amount
+            category_product_sales[category.id][product_id] += sale_amount
+            if brand:
+                brand_product_sales[brand.id][product_id] += sale_amount
+
+        # Sort and rank products
+        sorted_products = sorted(product_sales.items(), key=lambda x: x[1], reverse=True)
+        product_ranks = {pid: rank + 1 for rank, (pid, _) in enumerate(sorted_products)}
+
+        # Per-category product ranking
+        category_ranks = {}
+        for category_id, prod_sales in category_product_sales.items():
+            sorted_cat = sorted(prod_sales.items(), key=lambda x: x[1], reverse=True)
+            category_ranks[category_id] = {pid: rank + 1 for rank, (pid, _) in enumerate(sorted_cat)}
+
+        # Per-brand product ranking
+        brand_ranks = {}
+        for brand_id, prod_sales in brand_product_sales.items():
+            sorted_brand = sorted(prod_sales.items(), key=lambda x: x[1], reverse=True)
+            brand_ranks[brand_id] = {pid: rank + 1 for rank, (pid, _) in enumerate(sorted_brand)}
+        # raise UserError(str(category_ranks).get(356))
+        # Update product ranks
+        for product in self:
+            category_rank = category_ranks.get(product.categ_id.id, {}).get(product.id, 0)
+            brand_rank = brand_ranks.get(product.product_brand_id.id, {}).get(product.id, 0) if hasattr(product,
+                                                                                                        'product_brand_id') else 0
+            product.product_rank = product_ranks.get(product.id, 0)
+            product.category_rank = category_rank
+            product.brand_rank = brand_rank
+
+            total_in_category = len(category_ranks.get(product.categ_id.id, {}))
+            total_in_brand = len(brand_ranks.get(product.product_brand_id.id, {})) if product.product_brand_id.id else 0
+            # Calculate percentiles
+            category_percent = (category_rank / total_in_category * 100) if total_in_category else 0
+            brand_percent = (brand_rank / total_in_brand * 100) if total_in_brand else 0
+
+            # Classification logic
+            def classify(percent):
+                if percent <= 30:
+                    return "Super"
+                elif percent <= 70:
+                    return "Leading"
+                else:
+                    return "Normal"
+
+            product.category_classification = classify(category_percent)
+            product.brand_classification = classify(brand_percent) if product.product_brand_id.id else "Normal"
+
+    def _compute_profit(self):
+        for record in self:
+            cost_price = record.standard_price
+            sale_price = record.list_price
+
+            record.profit_value = sale_price - cost_price
+            record.profit_percent = (record.profit_value / cost_price * 100) if cost_price else 0
+
+    def _cron_assign_sales_contribution_class(self):
+        """This will run and assign sales contribution class (aka abc category) based on the product division"""
+        # loop over all the product divisions and find out all the relevant products.
+        # for each division, compute the abc category and assign it in scc
+        # if category is A -> set SCM to FS else FC
+        end_date = datetime.now().date()
+        start_date = date.today().replace(day=1) - relativedelta(months=3)
+
+        product_divisions = self.env['product.division'].search([])
+        for division in product_divisions:
+            products = self.env['product.product'].search([('product_division_id', '=', division.id)])
+            products = set(products.ids) or {}
+
+            if not products:
+                continue
+
+            query = """
+                                Select * from get_division_wise_abc_sales_analysis_data('%s','%s','%s','%s','%s','%s', '%s')
+                            """ % (
+                {}, products, {}, {}, start_date, end_date, 'all')
+            print(query)
+            self._cr.execute(query)
+            sales_data = self._cr.dictfetchall()
+            for product_dict in sales_data:
+                product_id = product_dict['product_id']
+                category = product_dict['analysis_category']
+                scc = self.env['attribute.1'].search([('name', '=', category)])
+                if not scc:
+                    scc = self.env['attribute.1'].create({
+                        'name': category,
+                    })
+
+                product = self.env['product.product'].browse(product_id)
+
+                # assigning scc category
+                product.product_tmpl_id.product_attribute_1_id = scc.id
+
+                # checking if scm category is not trial
+                if not product.product_tmpl_id.product_scm_grading_id.is_trial:
+                    if scc.name == 'A':
+                        if product.product_tmpl_id.product_division_id and product.product_tmpl_id.product_division_id.name.lower() not in [
+                            'accessories']:
+                            scm_grading_name = 'FA (DAILY) CATEGORY'
+                        else:
+                            scm_grading_name = 'AS (DAILY) CATEGORY'
+                    # either B or C
+                    else:
+                        if product.product_tmpl_id.product_division_id and product.product_tmpl_id.product_division_id.name.lower() in [
+                            'accessories']:
+                            scm_grading_name = 'FC (WEEKLY) CATEGORY'
+                        else:
+                            scm_grading_name = 'AT (WEEKLY) CATEGORY'
+
+                    scm_grading = self.env['scm.grading'].search([('name', '=', scm_grading_name)])
+                    if scm_grading:
+                        product.product_tmpl_id.product_scm_grading_id = scm_grading.id

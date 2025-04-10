@@ -1,0 +1,67 @@
+<odoo>
+
+    <record id="extra_company_fields_base_document" model="ir.ui.view">
+        <field name="model">base.document.layout</field>
+        <field name="inherit_id" ref="web.view_base_document_layout"/>
+        <field name="arch" type="xml">
+            <field name="logo" position="after">
+                <field name="ntn"/>
+                <field name="strn"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="extra_company_fields" model="ir.ui.view">
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type="xml">
+            <field name="vat" position="after">
+                <field name="ntn"/>
+                <field name="strn"/>
+            </field>
+        </field>
+    </record>
+    <record id="extra_customer_fileds_view" model="ir.ui.view">
+        <field name="name">res.partner.property.form.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='vat']" position="after">
+                <field name="ntn"/>
+                <field name="strn"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record model="ir.module.category" id="module_pos_sessions">
+        <field name="name">POS Sessions</field>
+        <field name="description">User access POS Sessions</field>
+        <field name="sequence">3</field>
+    </record>
+
+    <record id="group_actual_in_cash" model="res.groups">
+        <field name="name">Actual in Cash</field>
+        <field name="category_id" ref="dxl_print_ntn_strn_v15.module_pos_sessions"/>
+    </record>
+
+    <record id="group_expected_in_cash" model="res.groups">
+        <field name="name">Expected in Cash</field>
+        <field name="category_id" ref="dxl_print_ntn_strn_v15.module_pos_sessions"/>
+    </record>
+
+    <record id="group_order_payments" model="res.groups">
+        <field name="name">Orders and Payments</field>
+        <field name="category_id" ref="dxl_print_ntn_strn_v15.module_pos_sessions"/>
+    </record>
+
+    <record id="group_staring_cash" model="res.groups">
+        <field name="name">Staring Cash</field>
+        <field name="category_id" ref="dxl_print_ntn_strn_v15.module_pos_sessions"/>
+    </record>
+
+    <record id="group_transaction" model="res.groups">
+        <field name="name">Transactions</field>
+        <field name="category_id" ref="dxl_print_ntn_strn_v15.module_pos_sessions"/>
+
+    </record>
+</odoo>

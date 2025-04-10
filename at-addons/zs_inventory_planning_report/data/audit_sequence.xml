@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="audit_report_sequence" model="ir.sequence">
+            <field name="name">Audit Report Sequence</field>
+            <field name="code">audit_report_sequence</field>
+            <field name="prefix">AUDIT </field>
+            <field name="padding">5</field>
+            <field name="number_next">1</field>
+            <field name="company_id" eval="False"/>
+        </record>
+    </data>
+</odoo>

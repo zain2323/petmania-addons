@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+
+    <record id="view_warehouse_is_bonded" model="ir.ui.view">
+        <field name="name">stock.warehouse.is.bonded</field>
+        <field name="model">stock.warehouse</field>
+        <field name="inherit_id" ref="stock.view_warehouse"/>
+        <field name="arch" type="xml">
+            
+            <xpath expr="//form[1]/sheet[1]/group[1]/group[1]" position="inside">
+                <field name="is_bonded" widget="boolean_toggle"/>
+            </xpath>
+            
+        </field>
+    </record>
+</odoo>

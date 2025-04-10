@@ -1,0 +1,20 @@
+{
+    'name': "Purchase Stages",
+    'description': "",
+    'category': 'customization',
+    'sequence': 10,
+    'version': '15.0.0.5',
+    'depends': [ 'purchase', 'purchase_stock'],
+    'data': [
+        'security/ir.model.access.csv',
+        'views/purchase_order_stage.xml',
+        'views/purchase_order.xml',
+        'data/ir_cron.xml',
+    ],
+    'demo' : [] ,
+    'qweb' : [],
+    'installable' : True, 
+    'application' : False,
+    'auto_install' : False,
+    'license': 'LGPL-3',
+}

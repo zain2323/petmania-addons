@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="l10n_in_report_invoice_document_inherit" inherit_id="account.report_invoice_document">
+
+        <xpath expr="//h2/span" position="replace">
+                      <span t-if="o.move_type == 'out_invoice' and o.state == 'posted'">Sales Tax</span>
+        </xpath>
+    </template>
+</odoo>

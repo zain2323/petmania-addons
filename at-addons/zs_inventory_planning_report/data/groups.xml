@@ -1,0 +1,18 @@
+<odoo>
+    <data noupdate="1">
+        <!-- SCM Officers Group -->
+        <record id="group_scm_officers" model="res.groups">
+            <field name="name">SCM Officers</field>
+        </record>
+
+        <!-- Branch Officers Group -->
+        <record id="group_branch_officers" model="res.groups">
+            <field name="name">Branch Officers</field>
+        </record>
+
+          <!-- Executive Officers Group -->
+        <record id="group_executive_officers" model="res.groups">
+            <field name="name">Executive Officers</field>
+        </record>
+    </data>
+</odoo>

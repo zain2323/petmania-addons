@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record model="ir.actions.server" id="action_enable_pos_availability">
+            <field name="name">Enable POS Availability for All Products</field>
+            <field name="model_id" ref="product.model_product_template"/>
+            <field name="binding_model_id" ref="product.model_product_template"/>
+            <field name="state">code</field>
+            <field name="code">
+                for record in records:
+                record.sudo().write({'available_in_pos_company': True})
+            </field>
+        </record>
+    </data>
+</odoo>

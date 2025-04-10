@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="cl_agent_search_form_view" model="ir.ui.view">
+        <field name="name">cl.agent.search.form</field>
+        <field name="model">cl.agent</field>
+        <field name="arch" type="xml">
+            <search string="CC Agent">
+                <field name="name" />
+            </search>
+        </field>
+    </record>
+    <record id="action_open_single_cl_agent" model="ir.actions.act_window">
+        <field name="name">CC Agent</field>
+        <field name="res_model">cl.agent</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <record id="view_brand_tree" model="ir.ui.view">
+        <field name="name">cl.agent.tree</field>
+        <field name="model">cl.agent</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+            </tree>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="action_cl_agent">
+        <field name="name">CC Agent</field>
+        <field name="res_model">cl.agent</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem
+        name="CC Agent"
+        id="menu_cl_agent"
+        action="action_cl_agent"
+        parent="purchase.menu_purchase_config"
+    />
+</odoo>

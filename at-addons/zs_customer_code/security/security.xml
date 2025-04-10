@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="group_first_partner_approval" model="res.groups">
+        <field name="name">Allow First Approval on Partner</field>
+    </record>
+    <record id="group_second_partner_approval" model="res.groups">
+        <field name="name">Allow Second Approval on Partner</field>
+    </record>
+</odoo>

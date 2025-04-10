@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.module.category" id="category_load_sheet">
+            <field name="name">Load Sheet</field>
+        </record>
+        <record id="group_load_sheet_user" model="res.groups">
+            <field name="name">Generate Load Sheet (User)</field>
+            <field name="category_id" ref="dxl_load_sheet.category_load_sheet" />
+        </record>
+        <record id="group_load_sheet_supervisor" model="res.groups">
+            <field name="name">Load Sheet (Supervisor)</field>
+            <field name="category_id" ref="dxl_load_sheet.category_load_sheet" />
+        </record>
+        <record id="group_load_sheet_admin" model="res.groups">
+            <field name="name">Load Sheet (Administrator)</field>
+            <field name="category_id" ref="dxl_load_sheet.category_load_sheet" />
+        </record>
+    </data>
+</odoo>

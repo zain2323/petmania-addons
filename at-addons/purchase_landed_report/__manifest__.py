@@ -1,0 +1,21 @@
+{
+    "name": "Purchase Landed Cost",
+    "summary": "Purchase landed cost excel report",
+    "version": "15.0.5",
+    "maintainers": ["Awis Ali"],
+    "category": "Purchase",
+    'author': "Awis Ali",
+    'website': "https://www.upwork.com/freelancers/~018ff6830780ff04b4",
+    "depends": ['base', 'purchase','product_brand','stock' ,'report_xlsx'],
+    "data": [
+        "security/ir.model.access.csv",
+        "security/security.xml",
+        "views/purchase_order.xml",
+        "wizard/landed_cost_wizard_view.xml",
+        "report/landed_cost_report.xml",
+    ],
+    "application": False,
+    'auto_install': False,
+    "installable": True,
+    'license': 'LGPL-3',
+}

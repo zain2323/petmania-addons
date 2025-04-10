@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- Sequences for res.users/-->
+        <record id="zs_seq_res_parnter" model="ir.sequence">
+            <field name="name">Res Partners</field>
+            <field name="code">res.partner.sequence</field>
+            <field name="prefix">Customer/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <!-- vendor sequence -->
+        <record id="zs_seq_res_parnter_vendor" model="ir.sequence">
+            <field name="name">Res Partners Vendors</field>
+            <field name="code">res.partner.vendor.sequence</field>
+            <field name="prefix">Vendor/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+    </data>
+</odoo>

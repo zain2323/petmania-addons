@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <record id="view_order_product_company_type_inherit" model="ir.ui.view">
+        <field name="name">sale.report.company.type.inherit</field>
+        <field name="model">sale.report</field>
+        <field name="inherit_id" ref="sale.view_order_product_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='Customer']" position="after">
+                <filter string="Company Type" name="Company Type" context="{'group_by':'company_type'}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="product_template_form_company_type_add" model="ir.ui.view">
+        <field name="name">product.template.product.form</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view" />
+        <field name="arch" type="xml">
+            <field name="categ_id" position="after">
+                <field name="company_type" placeholder="Company Type" />
+            </field>
+        </field>
+    </record>
+
+    <record id="product_category_form_company_type_add" model="ir.ui.view">
+        <field name="name">product.category.product.form</field>
+        <field name="model">product.category</field>
+        <field name="inherit_id" ref="product.product_category_form_view" />
+        <field name="arch" type="xml">
+            <field name="parent_id" position="after">
+                <field name="company_type" placeholder="Company Type" />
+            </field>
+        </field>
+    </record>
+
+    <record id="res_partner_form_company_type_add" model="ir.ui.view">
+        <field name="name">res.partner.form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form" />
+        <field name="arch" type="xml">
+            <field name="vat" position="after">
+                <field name="custom_company_type" placeholder="Company Type" />
+            </field>
+        </field>
+    </record>
+
+    <record id="view_partner_tree" model="ir.ui.view">
+        <field name="name">res.partner.tree.inherited</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='phone']" position="after">
+                <field name="custom_company_type"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="product_brand_form_company_type_add" model="ir.ui.view">
+        <field name="name">product.brand.form</field>
+        <field name="model">product.brand</field>
+        <field name="inherit_id" ref="product_brand.view_product_brand_form" />
+        <field name="arch" type="xml">
+            <field name="partner_id" position="after">
+                <field name="company_type" placeholder="Company Type" />
+            </field>
+        </field>
+    </record>
+</odoo>

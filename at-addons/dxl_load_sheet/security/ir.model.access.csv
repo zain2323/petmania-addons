@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+dxl_load_sheet.access_load_sheet,access_load_sheet,dxl_load_sheet.model_load_sheet,base.group_user,1,1,1,0
+dxl_load_sheet.access_load_sheet_wizard,access_load_sheet_wizard,dxl_load_sheet.model_load_sheet_wizard,base.group_user,1,1,1,1
+dxl_load_sheet.access_load_sheet_line,access_load_sheet_line,dxl_load_sheet.model_load_sheet_line,base.group_user,1,1,1,0

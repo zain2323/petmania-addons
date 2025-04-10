@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_order_product_search" model="ir.ui.view">
+        <field name="inherit_id" ref="sale.view_order_product_search"/>
+        <field name="model">sale.report</field>
+        <field name="arch" type="xml">
+            <filter name="Customer" position="after">
+                <filter
+                        string="Procurement Type"
+                        name="procurement_type"
+                        context="{'group_by':'product_procurement_type_id'}"
+                />
+                <filter
+                        string="Product Division"
+                        name="product_division"
+                        context="{'group_by':'product_division_id'}"
+                />
+                <filter
+                        string="Vendor Name"
+                        name="vendor_name"
+                        context="{'group_by':'product_vendor_name_id'}"
+                />
+                <filter
+                        string="Life Stage"
+                        name="life_stage"
+                        context="{'group_by':'product_life_stage_id'}"
+                />
+
+                <filter
+                        string="Packing Type"
+                        name="packing_type"
+                        context="{'group_by':'product_packing_type_id'}"
+                />
+
+                <filter
+                        string="Product Material"
+                        name="product_material"
+                        context="{'group_by':'product_material_id'}"
+                />
+
+                <filter
+                        string="Sales Contribution Class"
+                        name="attribute_1"
+                        context="{'group_by':'product_attribute_1_id'}"
+                />
+
+                <filter
+                        string="Pcs in a pallet"
+                        name="attribute_2"
+                        context="{'group_by':'product_attribute_2_id'}"
+                />
+
+                <filter
+                        string="Pcs in a layer"
+                        name="attribute_3"
+                        context="{'group_by':'product_attribute_2_id'}"
+                />
+
+                <filter
+                        string="Packing Nature"
+                        name="packing_nature"
+                        context="{'group_by':'product_packing_nature_id'}"
+                />
+                <filter
+                        string="Pcs in a tray"
+                        name="pcs_tray"
+                        context="{'group_by':'product_pcs_in_a_tray'}"
+                />
+            </filter>
+        </field>
+    </record>
+</odoo>

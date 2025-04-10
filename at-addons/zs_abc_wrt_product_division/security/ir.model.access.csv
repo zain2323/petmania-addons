@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_min_max_config,access_min_max_config,model_min_max_config,base.group_user,1,1,1,1
+access_min_max_config_lines,access_min_max_config_lines,model_min_max_config_lines,base.group_user,1,1,1,1
+
+access_min_max_config_storage,access_min_max_config_storage,model_min_max_config_storage,base.group_user,1,1,1,1
+
+access_warehouse_spec,access_warehouse_spec,model_warehouse_spec,base.group_user,1,1,1,1
+access_min_max_config_warehouse,access_min_max_config_warehouse,model_min_max_config_warehouse,base.group_user,1,1,1,1

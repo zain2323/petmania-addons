@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record model="ir.actions.server" id="action_optimize_quantities">
+            <field name="name">Optimize Quantities</field>
+            <field name="model_id" ref="zs_inventory_planning_report.model_inventory_optimisation_data"/>
+            <field name="binding_model_id" ref="zs_inventory_planning_report.model_inventory_optimisation_data"/>
+            <field name="state">code</field>
+            <field name="groups_id" eval="[(4, ref('zs_inventory_planning_report.group_executive_officers'))]"/>
+            <field name="code">
+                records.sudo()._optimize_quantities()
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,31 @@
+Date : 7th November 2023
+Version : 15.7 (in __manifest__.py)
+Odoo Version : 15.7
+Done by : Rathod Hetvi
+Tested by : Rathod Hetvi
+Module : setu_advance_reordering
+	- added restriction in Replenishment from Warehouses for duplicate warehouses
+
+Date : 1st May 2023
+Version : 15.6 (in __manifest__.py)
+Odoo Version : 15
+Done by : Udit Ramani
+Tested by : Udit Ramani on 1st May 2023
+Module : setu_advance_reordering
+	- Procurement exception handing case(solution048) and purchase_stock run method not calling issue fixed.
+
+Date : 27th March 2023
+Version : 15.5 (in __manifest__.py)
+Odoo Version : 15.5
+Done by : Devangi Pabari
+Tested by : Devangi Pabari on 27th March 2023
+Module : setu_advance_reordering
+	- Issues Fix Related To Purchase Order's Unit Of Measure and Quantity
+
+Date : 24th Feb 2023
+Version : '3.0' (in __manifest__.py)
+Odoo Version : 15
+Done by : Udit Ramani
+Tested by : Udit Ramani on 24th Feb 2023
+Module : setu_advance_reordering
+	- Issue fixed related to Vendor MOQ in Real demand.

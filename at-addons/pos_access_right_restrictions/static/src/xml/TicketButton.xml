@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates xml:space="preserve">
+    <t name="pos_access_right.forceticketbutton" owl="1"
+       t-inherit="point_of_sale.TicketButton" t-inherit-mode="extension">
+        <xpath expr="//div[hasclass('ticket-button')]" position="replace">
+                <div t-if="props.showTicketButton" class="ticket-button" t-att-class="{ highlight: props.isTicketScreenShown}" t-on-click="onClick">
+                    <div class="with-badge" t-att-badge="count">
+                            <i class="fa fa-ticket" aria-hidden="true"></i>
+                    </div>
+                    <div t-if="!env.isMobile">Orders</div>
+                </div>
+                <div t-if="!props.showTicketButton" >
+                   
+                </div>
+        </xpath>
+    </t>
+</templates>

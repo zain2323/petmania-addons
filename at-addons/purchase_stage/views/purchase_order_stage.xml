@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    
+    <record id="purchase_order_stage_view_tree" model="ir.ui.view">
+        <field name="name">purchase.order.stage.view.tree</field>
+        <field name="model">purchase.order.stage</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="stage_type"/>
+                <field name="consignment_type"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_purchase_order_stage" model="ir.actions.act_window">
+        <field name="name">Purchase Order Stage</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">purchase.order.stage</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="purchase_order_stage_view_tree"/>
+        <field name="target">current</field>
+        <field name="context">{}</field>
+        <field name="domain">[]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face"> No Records to Show </p>
+        </field>
+    </record>
+
+    <menuitem
+        id="menu_purchase_order_stage_root"
+        name="Purchase Stages"
+        parent="purchase.menu_purchase_config"
+        sequence="50"/>
+
+    <menuitem
+        action="action_purchase_order_stage"
+        id="menu_purchase_order_stage"
+        name="Purchase Stages"
+        parent="menu_purchase_order_stage_root"
+        sequence="10"/>
+
+</odoo>

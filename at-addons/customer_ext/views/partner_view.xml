@@ -1,0 +1,56 @@
+<odoo>
+
+    <record id="view_partner_form" model="ir.ui.view">
+        <field name="name">res.partner.form.inherited</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='vat']" position="after">
+                <field name="type_id" string="Customer Type"
+                       attrs="{'invisible': [('is_customer', '=', False)]}"
+                       groups="customer_ext.group_access_customer_type" />
+                <field name="order_booker_id" string="Sponsor Captain"
+                       attrs="{'invisible': [('is_customer', '=', False)]}"
+                       groups="customer_ext.group_access_customer_order_booker" />
+                <field name="backup_captain" string="Backup Captain"
+                       attrs="{'invisible': [('is_customer', '=', False)]}"
+                       groups="customer_ext.group_access_customer_order_booker" />
+                <field name="is_customer" invisible="1" />
+                <field name="customer_rank" invisible="1" />
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_partner_tree" model="ir.ui.view">
+        <field name="name">res.partner.tree.inherited</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='phone']" position="after">
+                <field name="order_booker_id"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_res_partner_filter" model="ir.ui.view">
+        <field name="name">res.partner.search.inherited</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_res_partner_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='salesperson']" position="after">
+                <filter name="type" string="Customer Type" domain="[]" context="{'group_by' : 'type_id'}" />
+                <filter name="order_booker_id" string="Sponsor Captain" domain="[]" context="{'group_by' : 'order_booker_id'}" />
+                <filter name="backup_captain" string="Backup Captain" domain="[]" context="{'group_by' : 'backup_captain'}" />
+            </xpath>
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="type_id"
+                       groups="customer_ext.group_access_customer_type" />
+                <field name="order_booker_id" string="Sponsor Captain"
+                       groups="customer_ext.group_access_customer_order_booker" />
+                <field name="backup_captain" string="Backup Captain"
+                       groups="customer_ext.group_access_customer_order_booker" />
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

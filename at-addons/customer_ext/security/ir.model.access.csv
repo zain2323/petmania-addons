@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_customer_type,customer.type,model_customer_type,,1,1,1,1
+access_customer_order_booker,customer.order.booker,model_customer_order_booker,,1,1,1,1

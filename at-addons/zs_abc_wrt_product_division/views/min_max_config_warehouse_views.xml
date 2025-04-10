@@ -1,0 +1,56 @@
+<odoo>
+    <record id="view_min_max_config_warehouse_tree" model="ir.ui.view">
+        <field name="name">min.max.config.warehouse.tree</field>
+        <field name="model">min.max.config.warehouse</field>
+        <field name="arch" type="xml">
+            <tree string="Min-Max Configurations Company Warehouse">
+                <field name="product_id"/>
+                <field name="brand_id"/>
+                <field name="product_category_id"/>
+                <field name="product_division"/>
+                <field name="warehouse_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_min_max_config_warehouse_form" model="ir.ui.view">
+        <field name="name">min.max.config.warehouse.form</field>
+        <field name="model">min.max.config.warehouse</field>
+        <field name="arch" type="xml">
+            <form string="Min-Max Configuration Company Warehouse">
+                <sheet>
+                    <group>
+                        <field name="warehouse_id"/>
+                        <field name="product_division"/>
+                        <field name="product_category_id"/>
+                        <field name="brand_id"/>
+                        <field name="product_id"/>
+                    </group>
+                    <group>
+                        <field name="lead_days"/>
+                        <field name="safety_margin"/>
+                        <field name="buffer_stock"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_min_max_config_warehouse" model="ir.actions.act_window">
+        <field name="name">Min-Max Configurations For Company Warehouse</field>
+        <field name="res_model">min.max.config.warehouse</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_create">
+                Create your first Min-Max Configuration For Company Warehouse
+            </p>
+        </field>
+    </record>
+    <menuitem
+            name="Min Max Configuration For Company Warehouse"
+            id="menu_min_max_config_warehouse"
+            action="action_min_max_config_warehouse"
+            sequence="9"
+            parent="zs_inventory_planning_report.zs_branch_storage_configuration_menu"
+    />
+</odoo>

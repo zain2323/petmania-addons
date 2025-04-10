@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+     <record id="view_reordering_slab_qty_tree" model="ir.ui.view">
+        <field name="name">reordering.slab.qty.form.view</field>
+        <field name="model">reordering.slab.qty</field>
+        <field name="arch" type="xml">
+            <tree string="Reordering Qty SLabs">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+     <record id="view_reordering_slab_qty_form" model="ir.ui.view">
+        <field name="name">reordering.slab.qty.form.view</field>
+        <field name="model">reordering.slab.qty</field>
+        <field name="arch" type="xml">
+            <form string="Reordering Qty SLabs">
+                <sheet string="Reordering Qty SLabs">
+                     <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <notebook>
+                        <page string="Slabs" name="information">
+                            <field name="reordering_slab_lines">
+                                <tree editable="bottom">
+                                    <field name="min_cost"/>
+                                    <field name="max_cost"/>
+                                    <field name="min_inventory"/>
+                                    <field name="max_inventory"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="action_reordering_slab_qty" model="ir.actions.act_window">
+        <field name="name">Reordering Qty SLabs</field>
+        <field name="res_model">reordering.slab.qty</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_reordering_slab_qty_tree"/>
+    </record>
+
+    <menuitem id="menu_reordering_slab_qty" name="Reordering Qty SLabs"
+          parent="setu_advance_reordering.menu_sub_reorder_configuration" sequence="30"
+          action="action_reordering_slab_qty"/>
+
+
+</odoo>

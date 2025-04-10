@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_order_product_template_inherit" model="ir.ui.view">
+        <field name="name">product.template.secondary.name</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='barcode']" position="after">
+                <field name="use_secondary_name" string="Use Secondary Name?"/>
+                <field name="secondary_name" string="Secondary Name"/>
+              </xpath>
+        </field>
+    </record>
+        <record id="view_order_product_product_inherit" model="ir.ui.view">
+        <field name="name">product.product.secondary.name</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='barcode']" position="after">
+                <field name="use_secondary_name" string="Use Secondary Name?"/>
+                <field name="secondary_name" string="Secondary Name"/>
+              </xpath>
+        </field>
+    </record>
+</odoo>

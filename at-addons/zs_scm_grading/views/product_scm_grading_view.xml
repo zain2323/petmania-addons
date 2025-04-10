@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="scm_grading_search_form_view" model="ir.ui.view">
+        <field name="name">scm.grading.search.form</field>
+        <field name="model">scm.grading</field>
+        <field name="arch" type="xml">
+            <search string="SCM Grading">
+                <field name="name"/>
+            </search>
+        </field>
+    </record>
+    <record id="action_open_scm_grading" model="ir.actions.act_window">
+        <field name="name">SCM Grading</field>
+        <field name="res_model">product.template</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('product_scm_grading_id', '=', active_id)]</field>
+    </record>
+    <record id="action_open_single_scm_grading" model="ir.actions.act_window">
+        <field name="name">SCM Grading</field>
+        <field name="res_model">scm.grading</field>
+        <field name="view_mode">tree,form</field>
+        <field name="target">current</field>
+        <field name="domain">[('product_ids', 'in', active_id)]</field>
+    </record>
+    <record id="view_product_brand_form" model="ir.ui.view">
+        <field name="name">scm.grading.form</field>
+        <field name="model">scm.grading</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button
+                                name="%(action_open_scm_grading)d"
+                                type="action"
+                                class="oe_stat_button"
+                                icon="fa-cubes"
+                        >
+                            <field
+                                    name="products_count"
+                                    widget="statinfo"
+                                    string="Products"
+                                    context="{'default_product_brand_id': active_id}"
+                            />
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <label for="name" string="SCM Grading" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <field name="is_trial" string="Is Trial?"/>
+                    </group>
+                    <notebook>
+                        <page name="description" string="Description">
+                            <field name="description" nolabel="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_product_brand_tree" model="ir.ui.view">
+        <field name="name">scm.grading.tree</field>
+        <field name="model">scm.grading</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="description"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_product_template_search_scm_grading" model="ir.ui.view">
+        <field name="name">product.template.search.scm.grading</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_search_view"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="product_scm_grading_id"/>
+                <filter
+                        string="SCM Grading"
+                        name="groupby_scm_grading"
+                        domain="[]"
+                        context="{'group_by' : 'product_scm_grading_id'}"
+                />
+                <separator/>
+            </field>
+        </field>
+    </record>
+    <record id="product_template_form_scm_grading_add" model="ir.ui.view">
+        <field name="name">product.template.product.form</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <field name="sale_ok" position="before">
+                <field name="product_scm_grading_id" placeholder="SCM Grading"/>
+                <div/>
+            </field>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="action_product_scm_grading">
+        <field name="name">SCM Grading</field>
+        <field name="res_model">scm.grading</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem
+            name="SCM Grading"
+            id="menu_scm_grading"
+            action="action_product_scm_grading"
+            parent="sale.prod_config_main"
+    />
+</odoo>

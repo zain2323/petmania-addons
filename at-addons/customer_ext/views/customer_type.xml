@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_customer_type_tree" model="ir.ui.view">
+        <field name="name">customer.type.tree</field>
+        <field name="model">customer.type</field>
+        <field name="arch" type="xml">
+            <tree editable="top">
+                <field name="name" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_customer_type_search" model="ir.ui.view">
+        <field name="name">customer.type.search</field>
+        <field name="model">customer.type</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" />
+            </search>
+        </field>
+    </record>
+
+    <record id="view_customer_type_action" model="ir.actions.act_window">
+        <field name="name">Customer Type</field>
+        <field name="res_model">customer.type</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+    <menuitem id="menu_customer_type"
+              name="Customer Type"
+              parent="sale.menu_sale_config"
+              action="customer_ext.view_customer_type_action"
+              groups="customer_ext.group_access_customer_type"
+              sequence="14"
+    />
+
+</odoo>

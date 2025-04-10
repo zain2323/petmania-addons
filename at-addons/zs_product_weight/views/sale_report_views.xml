@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <record id="view_order_product_company_type_inherit" model="ir.ui.view">
+        <field name="name">sale.report.company.type.inherit</field>
+        <field name="model">sale.report</field>
+        <field name="inherit_id" ref="sale.view_order_product_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='Customer']" position="after">
+                <filter string="Product Weight" name="Product Weight" context="{'group_by':'product_weight'}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_order_account_invoice_report_product_company_type_inherit" model="ir.ui.view">
+        <field name="name">account.invoice.report.product.weight.inherit</field>
+        <field name="model">account.invoice.report</field>
+        <field name="inherit_id" ref="account.view_account_invoice_report_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='user']" position="after">
+                <filter string="Product Weight" name="Product Weight" context="{'group_by':'product_weight'}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_order_stock_quant_inherit" model="ir.ui.view">
+        <field name="name">stock.quant.product.weight.inherit</field>
+        <field name="model">stock.quant</field>
+        <field name="inherit_id" ref="stock.quant_search_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='productgroup']" position="after">
+                <filter string="Product Weight" name="Product Weight" context="{'group_by':'product_weight'}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_order_purchase_report_inherit" model="ir.ui.view">
+        <field name="name">purchase.report.product.weight.inherit</field>
+        <field name="model">purchase.report</field>
+        <field name="inherit_id" ref="purchase.view_purchase_order_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='group_partner_id']" position="after">
+                <filter string="Product Weight" name="Product Weight" context="{'group_by':'product_weight'}"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

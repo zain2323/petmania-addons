@@ -1,0 +1,17 @@
+<odoo>
+    <record id="view_customer_sales_analysis_pivot" model="ir.ui.view">
+        <field name="name">customer.sales.analysis.data.pivot</field>
+        <field name="model">customer.sales.data</field>
+        <field name="arch" type="xml">
+            <pivot string="Customer Sales Analysis">
+                <field name="customer_name" type="row"/>
+                <field name="brand_name" type="col"/>
+                <field name="sales" type="measure" />
+                <field name="brand_purchase_count" type="measure"/>
+                <field name="order_count" type="measure"/>
+                <field name="drop_size_avg" type="measure"/>
+                <field name="brand_coverage" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+</odoo>

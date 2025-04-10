@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <record id="landed_cost_report" model="ir.actions.report">
+        <field name="name">Print to XLSX</field>
+        <field name="model">landed.cost.report</field>
+        <field name="report_type">xlsx</field>
+        <field name="report_name">purchase_landed_report.landed_cost_template</field>
+        <field name="report_file">Landed Cost Report</field>
+        <field name="binding_type">report</field>
+    </record>
+
+</odoo>

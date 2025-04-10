@@ -1,0 +1,9 @@
+Date : 12th May 2023
+Version : '3.0' (in __manifest__.py)
+Odoo Version : 15
+Done by : Devangi Pabari
+Tested by : Devangi Pabari
+Module : setu_intercompany_transaction
+ -Replenishment strategy option added in the sale order as well for IWT. Stock + IWT added in all options accept Manual in company configuration.
+
+

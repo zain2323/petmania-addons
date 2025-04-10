@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_warehouse_orderpoint_form" model="ir.ui.view">
+        <field name="name">stock.warehouse.orderpoint.extended</field>
+        <field name="model">stock.warehouse.orderpoint</field>
+        <field name="inherit_id" ref="stock.view_warehouse_orderpoint_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='product_id']" position="after">
+                <field name="reordering_slab" string="Reordering Qty Slabs"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

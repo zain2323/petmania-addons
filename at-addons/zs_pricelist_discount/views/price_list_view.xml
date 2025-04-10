@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_order_product_pricelist_item_discount_inherit" model="ir.ui.view">
+        <field name="name">product.pricelist.item.disocunt</field>
+        <field name="model">product.pricelist.item</field>
+        <field name="inherit_id" ref="product.product_pricelist_item_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='price_surcharge']" position="after">
+                <field name="extra_discount" string="Extra Discount %"/>
+              </xpath>
+        </field>
+    </record>
+</odoo>

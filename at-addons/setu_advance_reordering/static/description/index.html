@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Advance Reordering / Advance Purchase Reordering | Setu Consulting Services Pvt. Ltd. | Odoo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://www.setuconsulting.com/css/fonts.css" rel="stylesheet">
+    <link href="https://www.setuconsulting.com/css/plugins.css" rel="stylesheet">
+    <!-- <link href="https://www.setuconsulting.com/css/style.css" rel="stylesheet"> -->
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+    
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap" rel="stylesheet">
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"> -->
+    <link rel="stylesheet" type="text/css" href="main.css">
+</head>
+<!-- odoo description page css -->
+<style>
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    .h1,
+    .h2,
+    .h3,
+    .h4,
+    .h5,
+    .h6 {
+        font-family: "Montserrat", sans-serif;
+        font-weight: 400;
+        line-height: 1.1;
+        color: #21272b;
+    }
+
+    ul {
+        color: #222020;
+    }
+
+    * {
+        font-family: "Montserrat", sans-serif;
+    }
+</style>
+<body>
+<div class="container">
+    <!-- Header -->
+    <div class="row justify-content-md-between justify-content-center border-bottom align-items-center py-2 mx-0">
+        <div id="logo">
+            <img src="images/odoo_images/setu.png" width="150px" class="logo-default" data-toggle="tooltip" data-placement="right" title="Setu Consulting Services Pvt. Ltd." alt="Setu Consulting Services Pvt. Ltd.">
+        </div>
+        <div class="ml-sm-center">
+            <strong>User Guide:</strong>
+            <span class="btn-success mx-2 pr-sm-4 mb-2 mb-lg-0" style="padding: 7px 7px 7px 7px; font-size: 14px; border-radius: 5px;" title="Copy this link and paste it to new tab or window"><strong>
+                https://www.setuconsulting.com/slides/advance-reordering-user-guide-13</strong></span>
+        </div>
+        <div class="text-center">
+            <a href="mailto:apps@setuconsulting.com?subject=Advance Reordering Version 15.0 - Demo Request" target="_blank" class="btn btn-primary mx-2 pr-sm-4 mb-2 mb-lg-0" style="text-transform: uppercase; font-size: 14px;"><i class="fa fa-envelope-square mr-sm-2" style="font-size: 20px;vertical-align: middle;"></i> <span class="d-none d-sm-inline">Request a demo</span></a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div class="text-center mb-4 mt-3">
+                <a class="btn" style="width: auto; font-size: 32px; font-weight: bold; background: linear-gradient(to right, #F27E00, #F29500);box-shadow: 0px 0px 6px 3px #d7e5f1; padding-top: 12px;padding-bottom: 12px;padding-left: 60px; padding-right: 60px; border-radius: 28px; color: white; border: none;">Advance Reordering
+                </a>
+                <a href="https://www.youtube.com/playlist?list=PLH6xCEY0yCIBXSy1ZH3tGj6NPaZqCllca" target="_blank"><img src="images/video_userguide.png" title="Video user guide" alt="Video user guide" width="300px" class="ml-4">
+                </a>
+            </div>
+            <!-- <img src="images/overview.png"> -->
+            <div class="row p-3 pt64 pb64 shadow" style="border-radius:10px; padding:5px; border-top:4px solid #5A63A6; width: 100%">
+                <div class="col-lg-8 text-center">
+                    <h2 class="mb-3">OVERVIEW</h2>
+                    <p style="font-size: 18px; letter-spacing: 0.2px; text-align: justify;" class="px-sm-4 p-2">
+                        Purchasing is the main point in supply chain management. Manage accurate inventories is the key point for businesses and nightmares as well. Inaccurate inventories puts organizations either in Over stock or Out of stock. <br>Overstock blocks cash flow whereas Out of stock breaks revenue channels.<br>It is always necessary to bring the right inventories at the right time in the warehouses. Effective inventory management is one of the biggest challenges that entrepreneurs face. It’s not easy to balance customer demand with the right level of inventory.
+                    </p>
+                </div>
+                <div class="col-lg-4">
+                    <img src="images/advance_reordering_overview.jpeg" alt="Advance Reordering" class="w-100" style="border-radius: 10px; box-shadow: 0px 2px 9px 4px #d0cecb;">
+                </div>
+
+                <div class="col-lg-4 mt32">
+                    <img src="images/advance_reordering.jpg" alt="Advance Reordering" class="w-100" style="border-radius: 10px; box-shadow: 0px 2px 9px 4px #d0cecb;">
+                </div>
+                <div class="col-lg-8 text-center">
+                    <p style="font-size: 18px; letter-spacing: 0.2px; text-align: justify; margin-top: 50px" class="px-sm-4 p-2">
+                        Advance Reordering is the solution for those nightmares. It helps to manage accurate inventories by placing accurate purchase orders or replenish inventories from the other warehouses of the same companies or other companies. It helps to prevent Out of stock and Overstock situations with it’s smart features. Let’s take a look on it’s key features.
+                    </p>
+                </div>
+            </div>
+            <p class="text-justify text-muted" data-animate="fadeIn" data-animate-delay="400"><!-- <span class="dropcap dropcap-colored"> B </span> --> 
+                <font size="4"></font>
+            </p><br>
+            
+            <!-- KEY FEATURES START -->
+            <h2 class="text-left">Key Features</h2>
+            <h5 class="text-right">
+                <span style="padding: .3em .8em; color: #ffffff; background-color: #875A7B !important; font-size: 16px; border-radius: 2px;"><b><i class="fa fa-check"></i> Enerprise</b></span>
+                <span style="padding: .3em .8em; color: #ffffff; background-color: #875A7B !important; font-size: 16px; border-radius: 2px;"><b><i class="fa fa-check"></i> Community</b></span>
+                <span style="padding: .3em .8em; color: #ffffff; background-color: #875A7B !important; font-size: 16px; border-radius: 2px;"><b><i class="fa fa-check"></i> Odoo.sh</b></span>
+            </h5>
+            <div class="row  border-left-0 position-relative align-items-center px-sm-5 py-sm-5 px-1 py-4" style="border: 2px solid #875a7b; border-radius: 35px; border-top-left-radius: 0; border-bottom-left-radius:0; margin-left:25px">
+                <div class="col-lg-8">
+                    <ul class="list-unstyled pl-0  bg-white" style="font-size:15px;">
+                        <h2 class="text-center mb-3">Advance reordering based on <br> ORDER POINTS</h2>
+                        <div class="text-center mb-3">
+                            <img src="images/line.png" alt="Advance reordering based on ORDER POINTS" width="60%" height="60%">
+                        </div>
+                        <font size="4">
+                            <li class="mb-4" style="list-style: none">
+                                <img src="images/next.svg" alt="arrow" style="width:15px;margin-right:10px" class="ml-4">Multiple options stock replenishment options in Order points
+                                <li class="mb-4" style="list-style-type: none; margin-left: 70px"><img src="images/redo.svg" alt="arrow" style="width:15px;margin-right:10px" class="ml-4">Create Inter company transaction from Order points</li>
+                                <li class="mb-4" style="list-style: none; margin-left: 70px"><img src="images/redo.svg" alt="arrow" style="width:15px;margin-right:10px" class="ml-4">Create Inter warehouse transaction from Order points</li>
+                                <li class="mb-4" style="list-style: none; margin-left: 70px"><img src="images/redo.svg" alt="arrow" style="width:15px;margin-right:10px" class="ml-4">Create Purchase order from order points</li>
+                            </li>
+                        </font>
+                        <font size="4">
+                            <li class="mb-4" style="list-style: none">
+                                <img src="images/next.svg" alt="arrow" style="width:15px;margin-right:10px" class="ml-4">Place purchase order based on strategy
+                                <li class="mb-4" style="list-style: none; margin-left: 70px"><img src="images/redo.svg" alt="arrow" style="width:15px;margin-right:10px" class="ml-4">Choose cheapest supplier</li>
+                                <li class="mb-4" style="list-style: none; margin-left: 70px"><img src="images/redo.svg" alt="arrow" style="width:15px;margin-right:10px" class="ml-4">Choose quickest supplier</li>
+                                <li class="mb-4" style="list-style: none; margin-left: 70px"><img src="images/redo.svg" alt="arrow" style="width:15px;margin-right:10px" class="ml-4">Choose specific supplier</li>
+                            </li>
+                        </font>
+                        <font size="4">
+                            <li class="mb-4" style="list-style: none"><img src="images/next.svg" alt="arrow" style="width:15px;margin-right:10px" class="ml-4">Safety stock suggestion</li>
+                        </font>
+                        <font size="4">
+                            <li class="mb-4" style="list-style: none"><img src="images/next.svg" alt="arrow" style="width:15px;margin-right:8px" class="ml-4">Product average daily sales and maximum daily sales information</li>
+                        </font>
+                        <font size="4">
+                            <li class="mb-4" style="list-style: none"><img src="images/next.svg" alt="arrow" style="width:15px;margin-right:10px" class="ml-4">Reordering level suggestions</li>
+                        </font>
+                        <font size="4">
+                            <li class="mb-4" style="list-style: none"><img src="images/next.svg" alt="arrow" style="width:15px;margin-right:10px" class="ml-4">Set reorder level with buffer days stock</li>
+                        </font>
+                        <font size="4">
+                            <li class="mb-4" style="list-style: none"><img src="images/next.svg" alt="arrow" style="width:15px;margin-right:10px" class="ml-4">Create multiple order points together</li>
+                        </font>
+                        <font size="4">
+                            <li class="mb-4" style="list-style: none"><img src="images/next.svg" alt="arrow" style="width:15px;margin-right:10px" class="ml-4">Sales & Purchase history data for analysis</li>
+                        </font>
+                        <font size="4">
+                            <li class="mb-4" style="list-style: none"><img src="images/next.svg" alt="arrow" style="width:15px;margin-right:10px" class="ml-4">Auto update sales & purchase history</li>
+                        </font>
+                        <font size="4">
+                            <li class="mb-4" style="list-style: none"><img src="images/next.svg" alt="arrow" style="width:15px;margin-right:10px" class="ml-4">Automated scheduler to calculate Minimum/Maximum <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; reorder level</li>
+                        </font>
+                        <font size="4">
+                            <li class="mb-4" style="list-style: none"><img src="images/next.svg" alt="arrow" style="width:15px;margin-right:10px" class="ml-4">Quick order points creation from wizard </li>
+                        </font>
+                    </ul>
+                </div>
+                <div class="col-lg-4">
+                    <img src="images/reorder-level.png" alt="Reordering Order Point" class="w-100" style="border-radius: 10px; box-shadow: 0px 2px 9px 4px #d0cecb;">
+                </div>
+            </div>
+            <div class="row position-relative border-right-0 px-sm-5 py-sm-5 px-1 py-4" style="border: 2px solid #875a7b;margin-top: -2px ;transform: translateX(-35px);;border-radius: 35px;border-top-right-radius: 0;border-bottom-right-radius: 0; margin-right: 25px">
+                <div class="col-lg-4">
+                    <img src="images/demand-generation.png" alt="Rordering With Demand Generation" class="w-100" style="margin-top:100px; border-radius: 10px;box-shadow: 0px 2px 9px 4px #d0cecb;">
+                </div>
+                <div class="col-lg-8 order-lg-1 order-0">
+                    <ul class="list-unstyled pl-0  bg-white" style="font-size:15px;">
+                        <h2 class="text-center mb-3">Advance reordering with Demand generation</h2>
+                        <div class="text-center mb-3">
+                            <img src="images/line.png" alt="Advance reordering with Demand generation" width="60%" height="60%">
+                        </div>
+                        <font size="4">
+                            <li class="mb-4" style="list-style: none"><img src="images/next.svg" alt="arrow" style="width:15px;margin-right:10px" class="ml-4">Create purchase orders for warehouse group</li>
+                        </font>
+                        <font size="4">
+                            <li class="mb-4" style="list-style: none"><img src="images/next.svg" alt="arrow" style="width:15px;margin-right:10px" class="ml-4">Create purchase orders for multiple warehouse groups together</li>
+                        </font>
+                        <font size="4">
+                            <li class="mb-4" style="list-style: none"><img src="images/next.svg" alt="arrow" style="width:15px;margin-right:10px" class="ml-4">Options to manage vendor’s minimum rules for quantity or <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; amount</li>
+                        </font>
+                        <font size="4">
+                            <li class="mb-4" style="list-style: none"><img src="images/next.svg" alt="arrow" style="width:15px;margin-right:10px" class="ml-4">Get real demand from calculation</li>
+                        </font>
+                        <font size="4">
+                            <li class="mb-4" style="list-style: none"><img src="images/next.svg" alt="arrow" style="width:15px;margin-right:10px" class="ml-4">Use past sales or forecasted sales to generate demands</li>
+                        </font>
+                        <font size="4">
+                            <li class="mb-4" style="list-style: none"><img src="images/next.svg" alt="arrow" style="width:15px;margin-right:10px" class="ml-4">Useful reordering statistics to place accurate purchase order</li>
+                        </font>
+                    </ul>
+                </div>
+            </div>
+            <div class="row border-left-0 position-relative align-items-center px-sm-5 py-sm-5 px-1 py-4" style="border: 2px solid #875a7b; border-radius: 35px; border-top-left-radius: 0; border-bottom-left-radius: 0; margin-top: -2px; margin-left: 20px">
+                <div class="col-lg-8">
+                    <ul class="list-unstyled pl-0  bg-white" style="font-size:15px;">
+                        <h3 class="text-center mb-3">Stock replenishment from other warehouses</h3>
+                        <div class="text-center mb-3">
+                            <img src="images/line.png" alt="setuconsulting" width="60%" height="60%">
+                        </div>
+                        <font size="4">
+                            <li class="mb-4" style="list-style: none; margin-left: -40px"><img src="images/next.svg" alt="arrow" style="width:15px;margin-right:10px" class="ml-4">Replenish stock from the other warehouses of the same company</li>
+                        </font>
+                        <font size="4">
+                            <li class="mb-4" style="list-style: none; margin-left: -40px"><img src="images/next.svg" alt="arrow" style="width:15px;margin-right:10px" class="ml-4">Replenish stock from the other warehouses of the other company</li>
+                        </font>
+                        <font size="4">
+                            <li class="mb-4" style="list-style: none; margin-left: -40px"><img src="images/next.svg" alt="arrow" style="width:15px;margin-right:10px" class="ml-4">Multiple transfers created from the single record</li>
+                        </font>
+                        <font size="4">
+                            <li class="mb-4" style="list-style: none; margin-left: -40px"><img src="images/next.svg" alt="arrow" style="width:15px;margin-right:10px" class="ml-4">Get real demand from calculation</li>
+                        </font>
+                        <font size="4">
+                            <li class="mb-4" style="list-style: none; margin-left: -40px"><img src="images/next.svg" alt="arrow" style="width:15px;margin-right:10px" class="ml-4">Use past sales or forecasted sales to generate demands</li>
+                        </font>
+                        <font size="4">
+                            <li class="mb-4" style="list-style: none; margin-left: -40px"><img src="images/next.svg" alt="arrow" style="width:15px;margin-right:10px" class="ml-4">Useful replenishment statistics to place accurate Inter company or <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; inter warehouse transfer</li>
+                        </font>
+                    </ul>
+                </div>
+                <div class="col-lg-4">
+                    <img src="images/stock-replenishment.png" alt="Stock replenishment from other warehouses" width="110%" height="110%" style="border-radius: 10px; box-shadow: 0px 2px 9px 4px #d0cecb;">
+                </div>
+            </div>
+            <div class="row position-relative border-right-0 px-sm-5 py-sm-5 px-1 py-4" style="border: 2px solid #875a7b;margin-top: -2px ;transform: translateX(-35px);;border-radius: 35px;border-top-right-radius: 0;border-bottom-right-radius: 0; margin-right: 20px">
+                <div class="col-lg-5 text-center order-lg-0 order-1">
+                    <img src="images/sales-forecasting.png" alt="Sales forecast management" style="width:90%; border-radius: 10px; box-shadow: 0px 2px 9px 4px #d0cecb;">
+                </div>
+                <div class="col-lg-7 order-lg-1 order-0">
+                    <ul class="list-unstyled pl-0  bg-white" style="font-size:15px;">
+                        <h2 class="text-center mb-3">Sales forecast management</h2>
+                        <div class="text-center mb-3">
+                            <img src="images/line.png" alt="setuconsulting" width="60%" height="60%">
+                        </div>
+                        <font size="4">
+                            <li class="mb-4" style="list-style: none"><img src="images/next.svg" alt="arrow" style="width:15px;margin-right:10px" class="ml-4">Auto create <span class="badge badge-success">Seasonal Forecast</span> by Time series models</li>
+                        </font>
+                        <font size="4">
+                            <li class="mb-4" style="list-style: none"><img src="images/next.svg" alt="arrow" style="width:15px;margin-right:10px" class="ml-4">Auto create forecast data by Moving averages</li>
+                        </font>
+                        <font size="4">
+                            <li class="mb-4" style="list-style: none"><img src="images/next.svg" alt="arrow" style="width:15px;margin-right:10px" class="ml-4">Export normal sales or forecast sales</li>
+                        </font>
+                        <font size="4">
+                            <li class="mb-4" style="list-style: none"><img src="images/next.svg" alt="arrow" style="width:15px;margin-right:10px" class="ml-4">Import forecast sales from csv file</li>
+                        </font>
+                    </ul>
+                </div>
+            </div>
+            <div class="row border-left-0 position-relative align-items-center px-sm-5 py-sm-5 px-1 py-4" style="border: 2px solid #875a7b; border-radius: 35px; border-top-left-radius: 0; border-bottom-left-radius: 0; margin-top: -2px; margin-left: 20px">
+                <div class="col-lg-8">
+                    <ul class="list-unstyled pl-0  bg-white" style="font-size:15px;">
+                        <h3 class="text-center mb-3">SMART reporting</h3>
+                        <div class="text-center mb-3">
+                            <img src="images/line.png" alt="setuconsulting" width="60%" height="60%">
+                        </div>
+                        <font size="4">
+                            <li class="mb-4" style="list-style: none"><img src="images/next.svg" alt="arrow" style="width:15px;margin-right:10px" class="ml-4">Sales forecast report</li>
+                        </font>
+                        <font size="4">
+                            <li class="mb-4" style="list-style: none"><img src="images/next.svg" alt="arrow" style="width:15px;margin-right:10px" class="ml-4">Sales forecast v/s actual sales</li>
+                        </font>
+                    </ul>
+                </div>
+                <div class="col-lg-4">
+                    <img src="images/smart-reporting.png" alt="SMART reporting" class="w-100" style="border-radius: 10px; box-shadow: 0px 2px 9px 4px #d0cecb;">
+                </div>
+            </div>
+
+            <!-- ADVANTAGE - START -->
+            <div class="row py-sm-5 px-1 py-4">
+                <h2 class="w-100 text-center my-3">Advantages</h2>
+                <div class="text-center w-100 mb-4">
+                    <img src="images/line.png" alt="Setu Consulting" width="30%" height="100%">
+                </div>
+                <img src="images/reordering-advantages.png">
+            </div>
+            <!-- ADVANTAGE - END -->
+        <div class="line"></div>
+    </div>
+
+    <!-- tab view START -->
+    <h2 class="w-100 text-center my-3">Screenshots</h2>
+    <div class="text-center w-100 mb-4">
+        <img src="images/line.png" alt="Setu Consulting Services Pvt. Ltd." width="30%" height="100%">
+    </div>
+    <div class="row pt-4 px-3">
+        <div class="w-100">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs mb-4 justify-content-center bg-transparent">
+                <li class="nav-item ml-4">
+                    <a class="nav-link active" style="border-top-left-radius: .25rem;border-top-right-radius: .25rem; font-family: Roboto;font-weight: 500;" data-toggle="tab" href="#orderpoint">Order Point</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " style="border-top-left-radius: .25rem;border-top-right-radius: .25rem;font-family: Roboto;font-weight: 500;" data-toggle="tab" href="#demand-generation">Demand Generation</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " style="border-top-left-radius: .25rem;border-top-right-radius: .25rem;font-family: Roboto;font-weight: 500;" data-toggle="tab" href="#stock-replenishment">Stock Replenishment</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " style="border-top-left-radius: .25rem;border-top-right-radius: .25rem;font-family: Roboto;font-weight: 500;" data-toggle="tab" href="#sales-forecasting">Sales Forecast</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " style="border-top-left-radius: .25rem;border-top-right-radius: .25rem;font-family: Roboto;font-weight: 500;" data-toggle="tab" href="#smart-reporting">SMART Reporting</a>
+                </li>
+            </ul>
+            <div class="tab-content" id="pills-tabContent">
+                <!-- 11.Order Point start -->
+                <div class="tab-pane fade show active" id="orderpoint">
+                    <div class="card border-0" style="border-radius: .25rem;box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23); color: #002966;">
+                        <div class="row">
+                            <div class="col-12 col-lg-12">
+                                <ul class="list-unstyled pl-0  bg-white" style="font-size:15px;">
+                                    <li class="d-flex align-items-baseline mb-2 p-3 font-weight-bold" style="border-radius: 10px;font-size: 16px;">
+                                        <span class="text-center " style="font-size: 40px;font-weight: 400;color: #8482b2;">
+                                        <!-- Screenshots start -->
+                                            <div class="row">
+                                                <div class="text-center" style="width:100%">
+                                                    <h3 style="font-family: San Francisco;">Advance Reordering With Orderpoint</h3>
+                                                </div>
+                                                <div id="orderpotin_slide" class="carousel slide col-12 col-lg-12 mx-auto" data-ride="carousel">
+                                                    <div class="carousel-inner pt-4 pt-lg-5" >
+                                                        <div class="carousel-item px-4 active">
+                                                            <div class="row pb-sm-4 no-lg-gutters">
+                                                                <img src="images/screenshots/orderpoint/advance-reordering-with-order-point.png" style="max-width: 100%;" class="responsive">
+                                                            </div>
+                                                            <!-- <div style="font-size: 20px;color: #A24789;" class="text-center">
+                                                                RMA Dashboard for review Customer Return and Customer Return Choice by <br>Weekly, Monthly and Yearly
+                                                            </div> -->
+                                                        </div>
+                                                        <div class="carousel-item px-4">
+                                                            <div class="row pb-sm-4 no-gutters">
+                                                                <img src="images/screenshots/orderpoint/advance-reordering-with-order-point-1.png" style="max-width: 100%;" class="responsive">
+                                                            </div>
+                                                            <!-- <div style="font-size: 20px;color: #A24789;" class="text-center">
+                                                                Return order list view
+                                                            </div> -->
+                                                        </div>
+                                                        <div class="carousel-item px-4">
+                                                            <div class="row pb-sm-4 no-gutters">
+                                                                <img src="images/screenshots/orderpoint/advance-reordering-with-order-point-2.png" style="max-width: 100%;" class="responsive">
+                                                            </div>
+                                                            <!-- <div style="font-size: 20px;color: #A24789;" class="text-center">
+                                                                Return order list view
+                                                            </div> -->
+                                                        </div>
+                                                        <div class="carousel-item px-4">
+                                                            <div class="row pb-sm-4 no-gutters">
+                                                                <img src="images/screenshots/orderpoint/advance-reordering-with-order-point-3.png" style="max-width: 100%;" class="responsive">
+                                                            </div>
+                                                            <!-- <div style="font-size: 20px;color: #A24789;" class="text-center">
+                                                                Return order list view
+                                                            </div> -->
+                                                        </div>
+                                                        <div class="carousel-item px-4">
+                                                            <div class="row pb-sm-4 no-gutters">
+                                                                <img src="images/screenshots/orderpoint/advance-reordering-with-order-point-4.png" style="max-width: 100%;" class="responsive">
+                                                            </div>
+                                                            <!-- <div style="font-size: 20px;color: #A24789;" class="text-center">
+                                                                Return order list view
+                                                            </div> -->
+                                                        </div>
+                                                    </div>
+                                                    <a class="carousel-control-prev" href="#orderpoint_slide" data-slide="prev" style="left: -5%; width: 60px;">
+                                                        <i class="fa fa-chevron-circle-left" style="font-size: 2vw;color: #875a7b;"></i>
+                                                    </a>
+                                                    <a class="carousel-control-next" href="#orderpoint_slide" data-slide="next" style="right: -5%; width: 60px;">
+                                                        <i class="fa fa-chevron-circle-right" style="font-size: 2vw;color: #875a7b;"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 11.Order Point over -->
+
+                <!-- 22.Demand Generation start -->
+                <div class="tab-pane fade" id="demand-generation">
+                    <div class="card border-0" style="border-radius: .25rem;box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23); color: #002966;">
+                        <div class="row">
+                            <div class="col-12 col-lg-12">
+                                <ul class="list-unstyled pl-0  bg-white" style="font-size:15px;">
+                                    <li class="d-flex align-items-baseline mb-2 p-3 font-weight-bold" style="border-radius: 10px;font-size: 16px;">
+                                        <span class="text-center " style="font-size: 40px;font-weight: 400;color: #8482b2;">
+                                        <!-- Screenshots start -->
+                                            <div class="row">
+                                                <div class="text-center" style="width:100%">
+                                                    <h3 style="font-family: San Francisco;">Demand Generation</h3>
+                                                </div>
+                                                <div id="demand-generation-slide" class="carousel slide col-12 col-lg-12 mx-auto" data-ride="carousel">
+                                                    <div class="carousel-inner pt-4 pt-lg-5" >
+                                                        <div class="carousel-item px-4 active">
+                                                            <div class="row pb-sm-4 no-lg-gutters">
+                                                                <img src="images/screenshots/demandgeneration/1.png" style="max-width: 100%;" class="responsive">
+                                                            </div>
+                                                            <!-- <div style="font-size: 20px;color: #A24789;" class="text-center">
+                                                                Create return order on approval
+                                                            </div> -->
+                                                        </div>
+                                                        <div class="carousel-item px-4">
+                                                            <div class="row pb-sm-4 no-gutters">
+                                                                <img src="images/screenshots/demandgeneration/2.png" style="max-width: 100%;" class="responsive">
+                                                            </div>
+                                                        </div>
+                                                        <div class="carousel-item px-4">
+                                                            <div class="row pb-sm-4 no-gutters">
+                                                                <img src="images/screenshots/demandgeneration/3.png" style="max-width: 100%;" class="responsive">
+                                                            </div>
+                                                            <!-- <div style="font-size: 20px;color: #A24789;" class="text-center">
+                                                                Return order requested for approval
+                                                            </div> -->
+                                                        </div>
+                                                        <div class="carousel-item px-4">
+                                                            <div class="row pb-sm-4 no-gutters">
+                                                                <img src="images/screenshots/demandgeneration/4.png" style="max-width: 100%;" class="responsive">
+                                                            </div>
+                                                            <!-- <div style="font-size: 20px;color: #A24789;" class="text-center">
+                                                                Return order requested for approval
+                                                            </div> -->
+                                                        </div>
+                                                        <div class="carousel-item px-4">
+                                                            <div class="row pb-sm-4 no-gutters">
+                                                                <img src="images/screenshots/demandgeneration/5.png" style="max-width: 100%;" class="responsive">
+                                                            </div>
+                                                            <!-- <div style="font-size: 20px;color: #A24789;" class="text-center">
+                                                                Return order requested for approval
+                                                            </div> -->
+                                                        </div>
+                                                    </div>
+                                                    <a class="carousel-control-prev" href="#demand-generation-slide" data-slide="prev" style="left: -5%; width: 60px;">
+                                                        <i class="fa fa-chevron-circle-left" style="font-size: 2vw;color: #875a7b;"></i>
+                                                    </a>
+                                                    <a class="carousel-control-next" href="#demand-generation-slide" data-slide="next" style="right: -5%; width: 60px;">
+                                                        <i class="fa fa-chevron-circle-right" style="font-size: 2vw;color: #875a7b;"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 22.Demand Generation Over -->
+
+                <!-- 33.Stock Replenishment start -->
+                <div class="tab-pane fade" id="stock-replenishment">
+                    <div class="card border-0" style="border-radius: .25rem;box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23); color: #002966;">
+                        <div class="row">
+                            <div class="col-12 col-lg-12">
+                                <ul class="list-unstyled pl-0  bg-white" style="font-size:15px;">
+                                    <li class="d-flex align-items-baseline mb-2 p-3 font-weight-bold" style="border-radius: 10px;font-size: 16px;">
+                                        <span class="text-center " style="font-size: 40px;font-weight: 400;color: #8482b2;">
+                                        <!-- Screenshots start -->
+                                            <div class="row">
+                                                <div class="text-center" style="width:100%">
+                                                    <h3 style="font-family: San Francisco;">Stock Replenishment</h3>
+                                                </div>
+                                                <div id="replenishment-slide" class="carousel slide col-12 col-lg-12 mx-auto" data-ride="carousel">
+                                                    <div class="carousel-inner pt-4 pt-lg-5" >
+                                                        <div class="carousel-item px-4 active">
+                                                            <div class="row pb-sm-4 no-lg-gutters">
+                                                                <img src="images/screenshots/replenishment/1.png" style="max-width: 100%;" class="responsive">
+                                                            </div>
+                                                            <div style="font-size: 20px;color: #A24789;" class="text-center">
+                                                                <!-- Create return order on approval -->
+                                                            </div>
+                                                        </div>
+                                                        <div class="carousel-item px-4">
+                                                            <div class="row pb-sm-4 no-gutters">
+                                                                <img src="images/screenshots/replenishment/2.png" style="max-width: 100%;" class="responsive">
+                                                            </div>
+                                                            <!-- <div style="font-size: 20px;color: #A24789;" class="text-center">
+                                                                Return order requested for approval
+                                                            </div> -->
+                                                        </div>
+                                                        <div class="carousel-item px-4">
+                                                            <div class="row pb-sm-4 no-gutters">
+                                                                <img src="images/screenshots/replenishment/3.png" style="max-width: 100%;" class="responsive">
+                                                            </div>
+                                                        </div>
+                                                        <div class="carousel-item px-4">
+                                                            <div class="row pb-sm-4 no-gutters">
+                                                                <img src="images/screenshots/replenishment/4.png" style="max-width: 100%;" class="responsive">
+                                                            </div>
+                                                        </div>
+                                                        <div class="carousel-item">
+                                                            <div class="row pb-sm-4 no-gutters">
+                                                                <img src="images/screenshots/replenishment/5.png" style="max-width: 100%;" class="responsive">
+                                                            </div>
+                                                            <!-- <div style="font-size: 20px;color: #A24789;" class="text-center">
+                                                                Return approve or reject by manager
+                                                            </div> -->
+                                                        </div>
+                                                    </div>
+                                                    <a class="carousel-control-prev" href="#replenishment-slide" data-slide="prev" style="left: -5%; width: 60px;">
+                                                        <i class="fa fa-chevron-circle-left" style="font-size: 2vw;color: #875a7b;"></i>
+                                                    </a>
+                                                    <a class="carousel-control-next" href="#replenishment-slide" data-slide="next" style="right: -5%; width: 60px;">
+                                                        <i class="fa fa-chevron-circle-right" style="font-size: 2vw;color: #875a7b;"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 33.Stock Replenishment Over -->
+
+                <!-- 44.Sales Forecast start -->
+                <div class="tab-pane fade" id="sales-forecasting">
+                    <div class="card border-0" style="border-radius: .25rem;box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23); color: #002966;">
+                        <div class="row">
+                            <div class="col-12 col-lg-12">
+                                <ul class="list-unstyled pl-0  bg-white" style="font-size:15px;">
+                                    <li class="d-flex align-items-baseline mb-2 p-3 font-weight-bold" style="border-radius: 10px;font-size: 16px;">
+                                        <span class="text-center " style="font-size: 40px;font-weight: 400;color: #8482b2;">
+                                        <!-- Screenshots start -->
+                                            <div class="row">
+                                                <div class="text-center" style="width:100%">
+                                                    <h3 style="font-family: San Francisco;">Sales Forecasting</h3>
+                                                </div>
+                                                <div id="sales-forecasting-slide" class="carousel slide col-12 col-lg-12 mx-auto" data-ride="carousel">
+                                                    <div class="carousel-inner pt-4 pt-lg-5" >
+                                                        <div class="carousel-item px-4 active">
+                                                            <div class="row pb-sm-4 no-lg-gutters">
+                                                                <img src="images/screenshots/salesforecast/1.png" style="max-width: 100%;" class="responsive">
+                                                            </div>
+                                                            <!-- <div style="font-size: 20px;color: #A24789;" class="text-center">
+                                                                Create return order on approval
+                                                            </div> -->
+                                                        </div>
+                                                        <div class="carousel-item px-4">
+                                                            <div class="row pb-sm-4 no-gutters">
+                                                                <img src="images/screenshots/salesforecast/2.png" style="max-width: 100%;" class="responsive">
+                                                            </div>
+                                                           <!--  <div style="font-size: 20px;color: #A24789;" class="text-center">
+                                                                Return order requested for approval
+                                                            </div> -->
+                                                        </div>
+                                                        <div class="carousel-item px-4">
+                                                            <div class="row pb-sm-4 no-gutters">
+                                                                <img src="images/screenshots/salesforecast/3.png" style="max-width: 100%;" class="responsive">
+                                                            </div>
+                                                        </div>
+                                                        <div class="carousel-item px-4">
+                                                            <div class="row pb-sm-4 no-gutters">
+                                                                <img src="images/screenshots/salesforecast/4.png" style="max-width: 100%;" class="responsive">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <a class="carousel-control-prev" href="#sales-forecasting-slide" data-slide="prev" style="left: -5%; width: 60px;">
+                                                        <i class="fa fa-chevron-circle-left" style="font-size: 2vw;color: #875a7b;"></i>
+                                                    </a>
+                                                    <a class="carousel-control-next" href="#sales-forecasting-slide" data-slide="next" style="right: -5%; width: 60px;">
+                                                        <i class="fa fa-chevron-circle-right" style="font-size: 2vw;color: #875a7b;"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 44.Sales Forecast Over -->
+
+                <!-- 55.SMART Reporting start -->
+                <div class="tab-pane fade" id="smart-reporting">
+                    <div class="card border-0" style="border-radius: .25rem;box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23); color: #002966;">
+                        <div class="row">
+                            <div class="col-12 col-lg-12">
+                                <ul class="list-unstyled pl-0  bg-white" style="font-size:15px;">
+                                    <li class="d-flex align-items-baseline mb-2 p-3 font-weight-bold" style="border-radius: 10px;font-size: 16px;">
+                                        <span class="text-center " style="font-size: 40px;font-weight: 400;color: #8482b2;">
+                                        <!-- Screenshots start -->
+                                            <div class="row">
+                                                <!-- <div class="text-center" style="width:100%">
+                                                    <h3 style="font-family: San Francisco;">SMART Reporting</h3>
+                                                </div> -->
+                                                <div id="reporting-slide" class="carousel slide col-12 col-lg-12 mx-auto" data-ride="carousel">
+                                                    <div class="carousel-inner" >
+                                                        <div class="carousel-item px-4 active">
+                                                            <div style="font-size: 20px;color: #A24789;" class="text-center mb-3">
+                                                                Forecast vs Actual Sales Report
+                                                            </div>
+                                                            <div class="row pb-sm-4 no-lg-gutters">
+                                                                <img src="images/screenshots/reportforecastactual/forecast-vs-actual-sales.png" style="max-width: 100%;" class="responsive">
+                                                            </div>
+                                                        </div>
+                                                        <div class="carousel-item px-4">
+                                                            <div class="row pb-sm-4 no-gutters">
+                                                                <img src="images/screenshots/sales-forecast-report/1.png" style="max-width: 100%;" class="responsive">
+                                                            </div>
+                                                           <!--  <div style="font-size: 20px;color: #A24789;" class="text-center">
+                                                                Return order requested for approval
+                                                            </div> -->
+                                                        </div>
+                                                        <div class="carousel-item px-4">
+                                                            <div class="row pb-sm-4 no-gutters">
+                                                                <img src="images/screenshots/sales-forecast-report/2.png" style="max-width: 100%;" class="responsive">
+                                                            </div>
+                                                        </div>
+                                                        <div class="carousel-item px-4">
+                                                            <div class="row pb-sm-4 no-gutters">
+                                                                <img src="images/screenshots/sales-forecast-report/3.png" style="max-width: 100%;" class="responsive">
+                                                            </div>
+                                                           <!--  <div style="font-size: 20px;color: #A24789;" class="text-center">
+                                                                Return order requested for approval
+                                                            </div> -->
+                                                        </div>
+                                                        <div class="carousel-item px-4">
+                                                            <div class="row pb-sm-4 no-gutters">
+                                                                <img src="images/screenshots/sales-forecast-report/4.png" style="max-width: 100%;" class="responsive">
+                                                            </div>
+                                                           <!--  <div style="font-size: 20px;color: #A24789;" class="text-center">
+                                                                Return order requested for approval
+                                                            </div> -->
+                                                        </div>
+                                                        <div class="carousel-item px-4">
+                                                            <div class="row pb-sm-4 no-gutters">
+                                                                <img src="images/screenshots/sales-forecast-report/5.png" style="max-width: 100%;" class="responsive">
+                                                            </div>
+                                                           <!--  <div style="font-size: 20px;color: #A24789;" class="text-center">
+                                                                Return order requested for approval
+                                                            </div> -->
+                                                        </div>
+                                                        <div class="carousel-item px-4">
+                                                            <div class="row pb-sm-4 no-gutters">
+                                                                <img src="images/screenshots/sales-forecast-report/6.png" style="max-width: 100%;" class="responsive">
+                                                            </div>
+                                                           <!--  <div style="font-size: 20px;color: #A24789;" class="text-center">
+                                                                Return order requested for approval
+                                                            </div> -->
+                                                        </div>
+                                                        <div class="carousel-item px-4">
+                                                            <div class="row pb-sm-4 no-gutters">
+                                                                <img src="images/screenshots/sales-forecast-report/7.png" style="max-width: 100%;" class="responsive">
+                                                            </div>
+                                                           <!--  <div style="font-size: 20px;color: #A24789;" class="text-center">
+                                                                Return order requested for approval
+                                                            </div> -->
+                                                        </div>
+                                                    </div>
+                                                    <a class="carousel-control-prev" href="#reporting-slide" data-slide="prev" style="left: -5%; width: 60px;">
+                                                        <i class="fa fa-chevron-circle-left" style="font-size: 2vw;color: #875a7b;"></i>
+                                                    </a>
+                                                    <a class="carousel-control-next" href="#reporting-slide" data-slide="next" style="right: -5%; width: 60px;">
+                                                        <i class="fa fa-chevron-circle-right" style="font-size: 2vw;color: #875a7b;"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 55.SMART Reporting Over -->
+            </div>
+        </div>
+    </div>
+    <!-- tab view END -->
+
+    <div class="container" style="width: 100%;">
+        <div class="row">
+            <div class="col-sm-6 col-md-12 px-2">
+                <h2 class="w-100 text-center my-3">Suggested Apps</h2>
+                <div class="text-center w-100 mb-4">
+                    <img src="images/line.png" alt="Setu Consulting" width="30%" height="100%">
+                </div>
+            </div>
+            <div class="card border-0" style="border-radius: .25rem;box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23); color: #002966; width: 100%;">
+                <div id="demo11" class="carousel slide col-12 col-lg-12 mx-auto" data-ride="carousel">
+                    <div class="row">
+                        <div id="apps" class="carousel slide col-12 col-lg-12 mx-auto" data-ride="carousel">
+                            <div class="carousel-inner pt-lg-5" >
+                                <div class="carousel-item px-4 active">
+                                    <div class="row pb-sm-4 no-lg-gutters">
+                                        <a href="https://apps.odoo.com/apps/modules/15.0/setu_cash_flow_forecasting/" target="_blank">
+                                        <img src="images/odoo_images/cash-forecasting-setu-consulting-odoo-erp-consultant.png" alt="Cash Forecasting" width="450px"  style="margin-left: 100px; margin-right:10px"></a>
+                                        <a href="https://apps.odoo.com/apps/modules/15.0/setu_advance_inventory_reports/" target="_blank">
+                                        <img src="images/odoo_images/advance-inventory-reports-setu-consulting-odoo-erp-consultant.png" alt="Advance Inventory Reports" width="450px" class="ml-4"></a>
+                                    </div>
+                                </div>
+                                <div class="carousel-item px-4">
+                                    <div class="row pb-sm-4 no-lg-gutters">
+                                        <a href="https://apps.odoo.com/apps/modules/15.0/setu_intercompany_transaction/" target="_blank">
+                                        <img src="images/odoo_images/inter-company-transfer-setu-consulting-odoo-erp-consultant.png" alt="Inyter company Transaction" alt="Inter Company Transfer" width="450px" style="margin-left: 100px; margin-right:10px"></a>
+                                        <a href="https://apps.odoo.com/apps/modules/15.0/setu_inventory_ledger_report/" target="_blank">
+                                        <img src="images/odoo_images/inventory-ledger-report-setu-consulting-odoo-erp-consultant.png" alt="Inventory Ledger Report" width="450px" class="ml-4"></a>
+                                    </div>
+                                </div>
+                                <div class="carousel-item px-4">
+                                    <div class="row pb-sm-4 no-lg-gutters">
+                                        <a href="https://apps.odoo.com/apps/modules/15.0/setu_abc_analysis_reports/" target="_blank">
+                                        <img src="images/odoo_images/abc-analysis-setu-consulting-odoo-erp-consultant.png" alt="ABC Analysis Reports" width="450px" style="margin-left: 100px; margin-right:10px"></a>
+                                        <a href="https://apps.odoo.com/apps/modules/15.0/setu_rfm_analysis/" target="_blank">
+                                        <img src="images/odoo_images/rfm-analysis-marketing-strategy-setu-consulting-odoo-erp-consultant.png" alt="RFM Analysis" width="450px" class="ml-4"></a>
+                                    </div>
+                                </div>
+                                <div class="carousel-item px-4">
+                                    <div class="row pb-sm-4 no-lg-gutters">
+                                        <a href="https://apps.odoo.com/apps/modules/15.0/setu_shopify_connector/" target="_blank">
+                                        <img src="images/odoo_images/odoo-shopify-connector-setu-consulting-odoo-erp-consultant.png" alt="Odoo Shopify Connector" width="450px" style="margin-left: 100px; margin-right:10px"></a>
+                                        <a href="https://apps.odoo.com/apps/modules/15.0/setu_inventory_count_management/" target="_blank">
+                                        <img src="images/odoo_images/inventory-count-setu-consulting-odoo-erp-consultant.png" alt="Multi User Inventory Count" width="450px" class="ml-4"></a>
+                                    </div>
+                                </div>
+                                <div class="carousel-item px-4">
+                                    <div class="row pb-sm-4 no-lg-gutters">
+                                        <a href="https://apps.odoo.com/apps/modules/15.0/setu_woocommerce_connector/" target="_blank">
+                                        <img src="images/odoo_images/woocommerce-odoo-connector-setu-consulting-erp-consultant.png" alt="Odoo WooCommerce Connector" width="450px" style="margin-left: 100px; margin-right:10px"></a>
+                                        <a href="https://apps.odoo.com/apps/modules/15.0/setu_rma/" target="_blank">
+                                        <img src="images/odoo_images/rma-website-rma-setu-consulting-odoo-erp-consultant.png" alt="Return Merchandise Authorization" width="450px" class="ml-4"></a>
+                                    </div>
+                                </div>
+                                <div class="carousel-item px-4">
+                                    <div class="row pb-sm-4 no-lg-gutters">
+                                        <a href="https://apps.odoo.com/apps/modules/15.0/setu_customer_rating/" target="_blank">
+                                        <img src="images/odoo_images/customer-rating-setu-consulting-odoo-erp-consultant.png" alt="Customer Rating" width="450px" style="margin-left: 100px; margin-right:10px" class="ml-4"></a>
+                                        <a href="https://apps.odoo.com/apps/modules/15.0/setu_wayfair_connector/" target="_blank">
+                                        <img src="images/odoo_images/odoo-wayfair-connector-setu-consulting-erp-consultant.png" alt="Odoo Wayfair Connector" width="450px" class="ml-4"></a>
+                                    </div>
+                                </div>
+                                <div class="carousel-item px-4">
+                                    <div class="row pb-sm-4 no-lg-gutters">
+                                        <a href="https://apps.odoo.com/apps/modules/15.0/setu_sales_product_performance_report/" target="_blank">
+                                        <img src="images/odoo_images/sales-and-product-performance-report-setu-consulting-odoo-erp-consultant.png" alt="Sales and Product Performance Report" width="450px" style="margin-left: 100px; margin-right:10px"></a>
+                                        <a href="https://apps.odoo.com/apps/modules/15.0/setu_sales_purchase_price_tracker/" target="_blank">
+                                        <img src="images/odoo_images/sale-purchase-price-tracker-setu-consulting-odoo-erp-consultant.png" alt="Sale - Purchase Price Tracker" width="450px" class="ml-4"></a>
+                                    </div>
+                                </div>
+                                <div class="carousel-item px-4">
+                                    <div class="row pb-sm-4 no-lg-gutters">
+                                        <a href="https://apps.odoo.com/apps/modules/14.0/setu_inventory_card_report/" target="_blank">
+                                        <img src="images/odoo_images/ledgerCard.png" alt="Inventory Card Report" width="450px" style="margin-left: 100px; margin-right:10px"></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <a class="carousel-control-prev" href="#apps" data-slide="prev" style="left: -5%; width: 60px;">
+                                <i class="fa fa-chevron-circle-left" style="font-size: 2vw;color: #875a7b;"></i>
+                            </a>
+                            <a class="carousel-control-next" href="#apps" data-slide="next" style="right: -5%; width: 60px;">
+                                <i class="fa fa-chevron-circle-right" style="font-size: 2vw;color: #875a7b;"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col-sm-6 col-md-6 mt-3 px-2 text-center">
+                <div style="border-radius:10px; padding:5px; border-left:4px solid #5A63A6; box-shadow: 0px 2px 9px 4px #d0cecb;">
+                    <h5 class="font-weight-bold">FREE SUPPORT</h5>
+                    <p class="m-auto w-75" style="line-height: 1.5;font-weight: 100;">We will provide free support for any issues, queries, and bug fixing upto 90 days from the date of purchase of this application. 
+                    <a href="mailto:support@setuconsulting.com?subject=Cash Forecasting Version 15.0 - Support Request" target="_blank" class="btn btn-info mx-2 pr-sm-4 mb-2 mb-lg-0" style="text-transform: uppercase; font-size: 14px;"><i class="fa fa-envelope-square mr-sm-2" style="font-size: 20px;vertical-align: middle;"></i> <span class="d-none d-sm-inline">Request free support</span></a>
+                    </p>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-6 mt-3 px-2 text-center">
+                <div style="border-radius:10px; padding:5px; border-left:4px solid #5A63A6; height: 150px; box-shadow: 0px 2px 9px 4px #d0cecb;">
+                    <h3 class="font-weight-bold">NOTE</h3>
+                    <p class="m-auto w-75" style="line-height: 1.5;font-weight: 100;">
+                        Get notified about latest update. Please drop an email when you make purchase at
+                        <a href="mailto:info@setuconsulting.com?subject=Cash Forecasting Version 15.0 - New Purchase" class="btn btn-info mx-2 pr-sm-4 mb-2 mb-lg-0" style="text-transform: uppercase; font-size: 14px;"><i class="fa fa-envelope-square mr-sm-2" style="font-size: 20px;vertical-align: middle;"></i> <span class="d-none d-sm-inline">Setu Consulting</span></a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col-sm-6 col-md-12 mt-3 px-2 text-center">
+                <div style="border-radius:10px; padding:5px; border-left:4px solid #5A63A6; border-right:4px solid #5A63A6; box-shadow: 0px 2px 9px 4px #d0cecb;">
+                    <h5 class="font-weight-bold">
+                        <a href="mailto:sales@setuconsulting.com?subject=Cash Forecasting Version 15.0 - Solution Inquiry" target="_blank" class="mx-2 pr-sm-4 mb-2 mb-lg-0" style="text-transform: uppercase; text-decoration: none; font-size: 14px;"><span class="d-none d-sm-inline">
+                            <img src="images/email.gif" alt="arrow" style="width:30px;"> sales@setuconsulting.com</span>
+                        </a>
+                        <a href="skype:live:.cid.7abebb3d4adef53f?chat" target="_blank" class="" style="text-transform: uppercase; text-decoration: none; font-size: 14px;"><i class="fa fa-envelope-square mr-sm-2" style="font-size: 20px;vertical-align: middle;"></i> <span class="d-none d-sm-inline">
+                            <img src="images/skype.gif" alt="arrow" style="width:30px;"> Setu Consulting</span>
+                        </a>
+                    </h5>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-3 mb-4">
+        <div class="row">
+            <div class="col-sm-6 col-md-12 mt-3 px-2 text-center">
+                <div class="col-sm-6 col-md-12 mt-6 px-2 text-center">
+                    <img src="images/odoo_images/odoo-services-1.png" class="responsive" style="margin:2px 2px 2px 2px; border-radius: 10px;  box-shadow: -1px 0px 10px 2px #888;" alt="Setu Consulting Services Private Limited | Odoo Certified Consultant | Offical Odoo Partner" title="Setu Consulting Services Private Limited | Odoo Certified Consultant | Offical Odoo Partner">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
+</html>

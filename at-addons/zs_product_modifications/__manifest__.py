@@ -1,0 +1,37 @@
+{
+    "name": "Product Modifications",
+    "version": "15.0.0.5",
+    "category": "Product",
+    "author": "Zain Siddiqui",
+    "license": "AGPL-3",
+    "depends": ["sale", "product", "product_brand", "zs_product_company_type"],
+    "data": [
+        "security/ir.model.access.csv",
+        "views/product_template_view.xml",
+        "views/product_storage_view.xml",
+        "views/product_core_view.xml",
+        "views/product_packsize_view.xml",
+        "views/product_type_view.xml",
+        "views/product_formula_view.xml",
+        "views/product_manufacture_view.xml",
+
+        "views/procurement_type_view.xml",
+        "views/product_division_view.xml",
+        "views/vendor_name_view.xml",
+        "views/life_stage_view.xml",
+        "views/packing_type_view.xml",
+        "views/product_material_view.xml",
+        "views/packing_size_view.xml",
+        "views/attribute_1_view.xml",
+        "views/attribute_2_view.xml",
+        "views/attribute_3_view.xml",
+        "views/pcs_tray_view.xml",
+
+        "views/account_invoice_report_view.xml",
+        "views/sale_report_view.xml",
+
+        "wizard/product_attributes_views.xml",
+    ],
+    "installable": True,
+    "auto_install": False,
+}

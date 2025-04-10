@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data noupdate="1">
+        <record id="cron_purchase_stage_deadline" model="ir.cron">
+            <field name="name">Purchase Stage End Date Activity</field>
+            <field name="model_id" ref="purchase.model_purchase_order"/>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="active" eval="1"/>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="code">model._cron_create_activity([2])</field>
+        </record>
+    </data>
+</odoo>

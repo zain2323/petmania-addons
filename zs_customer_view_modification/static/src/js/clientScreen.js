@@ -36,11 +36,12 @@ odoo.define('zs_customer_view_modification.ClientListScreen', function (require)
                         //     expiration: giftCard.expiration_date || '',
                         //     customerName: this.state.selectedClient.name
                         // });
-                        await this.showPopup('ConfirmPopup', {
+                        await this.showPopup('ErrorTracebackPopup', {
                             title: this.env._t('Gift Card Found'),
-                            body: this.env._t(`Customer ${this.state.selectedClient.name} has a gift card with code: ${giftCard.code}
-                                            Balance: ${this.env.pos.format_currency(giftCard.balance)}
-                                            Expiration: ${giftCard.expired_date || 'N/A'}`),
+                            body: this.env._t(`Customer ${this.state.selectedClient.name} has a gift card with code: ${giftCard.code}\n
+Balance: ${this.env.pos.format_currency(giftCard.balance)}\n
+Expiration: ${giftCard.expired_date || 'N/A'}`),
+
                             confirmText: this.env._t('OK'),
                         });
                     }

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<odoo>
+    <data>
+        <record id="pcs_tray_action" model="ir.actions.act_window">
+            <field name="name">Pcs in tray</field>
+            <field name="res_model">pcs.tray</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="pcs_tray_view" model="ir.ui.view">
+            <field name="name">Pcs in tray</field>
+            <field name="model">pcs.tray</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name" string="Name"/>
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+         <menuitem id="pcs_tray"
+                   name="Pcs in tray"
+                   parent="sale.product_menu_catalog"
+                   sequence="4"
+                   action="pcs_tray_action"/>
+    </data>
+</odoo>

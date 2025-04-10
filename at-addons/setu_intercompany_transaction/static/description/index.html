@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Inter Company Transaction | Setu Consulting Services Pvt. Ltd. | Odoo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://www.setuconsulting.com/css/fonts.css" rel="stylesheet">
+    <link href="https://www.setuconsulting.com/css/plugins.css" rel="stylesheet">
+    <!-- <link href="https://www.setuconsulting.com/css/style.css" rel="stylesheet"> -->
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+          integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap" rel="stylesheet">
+</head>
+<!-- odoo description page css -->
+<style>
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    .h1,
+    .h2,
+    .h3,
+    .h4,
+    .h5,
+    .h6 {
+        font-weight: 400;
+        line-height: 1.1;
+        color: #21272b;
+    }
+    
+    ul {
+        color: #222020;
+    }
+</style>
+
+<body>
+<div class="container">
+    <!-- Header -->
+    <div class="row justify-content-md-between justify-content-center border-bottom align-items-center py-2 mx-0">
+        <div id="logo">
+            <img src="images/odoo_images/setu.png" width="150px" class="logo-default" data-toggle="tooltip" data-placement="right" title="Setu Consulting" alt="Setu Consulting">
+        </div>
+        <div class="text-center">
+            <a href="mailto:apps@setuconsulting.com?subject=Inter Company Transfer version 15.0 - Demo Request" target="_blank" class="btn btn-primary mx-2 pr-sm-4 mb-2 mb-lg-0" style="text-transform: uppercase; font-size: 14px;"><i class="fa fa-envelope-square mr-sm-2" style="font-size: 20px;vertical-align: middle;"></i> <span class="d-none d-sm-inline">Request a demo</span></a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div class="text-center mb-4 mt-3">
+                <img src="images/inter-company-transfer.png">
+            </div>
+            <!-- <h1 class="text-center">Advance Inventory Reports</h1> -->
+            <p class="text-justify text-muted" data-animate="fadeIn" data-animate-delay="400"><!-- <span class="dropcap dropcap-colored"> B </span> --> 
+                <font size="4">In any industry today inventory movements between companies or between warehouses are common operations. It’s really hard to track each movement and its corresponding records. Especially when there are more companies doing transactions with each other, it becomes painful to manage track records for companies.<br><br>
+                We have developed a solution called “Inter Company Transaction” which helps to manage all transactions between companies in an automated way. All required documents will be created automatically by just a single click. Users can get all historical transactions (deliveries, receipts, invoices, vendor bills) very easily.</font>
+            </p><br>
+            <div class="row">
+                <div class="col-md-12 text-muted" style="height: 200px">
+                    <font size="4">
+                    <li class="list-group-item list-group-item-success">
+                    <!-- <div class="icon-holder"><i class="fa fa-arrow-right"></i></div> -->
+                    <div class="icon-class m-l-10" data-animate="bounceIn" data-animate-delay="600"><h3>Special feature ( Stock + Inter warehouse transfer)</h3></div></li>
+                    <li class="list-group-item p-b-20 list-group-item-success text-justify" style="height: 140px;">Pick the available stock first and the rest will be picked up from other warehouses of the same company. When a sales order gets created, it will reserve available stock and for the rest, it will create inter warehouse transaction records between the sales order's warehouse and the other warehouses where the stock is available. inter warehouse transaction will be created based on the inter warehouse channels configured in the system. </li></font>
+                </div>
+            </div><br>
+            <h2 class="text-left">Key Features</h2><br>
+            <div class="row">
+                <div class="col-md-6 text-muted" style="height: 200px">
+                    <font size="4">
+                    <li class="list-group-item list-group-item-primary">
+                    <!-- <div class="icon-holder"><i class="fa fa-arrow-right"></i></div> -->
+                    <div class="icon-class m-l-10" data-animate="bounceIn" data-animate-delay="600">Inter Company Channels</div></li>
+                    <li class="list-group-item p-b-20 text-justify" style="height: 140px;">Each company can configure its source from where they will purchase as and when needed.  More than one channel can be configured and the system will pick the right one according to priority.</li></font>
+                </div>
+                <div class="col-md-6 text-muted" style="height: 200px">
+                    <font size="4">
+                    <li class="list-group-item list-group-item-primary">
+                    <!-- <div class="icon-holder"><i class="fa fa-arrow-circle-right"></i></div> -->
+                    <div class="icon-class m-l-10" data-animate="bounceIn" data-animate-delay="600">Inter Warehouse Channels</div></li>
+                    <li class="list-group-item p-b-20 text-justify" style="height: 140px;">Each company can configure its source warehouses from where they will replenish stock as and when needed.  More than one channel can be configured and the system will pick the right one according to priority.</li></font>
+                </div>
+                <div class="col-md-6 text-muted" style="height: 170px">
+                    <font size="4">
+                    <li class="list-group-item list-group-item-primary">
+                    <!-- <div class="icon-holder"><i class="fa fa-arrow-circle-right"></i></div> -->
+                    <div class="icon-class m-l-10" data-animate="bounceIn" data-animate-delay="600">Inter company transfer</div></li>
+                    <li class="list-group-item p-b-20 text-justify" style="height: 120px;">It allows stock movements between companies by creating sales orders in the fulfiller company and purchase orders in the requestor company. Along with stock movement it will take care about accounting documents.</li></font>
+                </div>
+                <div class="col-md-6 text-muted" style="height: 180px">
+                    <font size="4">
+                    <li class="list-group-item list-group-item-primary">
+                    <!-- <div class="icon-holder"><i class="fa fa-arrow-circle-right"></i></div> -->
+                    <div class="icon-class m-l-10" data-animate="bounceIn" data-animate-delay="600">Inter warehouse transfer</div></li>
+                    <li class="list-group-item p-b-20 text-justify" style="height: 120px;">It allows stock movements between warehouses of the same company by creating two step pickings (Source -> Transit -> Destination)  or direct transfer (Source -> Destination) in a single step (based on configurations).</li></font>
+                </div>
+                <div class="col-md-6 text-muted" style="height: 220px">
+                    <font size="4">
+                    <li class="list-group-item list-group-item-primary">
+                    <!-- <div class="icon-holder"><i class="fa fa-arrow-circle-right"></i></div> -->
+                    <div class="icon-class m-l-10" data-animate="bounceIn" data-animate-delay="600">Auto create Inter Warehouse Transaction</div></li>
+                    <li class="list-group-item p-b-20 text-justify" style="height: 160px;">Companies can configure when an inter warehouse transaction needs to be created automatically (create Inter warehouse when receive sales order, when there isn’t enough stock for all products, when there isn’t enough stock for any single product, manually)</li></font>
+                </div>
+                <div class="col-md-6 text-muted" style="height: 220px">
+                    <font size="4">
+                    <li class="list-group-item list-group-item-primary">
+                    <!-- <div class="icon-holder"><i class="fa fa-arrow-circle-right"></i></div> -->
+                    <div class="icon-class m-l-10" data-animate="bounceIn" data-animate-delay="600">Auto create Inter Company Transaction</div></li>
+                    <li class="list-group-item p-b-60 text-justify" style="height: 160px;">Companies can configure when an inter company transaction needs to be created automatically (create Inter company when receive sales order, when there isn’t enough stock for all products, when there isn’t enough stock for any single product, manually)</li></font>
+                </div>
+                <div class="col-md-6 text-muted" style="height: 200px">
+                    <font size="4">
+                    <li class="list-group-item list-group-item-primary">
+                    <!-- <div class="icon-holder"><i class="fa fa-arrow-circle-right"></i></div> -->
+                    <div class="icon-class m-l-10" data-animate="bounceIn" data-animate-delay="600">Direct delivery to customer</div></li>
+                    <li class="list-group-item p-b-40 text-justify" style="height: 140px;">It’s similar to dropship, if the requestor company wants to deliver orders to customers directly from the fulfiller company then the fulfiller company will deliver orders directly to customers instead of the requestor company's warehouse.</li></font>
+                </div>
+                <div class="col-md-6 text-muted" style="height: 200px">
+                    <font size="4">
+                    <li class="list-group-item list-group-item-primary">
+                    <!-- <div class="icon-holder"><i class="fa fa-arrow-circle-right"></i></div> -->
+                    <div class="icon-class m-l-10" data-animate="bounceIn" data-animate-delay="600">Automatic documents processing</div></li>
+                    <li class="list-group-item p-b-20 text-justify" style="height: 140px;">There is an option in the channels / inter company transaction which will process all the documents according to the configurations. Based on the configuration system will create / validate all the documents. </li></font>
+                </div>
+                <div class="col-md-6 text-muted" style="height: 200px">
+                    <font size="4">
+                    <li class="list-group-item list-group-item-primary">
+                    <!-- <div class="icon-holder"><i class="fa fa-arrow-circle-right"></i></div> -->
+                    <div class="icon-class m-l-10" data-animate="bounceIn" data-animate-delay="600">Easy return management</div></li>
+                    <li class="list-group-item p-b-40 text-justify" style="height: 140px;">Helps to manage inventory return process, there is an easy interface from where users can return stock to companies or warehouses.</li></font>
+                </div>
+                <div class="col-md-6 text-muted" style="height: 200px">
+                    <font size="4">
+                    <li class="list-group-item list-group-item-primary">
+                    <!-- <div class="icon-holder"><i class="fa fa-arrow-circle-right"></i></div> -->
+                    <div class="icon-class m-l-10" data-animate="bounceIn" data-animate-delay="600">Easy import feature</div></li>
+                    <li class="list-group-item p-b-20 text-justify" style="height: 140px;">Helps to create inter company and inter warehouse transactions record by importing simple csv files.</li></font>
+                </div>
+            </div>
+        </div>
+        <div class="line"></div>
+    </div>
+
+    <div class="suggested-app">
+        <div class="text-center">
+            <h2 class="pt-4 display-4" style="font-size: 2.6rem; ">
+            <span style="color: #0000FF;">Features</span></h2>
+        </div>
+        <div class="row pt-4 px-3">
+            <div class="w-100">
+				<ul class="nav nav-tabs mb-4 justify-content-center bg-transparent">
+                    <li class="nav-item ml-4">
+                        <a class="nav-link active" style="border-top-left-radius: .25rem;border-top-right-radius: .25rem;color: #C70039 ;font-family: Roboto;font-weight: 500;" data-toggle="tab" href="#ICT-features">Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " style="border-top-left-radius: .25rem;border-top-right-radius: .25rem;color: #C70039 ;font-family: Roboto;font-weight: 500;" data-toggle="tab" href="#ICT-ICTprocessflow">Inter Company</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " style="border-top-left-radius: .25rem;border-top-right-radius: .25rem;color: #C70039 ;font-family: Roboto;font-weight: 500;" data-toggle="tab" href="#IWT-IWTprocessflow">Inter Warehouse</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " style="border-top-left-radius: .25rem;border-top-right-radius: .25rem;color: #C70039 ;font-family: Roboto;font-weight: 500;" data-toggle="tab" href="#ICT-screenshots">Screenshots</a>
+                    </li>
+                </ul>
+                <div class="tab-content" id="pills-tabContent">
+                	<!-- START : ICT-features  -->
+                    <div class="tab-pane fade show active" id="ICT-features">
+	                    <div class="card p-4 p-lg-5 mb-4 border-0" style="border-radius: .25rem;box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23); color: #002966;">
+	                        <div class="row">
+	                            <div class="col-12 col-lg-12">
+	                                <ul class="list-unstyled pl-0 bg-white" style="font-size:15px;">
+                                    	<table style="font-size: 18px">
+                                    		<tbody>
+                                    			<tr>
+                                    				<td valign="top"><li class="mb-1"><img src="images/next.svg" alt="arrow" style="width:15px;margin-right:10px"></li></td>
+                                    				<td>Inter company transaction will create sales order in fulfiller company and purchase order in requestor company</td>
+                                    			</tr><tr><td>&nbsp;</td></tr>
+                                    			<tr>
+                                    				<td valign="top"><li class="mb-4"><img src="images/next.svg" alt="arrow" style="width:15px;margin-right:10px"></li></td>
+                                    				<td>Allow to create inter company transactions automatically based on channel configurations. The requestor company can configure from which companies they want to purchase stock. It can be more than one, using priority users can define which one has to be picked first.</td>
+                                    			</tr><tr><td>&nbsp;</td></tr>
+                                    			<tr>
+                                    				<td valign="top"><li class="mb-4"><img src="images/next.svg" alt="arrow" style="width:15px;margin-right:10px"></li></td>
+                                    				<td>Companies want to create inter company records or not, it is based on configuration in the company.  At the time of sales order confirmation system  will check the configurations in the company whether it needs to create inter company records or not.<br><br>
+                                    				<li class="mb-4"><img src="images/correct.svg" alt="arrow" style="width:15px;margin-right:10px" class="ml-4">Create inter company records when there is no stock of all products.</li>
+                                                    <li class="mb-4"><img src="images/correct.svg" alt="arrow" style="width:15px;margin-right:10px" class="ml-4">Create inter company records when there is no stock of any single product.</li>
+                                                    <li class="mb-4"><img src="images/correct.svg" alt="arrow" style="width:15px;margin-right:10px" class="ml-4">Always create inter company records.</li>
+                                                    <li class="mb-4"><img src="images/correct.svg" alt="arrow" style="width:15px;margin-right:10px" class="ml-4">Create inter company records manually.</li>
+                                    				</td>
+                                    			</tr><tr><td>&nbsp;</td></tr>
+                                    			<tr>
+                                    				<td valign="top"><li class="mb-4"><img src="images/next.svg" alt="arrow" style="width:15px;margin-right:10px"></li></td>
+                                    				<td>Allow to create inter warehouse transactions automatically based on warehouse channel configurations. The requestor warehouse can configure from which warehouse they want to replenish the stock. It can be more than one, using priority users can define which one has to be picked first. </td>
+                                    			</tr><tr><td>&nbsp;</td></tr>
+                                    			<tr>
+                                    				<td valign="top"><li class="mb-4"><img src="images/next.svg" alt="arrow" style="width:15px;margin-right:10px"></li></td>
+                                    				<td>Companies want to replenish stock from the other warehouses of the same company or not, it is based on configuration in the company.  At the time of sales order confirmation system  will check the configurations in the company whether it needs to create inter warehouse records or not.<br><br>
+                                    				<li class="mb-4"><img src="images/correct.svg" alt="arrow" style="width:15px;margin-right:10px" class="ml-4">Create inter warehouse records when there is no stock of all products.</li>
+                                                    <li class="mb-4"><img src="images/correct.svg" alt="arrow" style="width:15px;margin-right:10px" class="ml-4">Create inter warehouse records when there is no stock of any single product.</li>
+                                                    <li class="mb-4"><img src="images/correct.svg" alt="arrow" style="width:15px;margin-right:10px" class="ml-4">Always create inter warehouse records.</li>
+                                                    <li class="mb-4"><img src="images/correct.svg" alt="arrow" style="width:15px;margin-right:10px" class="ml-4">Create inter warehouse records manually.</li>
+                                    				</td>
+                                    			</tr><tr><td>&nbsp;</td></tr>
+                                    			<tr>
+                                    				<td valign="top"><li class="mb-4"><img src="images/next.svg" alt="arrow" style="width:15px;margin-right:10px"></li></td>
+                                    				<td valign="top">Separate invoice numbering management for requestor and fulfiller companies. </td>
+                                    			</tr>
+                                    			<tr>
+                                    				<td valign="top"><li class="mb-4"><img src="images/next.svg" alt="arrow" style="width:15px;margin-right:10px"></li></td>
+                                    				<td valign="top">Easy control over pricing. Pricing effect will remain the same in all the documents. </td>
+                                    			</tr>
+                                    			<tr>
+                                    				<td valign="top"><li class="mb-4"><img src="images/next.svg" alt="arrow" style="width:15px;margin-right:10px"></li></td>
+                                    				<td valign="top">Automatic creation & validation of sales order, purchase order, customer invoice, vendor bill.</td>
+                                    			</tr>
+                                    			<tr>
+                                    				<td valign="top"><li class="mb-4"><img src="images/next.svg" alt="arrow" style="width:15px;margin-right:10px"></li></td>
+                                    				<td valign="top">The fulfiller company offers delivery direct to the requestor company’s customer then it’s possible to manage by just configurations.</td>
+                                    			</tr><tr><td>&nbsp;</td></tr>
+                                    			<tr>
+                                    				<td valign="top"><li class="mb-4"><img src="images/next.svg" alt="arrow" style="width:15px;margin-right:10px"></li></td>
+                                    				<td valign="top">Stock can be transferred between warehouses of the same company with two steps (fulfillment  warehouse -> transit location and transit location -> requestor warehouse) or single step (fulfillment warehouse -> requestor warehouse).</td>
+                                    			</tr><tr><td>&nbsp;</td></tr>
+                                    			<tr>
+                                    				<td valign="top"><li class="mb-4"><img src="images/next.svg" alt="arrow" style="width:15px;margin-right:10px"></li></td>
+                                    				<td valign="top">Users can create reverse transfer easily from the inter company or inter warehouse screen. System allows for partial or complete reverse transfer.</td>
+                                    			</tr><tr><td>&nbsp;</td></tr>
+                                    			<tr>
+                                    				<td valign="top"><li class="mb-4"><img src="images/next.svg" alt="arrow" style="width:15px;margin-right:10px"></li></td>
+                                    				<td valign="top">Easy and flexible navigation between documents.</td>
+                                    			</tr>
+                                    			<tr>
+                                    				<td valign="top"><li class="mb-4"><img src="images/next.svg" alt="arrow" style="width:15px;margin-right:10px"></li></td>
+                                    				<td valign="top">Easy import features to create inter company transactions or inter warehouse transactions.</td>
+                                    			</tr><tr><td>&nbsp;</td></tr>
+                                    		</tbody>
+                                    	</table>
+	                                </ul>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
+	                <!-- END : ICT-Features-->
+
+	                <!-- START : ICT-Process Flow-->
+	                <div class="tab-pane fade" id="ICT-ICTprocessflow">
+                        <img src="images/ICT.gif" alt="Inter Copmpany Transfer Process Flow">
+	                </div>
+	                <!-- END : ICT-Process Flow-->
+
+                    <!-- START : IWT-Process Flow-->
+                    <div class="tab-pane fade text-center" id="IWT-IWTprocessflow">
+                        <img src="images/IWT.gif" alt="Inter Warehouse Transfer Process Flow" height="750px" align="center">
+                    </div>
+                    <!-- END : IWT-Process Flow-->
+
+	                <!-- START : ICT-Screenshots-->
+	                <div class="tab-pane fade" id="ICT-screenshots">
+                        <!-- Screenshots start -->
+                        <div class="row pb-sm-5">
+                            <div class="text-center" style="width:100%">
+                                <h3 style="font-family: San Francisco;">Inter Company Transfer
+                                </h3>
+                            </div>
+                            <div id="demo1" class="carousel slide pb-5 col-12 col-lg-12 mx-auto" data-ride="carousel">
+                                <!-- The slideshow -->
+                                <div class="carousel-inner pt-4 pt-lg-5" >
+                                    <div class="carousel-item px-4 active">
+                                        <div class="row pb-sm-4 no-lg-gutters">
+                                            <img src="images/ict/Slide1.PNG" alt="" width="1000" height="500px">
+                                        </div>
+                                    </div>
+                                    <div class="carousel-item px-4">
+                                        <div class="row pb-sm-4 no-gutters">
+                                            <img src="images/ict/Slide2.PNG" alt="" width="990" height="500px">
+                                        </div>
+                                    </div>
+                                    <div class="carousel-item px-4">
+                                        <div class="row pb-sm-4 no-gutters">
+                                            <img src="images/ict/Slide3.PNG" alt="" width="990" height="500px">
+                                        </div>
+                                    </div>
+                                    <div class="carousel-item px-4">
+                                        <div class="row pb-sm-4 no-gutters">
+                                            <img src="images/ict/Slide4.PNG" alt="" width="990" height="500px">
+                                        </div>
+                                    </div>
+                                    <div class="carousel-item px-4">
+                                        <div class="row pb-sm-4 no-gutters">
+                                            <img src="images/ict/Slide5.PNG" alt="" width="990" height="500px">
+                                        </div>
+                                    </div>
+                                    <div class="carousel-item px-4">
+                                        <div class="row pb-sm-4 no-gutters">
+                                            <img src="images/ict/Slide6.PNG" alt="" width="990" height="500px">
+                                        </div>
+                                    </div>
+                                    <div class="carousel-item px-4">
+                                        <div class="row pb-sm-4 no-gutters">
+                                            <img src="images/ict/Slide7.PNG" alt="" width="990" height="500px">
+                                        </div>
+                                    </div>
+                                    <div class="carousel-item px-4">
+                                        <div class="row pb-sm-4 no-gutters">
+                                            <img src="images/ict/Slide8.PNG" alt="" width="990" height="500px">
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Screenshots over -->
+
+                                <!-- Left and right controls -->
+                                <a class="carousel-control-prev" href="#demo1" data-slide="prev" style="left: -5%; width: 60px;">
+                                    <i class="fa fa-angle-left" style="font-size: 5vw;color: #333;"></i>
+                                </a>
+                                <a class="carousel-control-next" href="#demo1" data-slide="next" style="right: -5%; width: 60px;">
+                                    <i class="fa fa-angle-right" style="font-size: 5vw;color: #333;"></i>
+                                </a>
+                            </div>
+                            <!-- IWT Screenshots start -->
+                            <div class="row pb-sm-5">
+                                <div class="text-center" style="width:100%">
+                                    <h3 style="font-family: San Francisco;">Inter Warehouse Transfer
+                                    </h3>
+                                </div>
+                                <div id="demo2" class="carousel slide pb-5 col-12 col-lg-12 mx-auto" data-ride="carousel">
+                                    <!-- The slideshow -->
+                                    <div class="carousel-inner pt-4 pt-lg-5" >
+                                        <div class="carousel-item px-4 active">
+                                            <div class="row pb-sm-4 no-lg-gutters">
+                                                <img src="images/iwt/Slide1.PNG" alt="" width="1000" height="500px">
+                                            </div>
+                                        </div>
+                                        <div class="carousel-item px-4">
+                                            <div class="row pb-sm-4 no-gutters">
+                                                <img src="images/iwt/Slide2.PNG" alt="" width="990" height="500px">
+                                            </div>
+                                        </div>
+                                        <div class="carousel-item px-4">
+                                            <div class="row pb-sm-4 no-gutters">
+                                                <img src="images/iwt/Slide3.PNG" alt="" width="990" height="500px">
+                                            </div>
+                                        </div>
+                                        <div class="carousel-item px-4">
+                                            <div class="row pb-sm-4 no-gutters">
+                                                <img src="images/iwt/Slide4.PNG" alt="" width="990" height="500px">
+                                            </div>
+                                        </div>
+                                        <div class="carousel-item px-4">
+                                            <div class="row pb-sm-4 no-gutters">
+                                                <img src="images/iwt/Slide5.PNG" alt="" width="990" height="500px">
+                                            </div>
+                                        </div>
+                                        <div class="carousel-item px-4">
+                                            <div class="row pb-sm-4 no-gutters">
+                                                <img src="images/iwt/Slide6.PNG" alt="" width="990" height="500px">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Screenshots over -->
+
+                                    <!-- Left and right controls -->
+                                    <a class="carousel-control-prev" href="#demo2" data-slide="prev" style="left: -5%; width: 60px;">
+                                        <i class="fa fa-angle-left" style="font-size: 5vw;color: #333;"></i>
+                                    </a>
+                                    <a class="carousel-control-next" href="#demo2" data-slide="next" style="right: -5%; width: 60px;">
+                                        <i class="fa fa-angle-right" style="font-size: 5vw;color: #333;"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END : IWT-Screenshots-->
+                        </div>
+	                </div>
+	                <!-- END : ICT-Screenshots-->
+                </div>
+            </div>
+        </div>
+        <div class="container" style="width: 100%;">
+            <div class="row">
+                <div class="col-sm-6 col-md-12 px-2">
+                    <h2 class="w-100 text-center my-3">Suggested Apps</h2>
+                    <div class="text-center w-100 mb-4">
+                        <img src="images/line.png" alt="Setu Consulting Services Pvt. Ltd." width="30%" height="100%">
+                    </div>
+                </div>
+                <div class="card border-0" style="border-radius: .25rem;box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23); color: #002966; width: 100%;">
+                    <div id="demo11" class="carousel slide col-12 col-lg-12 mx-auto" data-ride="carousel">
+                        <div class="row">
+                            <div id="apps" class="carousel slide col-12 col-lg-12 mx-auto" data-ride="carousel">
+                                <div class="carousel-inner pt-lg-5" >
+                                    <div class="carousel-item px-4 active">
+                                        <div class="row pb-sm-4 no-lg-gutters">
+                                            <a href="https://apps.odoo.com/apps/modules/14.0/setu_advance_reordering/" target="_blank">
+                                            <img src="images/odoo_images/advance-reordering.png" alt="Advance Reordering" width="450px"  style="margin-left: 70px; margin-right:10px"></a>
+                                            <a href="https://apps.odoo.com/apps/modules/15.0/setu_advance_inventory_reports/" target="_blank">
+                                            <img src="images/odoo_images/advance-inventory-reports.png" alt="Advance Inventory Reports" width="450px" class="ml-4"></a>
+                                        </div>
+                                    </div>
+                                    <div class="carousel-item px-4">
+                                        <div class="row pb-sm-4 no-lg-gutters">
+                                            <a href="https://apps.odoo.com/apps/modules/15.0/setu_abc_analysis_reports/" target="_blank">
+                                            <img src="images/odoo_images/abc-analysis.png"alt="ABC Analysis Reports" width="450px" style="margin-left: 70px; margin-right:10px"></a>
+                                            <a href="https://apps.odoo.com/apps/modules/15.0/setu_sales_purchase_price_tracker/" target="_blank">
+                                            <img src="images/odoo_images/price-tracker.png" alt="Sale - Purchase Price Tracker" width="450px" class="ml-4"></a>
+                                        </div>
+                                    </div>
+                                    <div class="carousel-item px-4">
+                                        <div class="row pb-sm-4 no-lg-gutters">
+                                            <a href="https://apps.odoo.com/apps/modules/15.0/setu_inventory_ledger_report/" target="_blank">
+                                            <img src="images/odoo_images/inventory-ledger-report.png"alt="Inventory Ledger Report" width="450px" style="margin-left: 70px; margin-right:10px"></a>
+                                            <a href="https://apps.odoo.com/apps/modules/14.0/setu_rfm_analysis/" target="_blank">
+                                            <img src="images/odoo_images/rfm-analysis.png" alt="RFM Analysis" width="450px" class="ml-4"></a>
+                                        </div>
+                                    </div>
+                                    <div class="carousel-item px-4">
+                                        <div class="row pb-sm-4 no-lg-gutters">
+                                            <a href="https://apps.odoo.com/apps/modules/14.0/setu_rma/" target="_blank">
+                                            <img src="images/odoo_images/rma.png"alt="Return Merchandise Authorization" width="450px" style="margin-left: 70px; margin-right:10px"></a>
+                                            <a href="https://apps.odoo.com/apps/modules/14.0/setu_inventory_card_report/" target="_blank">
+                                            <img src="images/odoo_images/ledgerCard.png"alt="Inventory Card Report" width="450px" class="ml-4"></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <a class="carousel-control-prev" href="#apps" data-slide="prev" style="left: -5%; width: 60px;">
+                                    <i class="fa fa-chevron-circle-left" style="font-size: 2vw;color: #875a7b;"></i>
+                                </a>
+                                <a class="carousel-control-next" href="#apps" data-slide="next" style="right: -5%; width: 60px;">
+                                    <i class="fa fa-chevron-circle-right" style="font-size: 2vw;color: #875a7b;"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col-sm-6 col-md-6 mt-3 px-2 text-center">
+                <div style="border-radius:10px; padding:5px; border-left:4px solid #5A63A6; box-shadow: 0px 2px 9px 4px #d0cecb;">
+                    <h5 class="font-weight-bold">FREE SUPPORT</h5>
+                    <a href="mailto:support@setuconsulting.com?subject=Inter Company Transfer Version 15.0 - Support Request" target="_blank" class="btn btn-info mx-2 pr-sm-4 mb-2 mb-lg-0" style="text-transform: uppercase; font-size: 14px;"><i class="fa fa-envelope-square mr-sm-2" style="font-size: 20px;vertical-align: middle;"></i> <span class="d-none d-sm-inline">Request free support</span></a>
+                    <p class="m-auto w-75" style="line-height: 1.5;font-weight: 100;">We will provide free support for any issues, queries, and bug fixing upto 90 days from the date of purchase of this application. 
+                    </p>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-6 mt-3 px-2 text-center">
+                <div style="border-radius:10px; padding:5px; border-left:4px solid #5A63A6; height: 150px; box-shadow: 0px 2px 9px 4px #d0cecb;">
+                    <h3 class="font-weight-bold">NOTE</h3>
+                    <p class="m-auto w-75" style="line-height: 1.5;font-weight: 100;">
+                        Get notified about latest update. Please drop an email when you make purchase at
+                        <a href="mailto:sales@setuconsulting.com?subject=Inter Company Transfer Version 15.0 - New Purchase" class="btn btn-info mx-2 pr-sm-4 mb-2 mb-lg-0" style="text-transform: uppercase; font-size: 14px;"><i class="fa fa-envelope-square mr-sm-2" style="font-size: 20px;vertical-align: middle;"></i> <span class="d-none d-sm-inline">Setu Consulting</span></a>
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="col-sm-6 col-md-12 mt-6 px-2 text-center">
+        <img src="images/odoo_images/odoo-services-1.png">
+    </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
+</html>

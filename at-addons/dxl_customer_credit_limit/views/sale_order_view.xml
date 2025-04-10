@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sale_order_view_form_inherit_tmgs" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.tmgs</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <data>
+                <xpath expr="//button[@name='action_cancel']" position="after">
+                    <button name="action_approve"
+                            type="object"
+                            string="Approve"
+                            attrs="{'invisible': [('visible_approval', '=', False)]}"
+                            class='oe_highlight'/>
+                </xpath>
+                <field name="partner_id" position="after">
+                    <field name="visible_approval" invisible="1"/>
+                </field>
+            </data>
+        </field>
+    </record>
+</odoo>

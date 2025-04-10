@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="res_product_product_customer_code_form_inherit" model="ir.ui.view">
+            <field name="name">res.product.product.customer.code.form</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook" position="inside">
+                    <page string="Client Code">
+                        <field name="client_code_ids" widget="many2many" string="Client Code">  
+                            <tree>
+                                <field name="partner_id"/>
+                                <field name="client_code"/>
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo> 
