@@ -129,8 +129,8 @@ class ProductTemplate(models.Model):
     brand_classification = fields.Char(string="Brand Classification", compute="_compute_ranks")
     category_classification = fields.Char(string="Category Classification", compute="_compute_ranks")
 
-    ads_quarterly = fields.Char(string="ADS (3 Months)", compute='_compute_total_ads')
-    ads_half_year = fields.Char(string="ADS (6 Months)", compute='_compute_total_ads')
+    ads_quarterly = fields.Float(string="ADS (3 Months)", compute='_compute_total_ads')
+    ads_half_year = fields.Float(string="ADS (6 Months)", compute='_compute_total_ads')
 
     warehouse_config_id = fields.Many2one('min.max.config.warehouse', string="Company Warehouse Configuration",
                                           compute='_compute_min_max_config_info')
@@ -250,7 +250,7 @@ class ProductTemplate(models.Model):
                         ('product_id', '=', product.id),
                         ('warehouse_id', '=', warehouse.id)
                     ], limit=1)
-                    spec.write({field_name: ads})
+                    spec.write({field_name: round(ads, 2)})
                 except:
                     pass
 
@@ -269,7 +269,7 @@ class ProductTemplate(models.Model):
         date_threshold = (datetime.now() + timedelta(hours=5)).date() - timedelta(days=180)
 
         # Fetch POS order lines for the last 180 days
-        pos_lines = self.env['pos.order.line'].search([
+        pos_lines = self.env['sale.order.line'].search([
             ('order_id.date_order', '>=', date_threshold),
             ('order_id.company_id.id', '=', self.env.company.id)
         ])

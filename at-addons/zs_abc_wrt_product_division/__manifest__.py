@@ -14,6 +14,7 @@
         'views/min_max_config_warehouse_views.xml',
         'views/min_max_config_storage_views.xml',
         'views/purchase_views.xml',
+        'views/warehouse_config_views.xml',
         # 'views/setu_abc_xyz_analysis_report.xml',
         # 'views/setu_abc_sales_frequency_analysis_report.xml',
     ],

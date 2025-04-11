@@ -1,0 +1,51 @@
+<odoo>
+    <record id="view_warehouse_config_form" model="ir.ui.view">
+        <field name="name">warehouse.config.form</field>
+        <field name="model">warehouse.config</field>
+        <field name="arch" type="xml">
+            <form string="Warehouse Configuration" create="false">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="bond_warehouse"/>
+                        <field name="bond_warehouse_stock_limit"/>
+                        <field name="company_warehouse"/>
+                        <field name="company_warehouse_stock_limit"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tree View -->
+    <record id="view_warehouse_config_tree" model="ir.ui.view">
+        <field name="name">warehouse.config.tree</field>
+        <field name="model">warehouse.config</field>
+        <field name="arch" type="xml">
+            <tree string="Warehouse Configurations" create="false" delete="false">
+                <field name="bond_warehouse"/>
+                <field name="bond_warehouse_stock_limit"/>
+                <field name="company_warehouse"/>
+                <field name="company_warehouse_stock_limit"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_warehouse_config" model="ir.actions.act_window">
+        <field name="name">Warehouse Configuration</field>
+        <field name="res_model">warehouse.config</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_warehouse_config_tree"/>
+        <field name="target">current</field>
+        <field name="context">{}</field>
+        <field name="domain">[]</field>
+    </record>
+
+    <!-- Menu Item -->
+    <menuitem id="menu_warehouse_config_root"
+              name="Warehouse Configuration"
+              parent="zs_inventory_planning_report.zs_branch_storage_configuration_menu"
+              action="action_warehouse_config"
+              sequence="10"/>
+</odoo>

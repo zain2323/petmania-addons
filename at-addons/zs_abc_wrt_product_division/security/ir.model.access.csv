@@ -6,3 +6,4 @@ access_min_max_config_storage,access_min_max_config_storage,model_min_max_config
 
 access_warehouse_spec,access_warehouse_spec,model_warehouse_spec,base.group_user,1,1,1,1
 access_min_max_config_warehouse,access_min_max_config_warehouse,model_min_max_config_warehouse,base.group_user,1,1,1,1
+access_warehouse_config,access_warehouse_config,model_warehouse_config,base.group_user,1,1,1,1
